@@ -1,0 +1,18 @@
+{
+	"apiList": [{
+		"urlPath": "",
+		"ControllerName": "",
+		"MethodName": "",
+		"HTTPMethod": "",
+		"RequestDTO": [
+			{
+				"Name":"",
+				"Description":"",
+				"Required":"",
+				"DTOType":"",
+				"ParamItemList":[] 
+			}
+		],
+		"ResponseDTO": []
+	}]
+}
