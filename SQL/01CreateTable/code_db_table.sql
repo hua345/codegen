@@ -1,22 +1,14 @@
 -- auto-generated definition
-create table code_api_field
+create table code_db_table
 (
   id           bigint auto_increment
   comment '主键',
-  field_id     varchar(32)                           not null
-  comment '字段Id',
-  field_name   varchar(32)                           not null
-  comment '字段名称',
-  field_type   varchar(32)                           not null
-  comment '字段类型',
-  api_id       varchar(32)                           not null
-  comment '所属接口Id',
-  field_desc   varchar(108)                          null
-  comment '字段描述',
-  request_type varchar(1)                            not null
-  comment '0;请求字段,1:响应字段',
-  parent_id    varchar(32)                           null
-  comment '父字段Id, 不为Null则为子DTO字段',
+  table_id     varchar(32)                           not null
+  comment '数据库表Id',
+  table_name   varchar(64)                           not null
+  comment '数据库表名称',
+  project_id   varchar(32)                           not null
+  comment '所属项目Id',
   created_date timestamp default current_timestamp() not null
   comment '创建时间',
   created_by   varchar(32)                           not null
@@ -35,13 +27,12 @@ create table code_api_field
   comment '预留字段',
   entity       varchar(32)                           null
   comment '实体字段，预留',
-  constraint code_api_field_field_id_uindex
-  unique (field_id),
   constraint id
-  unique (id)
+  unique (id),
+  constraint table_id
+  unique (table_id)
 )
-  comment '接口表';
+  comment '数据库表';
 
-alter table code_api_field
+alter table code_db_table
   add primary key (id);
-
