@@ -1,3 +1,16 @@
 package main
 
-const GroupName string = "com.github.chenjianhua"
+const DefaultGroupName string = "com.github"
+const DefaultArtifactName string = "learn"
+const JavaPath = "src/main/java"
+const JavaResourcePath = "src/main/resources"
+const DtoName = "DTO"
+const RequestDtoName = "InputDTO"
+const JavaControllerFileName = "Controller.java"
+const JavaServiceFileName = "Service.java"
+const JavaServiceImplFileName = "ServiceImpl.java"
+const JavaStubFileName = "Stub.java"
+const GitIgnoreFileName = ".gitignore"
+const ReadmeFileName = "README.md"
+const PomXmlFileName = "pom.xml"
+const JavaApplicationFileName = "Application.java"
