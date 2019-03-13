@@ -4,6 +4,8 @@ package main
 import (
 	"flag"
 	"fmt"
+	"generateCode/config"
+	"generateCode/models"
 	"os"
 )
 
@@ -19,7 +21,7 @@ func main() {
 	//jsonCode.ReadJsonData()
 	servicePtr := flag.String("a", "", "项目名称，比如:demo、demo.code")
 	methodPtr := flag.String("m", "", "方法名称")
-	groupNamePtr := flag.String("group", DefaultGroupName, "组织名称，比如:com.github")
+	groupNamePtr := flag.String("group", config.DefaultGroupName, "组织名称，比如:com.github")
 	initPtr := flag.Bool("init", false, "初始化工程")
 	flag.Usage = usage
 	flag.Parse()
@@ -29,16 +31,15 @@ func main() {
 			flag.Usage()
 			os.Exit(0)
 		}
-		fmt.Println("GroupId: ", *groupNamePtr)
-		fmt.Println("init project: ", *servicePtr)
-
+		projectInfoDto := models.ProjectInfoDto{GroupId: *groupNamePtr, ArtifactId: *servicePtr}
+		projectInfoDto = projectInfoDto.Init()
+		// InitCode(projectInfoDto)
 	} else {
 		if len(*servicePtr) == 0 || len(*methodPtr) == 0 {
 			flag.Usage()
 			os.Exit(0)
 		}
-		fmt.Println("GroupId: ", *groupNamePtr)
-		fmt.Println(*servicePtr + " project generate Api: " , *methodPtr)
-
+		projectInfoDto := models.ProjectInfoDto{GroupId: *groupNamePtr, ArtifactId: *servicePtr}
+		projectInfoDto.Init()
 	}
 }

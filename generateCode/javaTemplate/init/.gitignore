@@ -1,0 +1,25 @@
+# maven #
+**/target/
+**/class/
+**/.classpath
+**/.idea/
+**.iml
+**/.settings/
+**/.vscode/
+# nodejs #
+**/node_modules/
+# eclipse #
+.metadata/
+.recommenders/
+RemoteSystemsTempFiles/
+*.settings
+**/bin
+Servers/
+
+# Package Files #
+*.jar
+*.war
+*.class
+
+# python #
+**/__pycache__
