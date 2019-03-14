@@ -3,6 +3,7 @@ package config
 const JavaTemplateInitPath string = "javaTemplate/init"
 const JavaTemplateCodePath string = "javaTemplate/init/java"
 const JavaTemplateResourcePath string = "javaTemplate/init/resources"
+const MybatisPath string = "mybatis"
 const JavaUtilPath string = "utils"
 const JavaConfigPath string = "config"
 const DefaultGroupName string = "com.github"

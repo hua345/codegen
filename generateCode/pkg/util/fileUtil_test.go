@@ -25,3 +25,18 @@ func TestCopyFile(t *testing.T) {
 	os.Remove(path)
 	os.Remove(dstPath)
 }
+
+func TestGetFileSuffix(t *testing.T) {
+	var fileName string = "hello.go"
+	fileSuffix := GetFileSuffix(fileName)
+	if fileSuffix != ".go" {
+		t.Error(`"hello.go" Suffix != ".go"` )
+	}
+}
+func TestGetFileSuffix2(t *testing.T) {
+	var fileName string = "hello.jar"
+	fileSuffix := GetFileSuffix(fileName)
+	if fileSuffix != ".jar" {
+		t.Error(`"hello.jar" Suffix != ".jar"` )
+	}
+}

@@ -97,11 +97,22 @@ func (projectInfoDto ProjectInfoDto) CheckProjectPath() {
 	if !resourcePathExist {
 		util.PathMkdirAll(projectInfoDto.ResourcePath)
 	}
+	// 检测mybatis目录是否存在
+	mybatisPath := path.Join(projectInfoDto.ResourcePath, config.MybatisPath)
+	mybatisPathExist, err := util.PathExists(mybatisPath)
+	if err != nil {
+		panic(err)
+	}
+	if !mybatisPathExist {
+		util.PathMkdirAll(mybatisPath)
+	}
+	// Copy .Gitignore
 	_, err = util.CopyFile(path.Join(projectInfoDto.ProjectName, config.GitIgnoreFileName),
 		path.Join(config.JavaTemplateInitPath, config.GitIgnoreFileName))
 	if err != nil {
-		fmt.Printf("Create Project dir %s failed!", )
+		fmt.Printf("Copy %s failed!", config.GitIgnoreFileName)
 	}
+	// 解析模板
 	initProjectData(projectInfoDto)
 }
 
@@ -138,6 +149,25 @@ func initProjectData(projectInfoDto ProjectInfoDto) {
 		fileMapDtoList = append(fileMapDtoList,
 			FileMapDto{path.Join(config.JavaTemplateResourcePath, value),
 				path.Join(projectInfoDto.ResourcePath, value)})
+	}
+	// Mybatis
+	mybatisTemplatePath := path.Join(config.JavaTemplateInitPath, config.MybatisPath)
+	mybatisPath := path.Join(projectInfoDto.ResourcePath, config.MybatisPath)
+
+	mybatisFileNameList := util.GetFilesName(mybatisTemplatePath)
+	for _, value := range mybatisFileNameList {
+		if util.GetFileSuffix(value) == ".jar" {
+			// 如果是jar文件直接拷贝
+			_, err := util.CopyFile(path.Join(mybatisPath, value),
+				path.Join(mybatisTemplatePath, value))
+			if err != nil {
+				fmt.Printf("Copy %s failed!",value )
+			}
+		} else {
+			fileMapDtoList = append(fileMapDtoList,
+				FileMapDto{path.Join(mybatisTemplatePath, value),
+					path.Join(mybatisPath, value)})
+		}
 	}
 	// 解析模板
 	for _, value := range fileMapDtoList {

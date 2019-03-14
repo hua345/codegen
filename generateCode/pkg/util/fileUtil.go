@@ -4,6 +4,7 @@ import (
 	"io"
 	"io/ioutil"
 	"os"
+	"path"
 )
 //文件打开模式：
 //
@@ -35,6 +36,13 @@ func CopyFile(dstPath, srcPath string) (nBytes int64, err error){
 
 	return io.Copy(dstFile, srcFile)
 }
+// 获取文件后缀
+func GetFileSuffix(fileName string) string{
+	var fileSuffix string
+	fileSuffix = path.Ext(fileName) //获取文件后缀
+	return fileSuffix
+}
+//获取文件夹文件列表
 func GetFilesName(path string) []string {
 	var names []string
 	files, _ := ioutil.ReadDir(path)
@@ -47,6 +55,7 @@ func GetFilesName(path string) []string {
 	}
 	return names
 }
+// 读取文件
 func ReadFileWithIoUtil(path string) string {
 	fileBytes, err := ioutil.ReadFile(path)
 	if err != nil {
@@ -54,6 +63,7 @@ func ReadFileWithIoUtil(path string) string {
 	}
 	return string(fileBytes)
 }
+// 写入文件
 func WriteFileWithIoUtil(name,content string) {
 	data :=  []byte(content)
 	err := ioutil.WriteFile(name,data,0644)
