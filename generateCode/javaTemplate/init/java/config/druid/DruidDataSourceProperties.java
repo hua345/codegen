@@ -1,7 +1,10 @@
-package {{.PackageName}}.config;
+package {{.PackageName}}.config.druid;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+/**
+ * Created by zhong on 2017/1/7.
+ */
 @ConfigurationProperties(prefix = "spring.datasource.druid")
 public class DruidDataSourceProperties {
 

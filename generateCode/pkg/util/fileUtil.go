@@ -55,6 +55,31 @@ func GetFilesName(path string) []string {
 	}
 	return names
 }
+/**
+ * 检查目录是否存在，如果不存在创建目录
+ */
+func CheckDirAndMkdir(path string) {
+	pathExist, err := PathExists(path)
+	if err != nil {
+		panic(err)
+	}
+	if !pathExist {
+		PathMkdirAll(path)
+	}
+}
+//获取文件夹下子文件夹列表
+func GetSubDirList(path string) []string {
+	var subDirList []string
+	files, _ := ioutil.ReadDir(path)
+	for _, file := range files {
+		if file.IsDir() {
+			subDirList = append(subDirList, file.Name())
+		}else{
+			continue
+		}
+	}
+	return subDirList
+}
 // 读取文件
 func ReadFileWithIoUtil(path string) string {
 	fileBytes, err := ioutil.ReadFile(path)

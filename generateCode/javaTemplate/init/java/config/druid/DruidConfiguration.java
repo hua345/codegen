@@ -1,4 +1,4 @@
-package {{.PackageName}}.config;
+package {{.PackageName}}.config.druid;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.support.http.StatViewServlet;
@@ -14,6 +14,9 @@ import org.springframework.context.annotation.Configuration;
 import javax.sql.DataSource;
 import java.sql.SQLException;
 
+/**
+ * Created by zhong on 2016/9/5.
+ */
 @Configuration
 @EnableConfigurationProperties({DruidDataSourceProperties.class})
 public class DruidConfiguration {
