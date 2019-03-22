@@ -6,12 +6,12 @@
 主要根据URL设计和方法来生成对应的接口
 ```bash
 project baseUrl = /api/v1/hello
-GET /users/{name} method getUser
-=> Controller Users method getUser
-POST /users method addUser
-=> Controller Users method addUser
-POST /addUser [method addUser]
-=> Controller AddUser method addUser
+GET article/details/{id} method getDetails
+=> Controller Article method getDetails
+POST /article method addArticle
+=> Controller Article method addArticle
+POST /addArticle
+=> Controller AddArticle method addArticle
 ```
 ```bash
 ./generateCode.exe -a ArtifactId -m methodName -url url

@@ -1,8 +1,7 @@
-package {{.PackageName}}.service;
+package {{.ProjectInfo.PackageName}}.service;
 
-import hello.dto.request.AddUserInputDTO;
-import hello.dto.response.AddUserOutputDTO;
-import hello.model.User;
+import {{.ProjectInfo.PackageName}}.dto.request.{{.DTOName}}InputDTO;
+import {{.ProjectInfo.PackageName}}.dto.response.{{.DTOName}}OutputDTO;
 
 import java.util.List;
 
@@ -10,18 +9,12 @@ import java.util.List;
  * @author CHENJIANHUA001
  * @date 2019/03/18 15:54
  */
-public interface UserService {
+public interface {{.ControllerName}}Service {
 
     /**
-     * 添加用户
+     * {{.Description}}
      * @param param 入参
      * @return 出参
      */
-    AddUserOutputDTO addUser(AddUserInputDTO param);
-
-    /**
-     * 查询所有用户
-     * @return
-     */
-    List<User> getAllUsers();
+    {{.DTOName}}OutputDTO {{.MethodName}}({{.DTOName}}InputDTO param);
 }

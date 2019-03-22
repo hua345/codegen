@@ -1,9 +1,11 @@
 package models
 
 import (
+	"encoding/json"
 	"fmt"
 	"generateCode/config"
 	"generateCode/pkg/util"
+	"os"
 	"path"
 	"strings"
 )
@@ -45,8 +47,8 @@ func (projectInfoDto ProjectInfoDto) Init() ProjectInfoDto {
 	for _, value := range packageNameList {
 		projectInfoDto.JavaPath = path.Join(projectInfoDto.JavaPath, value)
 	}
-	fmt.Println("ProjectName:", projectInfoDto.ProjectName)
-	fmt.Println("projectInfo:", projectInfoDto)
+	data,_ := json.Marshal(projectInfoDto)
+	fmt.Printf("%s\n", data)
 	return projectInfoDto
 }
 func (projectInfoDto ProjectInfoDto) InitProject() {
@@ -57,7 +59,7 @@ func (projectInfoDto ProjectInfoDto) InitProject() {
 	}
 	if exist {
 		fmt.Printf("Project %s has Exist!\n", projectInfoDto.ProjectName)
-		//os.Exit(2)
+		os.Exit(2)
 	} else {
 		util.PathMkDir(projectInfoDto.ProjectName)
 	}
@@ -141,21 +143,21 @@ func initProjectData(projectInfoDto ProjectInfoDto) {
 			path.Join(projectInfoDto.ProjectName, config.PomXmlFileName)},
 		FileMapDto{path.Join(config.JavaTemplateInitPath, config.DotProjectFileName),
 			path.Join(projectInfoDto.ProjectName, config.DotProjectFileName)},
-		FileMapDto{path.Join(config.JavaTemplateCodePath, config.JavaApplicationFileName),
+		FileMapDto{path.Join(config.JavaTemplateInitCodePath, config.JavaApplicationFileName),
 			path.Join(projectInfoDto.JavaPath, config.JavaApplicationFileName)},
 	}
 	// Java Util包
-	javaTemplateUtilPath := path.Join(config.JavaTemplateCodePath, config.JavaUtilPath)
+	javaTemplateUtilPath := path.Join(config.JavaTemplateInitCodePath, config.JavaUtilPath)
 	javaCodeUtilPath := path.Join(projectInfoDto.JavaPath, config.JavaUtilPath)
 	fileMapDtoList = appendTemplateList(javaTemplateUtilPath, javaCodeUtilPath, fileMapDtoList)
 	// Java Config包
-	javaTemplateConfigPath := path.Join(config.JavaTemplateCodePath, config.JavaConfigPath)
+	javaTemplateConfigPath := path.Join(config.JavaTemplateInitCodePath, config.JavaConfigPath)
 	javaCodeConfigPath := path.Join(projectInfoDto.JavaPath, config.JavaConfigPath)
 	fileMapDtoList = appendTemplateList(javaTemplateConfigPath, javaCodeConfigPath, fileMapDtoList)
 	// Config subDir文件
 	fileMapDtoList =appendCommonTemplateList(javaTemplateConfigPath, javaCodeConfigPath, fileMapDtoList)
 	// Java Common包
-	javaTemplateCommonPath := path.Join(config.JavaTemplateCodePath, config.JavaCommonPath)
+	javaTemplateCommonPath := path.Join(config.JavaTemplateInitCodePath, config.JavaCommonPath)
 	javaCodeCommonPath := path.Join(projectInfoDto.JavaPath, config.JavaCommonPath)
 	fileMapDtoList = appendTemplateList(javaTemplateCommonPath, javaCodeCommonPath, fileMapDtoList)
 	// Resource文件

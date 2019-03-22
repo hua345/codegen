@@ -23,7 +23,7 @@ func main() {
 	groupNamePtr := flag.String("group", config.DefaultGroupName, "组织名称，比如:com.github")
 	restfulUrlPtr := flag.String("url", "", "URL路径，比如:user")
 	baseUrlPtr := flag.String("baseUrl", config.DefaultBaseURLName, "URL路径，比如:user")
-	httpMethodPtr := flag.String("httpMethod", config.DefaultHttpMethod, "Http Method，比如:get, post,put,delete")
+	httpMethodPtr := flag.String("httpMethod", "", "Http Method，比如:get, post,put,delete")
 	initPtr := flag.Bool("init", false, "初始化工程")
 	flag.Usage = usage
 	flag.Parse()
@@ -49,6 +49,7 @@ func main() {
 			BaseUrl:     *baseUrlPtr,
 			RestfulUrl:  *restfulUrlPtr,
 			ProjectInfo: projectInfoDto}
-		restfulApiDto.Init()
+		restfulApiDto = restfulApiDto.Init()
+		restfulApiDto.GenerateCode()
 	}
 }

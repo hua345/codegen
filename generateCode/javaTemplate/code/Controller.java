@@ -1,12 +1,12 @@
-package {{.PackageName}}.controller;
+package {{.ProjectInfo.PackageName}}.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import {{.PackageName}}.common.ResponseModel;
-import {{.PackageName}}.common.ResultCode;
-import {{.PackageName}}.config.exception.MyRuntimeException;
-import hello.dto.request.AddUserInputDTO;
-import hello.dto.response.AddUserOutputDTO;
-import hello.service.UserService;
+import {{.ProjectInfo.PackageName}}.common.ResponseModel;
+import {{.ProjectInfo.PackageName}}.common.ResultCode;
+import {{.ProjectInfo.PackageName}}.config.exception.MyRuntimeException;
+import {{.ProjectInfo.PackageName}}.dto.request.{{.DTOName}}InputDTO;
+import {{.ProjectInfo.PackageName}}.dto.response.{{.DTOName}}OutputDTO;
+import {{.ProjectInfo.PackageName}}.service.{{.ControllerName}}Service;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -25,23 +25,21 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @Slf4j
 @RestController
-@RequestMapping(path = "/user")
-public class UserController {
+@RequestMapping(path = "{{.ControllerURL}}")
+public class {{.ControllerName}}Controller {
 
     /**
      * {{.Description}}
      */
     @Autowired
-    private UserService userService;
+    private {{.ControllerName}}Service service;
 
-    @ApiOperation(value="添加用户", notes="添加用户")
-    @{{.HttpMethod}}(path = "/add")
-    public ResponseModel<AddUserOutputDTO> addNewUser(@RequestBody AddUserInputDTO param) {
-        log.info("Handing request addNewUser begin, req: {}", JSONObject.toJSONString(param));
+    @ApiOperation(value="{{.Description}}", notes="{{.Description}}")
+    @{{.HttpMethod}}(path = "{{.MethodURL}}")
+    public ResponseModel<{{.DTOName}}OutputDTO> {{.MethodName}}(@RequestBody {{.DTOName}}InputDTO param) {
+        log.info("Handing request {{.MethodName}} begin, req: {}", JSONObject.toJSONString(param));
 
-        userService.addUser(param);
-        AddUserOutputDTO addUserOutputDTO = new AddUserOutputDTO();
-        addUserOutputDTO.setStatus("Saved");
-        return ResponseModel.success(addUserOutputDTO);
+        {{.DTOName}}OutputDTO {{.MethodName}}OutputDTO = service.{{.MethodName}}(param);
+        return ResponseModel.success({{.MethodName}}OutputDTO);
     }
 }
