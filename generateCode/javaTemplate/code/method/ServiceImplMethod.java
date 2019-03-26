@@ -1,19 +1,3 @@
-package {{.ProjectInfo.PackageName}}.service.impl;
-
-import com.alibaba.fastjson.JSONObject;
-{{.ImportRequestDTOPath}}
-{{.ImportResponseDTOPath}}
-import {{.ProjectInfo.PackageName}}.service.{{.ControllerName}}Service;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-
-/**
- * @author CHENJIANHUA001
- * @date 2019/03/18 15:54
- */
-@Slf4j
-@Service
-public class {{.ControllerName}}ServiceImpl implements {{.ControllerName}}Service {
 
     /**
      * {{.Description}}
@@ -29,4 +13,3 @@ public class {{.ControllerName}}ServiceImpl implements {{.ControllerName}}Servic
         log.info("call service {{.MethodName}} end, resp: {}", JSONObject.toJSONString(result));
         return result;
     }
-}

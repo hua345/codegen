@@ -1,8 +1,8 @@
 package util
 
 import (
-	"text/template"
 	"os"
+	"text/template"
 )
 
 func ParseTemplate(dstPath, srcPath string, data interface{}) {
@@ -12,6 +12,7 @@ func ParseTemplate(dstPath, srcPath string, data interface{}) {
 	}
 
 	dstFileStream, err := os.Create(dstPath)
+	defer dstFileStream.Close()
 	if err != nil {
 		panic(nil)
 	}
@@ -20,4 +21,11 @@ func ParseTemplate(dstPath, srcPath string, data interface{}) {
 	if err != nil {
 		panic(nil)
 	}
+}
+func ParseMethodTemplate(srcPath string, data interface{}) string {
+	var tempFile string = "tempFile"
+	ParseTemplate(tempFile, srcPath, data)
+	content := ReadFileWithIoUtil(tempFile)
+	defer os.Remove(tempFile)
+	return content
 }

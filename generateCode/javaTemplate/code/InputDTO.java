@@ -11,7 +11,7 @@ import java.io.Serializable;
  */
 @Getter
 @Setter
-public class {{.DTOName}}InputDTO implements Serializable {
+public class {{.RequestDTOName}} implements Serializable {
     private static final long serialVersionUID = 1L;
 
     // TODO

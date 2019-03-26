@@ -4,8 +4,8 @@ import com.alibaba.fastjson.JSONObject;
 import {{.ProjectInfo.PackageName}}.common.ResponseModel;
 import {{.ProjectInfo.PackageName}}.common.ResultCode;
 import {{.ProjectInfo.PackageName}}.config.exception.MyRuntimeException;
-import {{.ProjectInfo.PackageName}}.dto.request.{{.DTOName}}InputDTO;
-import {{.ProjectInfo.PackageName}}.dto.response.{{.DTOName}}OutputDTO;
+{{.ImportRequestDTOPath}}
+{{.ImportResponseDTOPath}}
 import {{.ProjectInfo.PackageName}}.service.{{.ControllerName}}Service;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -36,10 +36,12 @@ public class {{.ControllerName}}Controller {
 
     @ApiOperation(value="{{.Description}}", notes="{{.Description}}")
     @{{.HttpMethod}}(path = "{{.MethodURL}}")
-    public ResponseModel<{{.DTOName}}OutputDTO> {{.MethodName}}(@RequestBody {{.DTOName}}InputDTO param) {
+    public ResponseModel<{{.ResponseDTOName}}> {{.MethodName}}(@RequestBody {{.RequestDTOName}} param) {
         log.info("Handing request {{.MethodName}} begin, req: {}", JSONObject.toJSONString(param));
 
-        {{.DTOName}}OutputDTO {{.MethodName}}OutputDTO = service.{{.MethodName}}(param);
-        return ResponseModel.success({{.MethodName}}OutputDTO);
+        {{.ResponseDTOName}} {{.VarResponseDTOName}} = service.{{.MethodName}}(param);
+        ResponseModel<{{.ResponseDTOName}}> result = ResponseModel.success();
+        log.info("Handing request {{.MethodName}} end, req: {}", JSONObject.toJSONString(result));
+        return result;
     }
 }

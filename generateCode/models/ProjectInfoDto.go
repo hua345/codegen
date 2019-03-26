@@ -47,11 +47,11 @@ func (projectInfoDto ProjectInfoDto) Init() ProjectInfoDto {
 	for _, value := range packageNameList {
 		projectInfoDto.JavaPath = path.Join(projectInfoDto.JavaPath, value)
 	}
-	data,_ := json.Marshal(projectInfoDto)
-	fmt.Printf("%s\n", data)
 	return projectInfoDto
 }
 func (projectInfoDto ProjectInfoDto) InitProject() {
+	data,_ := json.Marshal(projectInfoDto)
+	fmt.Printf("%s\n", data)
 	// 检测项目文件夹是否存在
 	exist, err := util.PathExists(projectInfoDto.ProjectName)
 	if err != nil {

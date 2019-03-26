@@ -1,7 +1,7 @@
 package {{.ProjectInfo.PackageName}}.service;
 
-import {{.ProjectInfo.PackageName}}.dto.request.{{.DTOName}}InputDTO;
-import {{.ProjectInfo.PackageName}}.dto.response.{{.DTOName}}OutputDTO;
+{{.ImportRequestDTOPath}}
+{{.ImportResponseDTOPath}}
 
 import java.util.List;
 
@@ -16,5 +16,5 @@ public interface {{.ControllerName}}Service {
      * @param param 入参
      * @return 出参
      */
-    {{.DTOName}}OutputDTO {{.MethodName}}({{.DTOName}}InputDTO param);
+    {{.ResponseDTOName}} {{.MethodName}}({{.RequestDTOName}} param);
 }

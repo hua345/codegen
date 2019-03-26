@@ -1,6 +1,10 @@
 package util
 
 import (
+	"fmt"
+	"generateCode/config"
+	"regexp"
+	"strings"
 	"testing"
 )
 
@@ -70,4 +74,44 @@ func TestDemoAppend(t *testing.T) {
 	if nameList[2] != "demo" {
 		t.Error(`nameList[2] != "demo"`)
 	}
+}
+func TestDemoAppend2(t *testing.T) {
+	nameList := []string{"liu", "fang", "hua"}
+	aa := nameList[0 : len(nameList)-1]
+	bb := nameList[len(nameList)-1]
+	fmt.Printf("%q %s", aa, bb)
+}
+func TestReg(t *testing.T) {
+	var testStr string = `public interface UserService {
+
+    /**
+     * addUser
+     *
+     * @param param 入参
+     * @return 出参
+     */
+    AddUserOutputDTO addUser(AddUserInputDTO param);
+
+    /**
+     * deleteUser
+     *
+     * @param param 入参
+     * @return 出参
+     */
+    DeleteUserOutputDTO deleteUser(DeleteUserInputDTO param);
+}
+`
+	contentReg := regexp.MustCompile(`.*}[\r\n|\n]`)
+	srcContentSlice := contentReg.Split(testStr, 10)
+	resultControllerContent := srcContentSlice[0 : len(srcContentSlice)-1]
+	resultControllerContent = append(resultControllerContent, " dd{} ")
+
+	var resultContent string
+	for _, value := range resultControllerContent {
+		if len(strings.TrimSpace(value)) >= 3 {
+			resultContent = resultContent + value
+		}
+	}
+	resultContent = resultContent + "}" + config.RowLimiter
+	fmt.Printf("%q", resultContent)
 }
