@@ -72,7 +72,7 @@ func (restfulApiDto RestfulApiDto) Init() RestfulApiDto {
 	return restfulApiDto
 }
 func (restfulApiDto RestfulApiDto) GenerateCode() {
-	data, _ := json.Marshal(restfulApiDto)
+	data, _ := json.MarshalIndent(restfulApiDto, "", "    ")
 	fmt.Printf("%s\n", data)
 	// 检测项目文件夹是否存在
 	existProject, err := util.PathExists(restfulApiDto.ProjectInfo.ProjectName)
@@ -113,20 +113,66 @@ func checkControllerExist(restfulApiDto RestfulApiDto) (controllerExist bool) {
 func checkSameMethod(controllerContent string, restfulApiDto RestfulApiDto) {
 	// 获取当前Controller所有方法
 	contentReg := regexp.MustCompile(`public.*\(`)
+	mappingReg := regexp.MustCompile(`@.*` + config.SpringMapping + `.*\)`)
+	// 方法正则
 	methodRegList := contentReg.FindAllString(controllerContent, -1)
-	var methodNameList []string
-	for _, value := range methodRegList {
+	// URL和请求方式正则
+	mappingRegList := mappingReg.FindAllString(controllerContent, -1)
+	mappingRegList = mappingRegList[1:]
+	if len(methodRegList) != len(mappingRegList) {
+		fmt.Printf("Controller: %s的方法和请求方式与请求路径不能一一对应!\n", restfulApiDto.ControllerName)
+		os.Exit(6)
+	}
+	var methodMappingInfoSlice []MethodMappingInfo
+	for index, value := range methodRegList {
+		var methodMappingInfo MethodMappingInfo
+		// 截取方法名称
 		methodSplitList := strings.Split(value, " ")
-		if len(methodSplitList) == 3 {
-			methodName := strings.Replace(methodSplitList[len(methodSplitList)-1], "(", "", 1)
-			methodNameList = append(methodNameList, methodName)
+		if len(methodSplitList) != 3 {
+			fmt.Printf("解析(%s)获取方法名称失败!", value)
+			os.Exit(6)
+		}
+		methodName := strings.Replace(methodSplitList[len(methodSplitList)-1], "(", "", 1)
+		methodMappingInfo.MethodName = methodName
+		// 截取请求方式和URL
+		mappingValue := mappingRegList[index]
+		mappingValueList := strings.Split(mappingValue, config.SpringMapping)
+		if len(mappingValueList) != 2 {
+			fmt.Printf("解析(%s)获取请求方式和URL失败!", mappingValue)
+			os.Exit(6)
+		}
+		// 截取请求方式
+		httpMethod := strings.Replace(mappingValueList[0], "@", "", 1)
+		methodMappingInfo.HttpMethod = httpMethod
+		//截取请求URL
+		urlPathList := strings.Split(mappingValueList[1], "=")
+		if len(urlPathList) != 2 {
+			fmt.Printf("解析(%s)获取方法URL失败!", mappingValue)
+			os.Exit(6)
+		}
+		urlPath := strings.TrimSpace(strings.Replace(urlPathList[1], ")", "", 1))
+		urlPath = strings.Replace(urlPath, "\"", "", 10)
+		methodMappingInfo.UrlPath = urlPath
+		methodMappingInfoSlice = append(methodMappingInfoSlice, methodMappingInfo)
+	}
+	data, err := json.MarshalIndent(methodMappingInfoSlice, "", "    ")
+	if err != nil {
+		fmt.Printf("JSON marshaling failed: %s", err)
+	}
+	fmt.Printf("接口列表: %s\n", data)
+	// 检查是否已经存在同一名称的方法
+	for _, item := range methodMappingInfoSlice {
+		if strings.ToLower(item.MethodName) == strings.ToLower(restfulApiDto.MethodName) {
+			fmt.Printf("Controller %s 已经存在方法 %s\n", restfulApiDto.ControllerName, restfulApiDto.MethodName)
+			os.Exit(5)
 		}
 	}
-	fmt.Printf("方法列表: %q\n", methodNameList)
-	// 检查是否已经存在同一名称的方法
-	for _, value := range methodNameList {
-		if strings.ToLower(value) == strings.ToLower(restfulApiDto.MethodName) {
-			fmt.Printf("Controller %s 已经存在方法 %s", restfulApiDto.ControllerName, restfulApiDto.MethodName)
+	// 检查是否存在同一请求路径和请求方法
+	for _, item := range methodMappingInfoSlice {
+		if strings.ToLower(item.UrlPath) == strings.ToLower(restfulApiDto.MethodURL) &&
+			strings.ToLower(item.HttpMethod+config.SpringMapping) == strings.ToLower(restfulApiDto.HttpMethod) {
+			fmt.Printf("Controller(%s)已经存在同一请求路径(%s)和请求方法(%s)\n",
+				restfulApiDto.ControllerName, restfulApiDto.MethodName, item.HttpMethod)
 			os.Exit(5)
 		}
 	}
@@ -193,7 +239,7 @@ func appendMethod(methodCode, dstFilePath string, restfulApiDto RestfulApiDto, j
 	srcContentSlice := contentReg.Split(srcContent, -1)
 
 	resultControllerContent := srcContentSlice[0 : len(srcContentSlice)-1]
-	resultControllerContent = append(resultControllerContent, methodCode + config.RowLimiter)
+	resultControllerContent = append(resultControllerContent, methodCode+config.RowLimiter)
 	var resultContent string
 	for _, value := range resultControllerContent {
 		if len(strings.TrimSpace(value)) >= 3 {
@@ -213,6 +259,13 @@ func appendMethod(methodCode, dstFilePath string, restfulApiDto RestfulApiDto, j
 	oldResponse := config.ImportResponseDto + ";"
 	resultContent = strings.Replace(resultContent, oldResponse, oldResponse+
 		config.RowLimiter+restfulApiDto.ImportResponseDTOPath, 1)
+
+	importAnnotation := config.ImportSpringAnnotation + restfulApiDto.HttpMethod + ";"
+	if !strings.Contains(resultContent, importAnnotation) {
+		defaultAnnotation := config.HttpMethodMapping[config.DefaultHttpMethod] + ";"
+		resultContent = strings.Replace(resultContent, defaultAnnotation, defaultAnnotation+
+			config.RowLimiter+importAnnotation, 1)
+	}
 
 	util.WriteFileWithIoUtil(dstFilePath, resultContent)
 }

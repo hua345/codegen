@@ -32,6 +32,8 @@ const JavaDtoResponsePath string = "dto/response"
 const ImportDtoResponsePath string = "dto.response"
 const ImportRequestDto = "InputDTO"
 const ImportResponseDto = "OutputDTO"
+const SpringMapping = "Mapping"
+const ImportSpringAnnotation = "import org.springframework.web.bind.annotation."
 //***************************************DTO***************************
 const JavaControllerFileName = "Controller.java"
 const JavaServiceFileName = "Service.java"

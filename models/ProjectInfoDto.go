@@ -50,7 +50,7 @@ func (projectInfoDto ProjectInfoDto) Init() ProjectInfoDto {
 	return projectInfoDto
 }
 func (projectInfoDto ProjectInfoDto) InitProject() {
-	data,_ := json.Marshal(projectInfoDto)
+	data,_ := json.MarshalIndent(projectInfoDto,"", "    ")
 	fmt.Printf("%s\n", data)
 	// 检测项目文件夹是否存在
 	exist, err := util.PathExists(projectInfoDto.ProjectName)
