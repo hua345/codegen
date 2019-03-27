@@ -1,3 +1,8 @@
+### 编译
+将源码放到`GOPATH`的`src`目录
+```bash
+go build
+```
 ### 查看帮助
 ```bash
  ./generateCode.exe -h
