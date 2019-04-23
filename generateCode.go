@@ -4,8 +4,8 @@ package main
 import (
 	"flag"
 	"fmt"
-	"generateCode/config"
-	"generateCode/models"
+	"github.com/hua345/generateCode/config"
+	"github.com/hua345/generateCode/models"
 	"os"
 )
 

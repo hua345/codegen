@@ -1,7 +1,6 @@
 ### 编译
-将源码放到`GOPATH`的`src`目录
 ```bash
-go build
+go get github.com/hua345/generateCode
 ```
 ### 查看帮助
 ```bash

@@ -3,8 +3,8 @@ package models
 import (
 	"encoding/json"
 	"fmt"
-	"generateCode/config"
-	"generateCode/pkg/util"
+	"github.com/hua345/generateCode/config"
+	"github.com/hua345/generateCode/pkg/util"
 	"os"
 	"path"
 	"regexp"
@@ -80,7 +80,7 @@ func (restfulApiDto RestfulApiDto) GenerateCode() {
 		panic(err)
 	}
 	if !existProject {
-		fmt.Printf("Project %s Not Found", )
+		fmt.Printf("Project %s Not Found")
 		os.Exit(2)
 	}
 	controllerExist := checkControllerExist(restfulApiDto)

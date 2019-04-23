@@ -3,8 +3,8 @@ package models
 import (
 	"encoding/json"
 	"fmt"
-	"generateCode/config"
-	"generateCode/pkg/util"
+	"github.com/hua345/generateCode/config"
+	"github.com/hua345/generateCode/pkg/util"
 	"os"
 	"path"
 	"strings"
@@ -50,7 +50,7 @@ func (projectInfoDto ProjectInfoDto) Init() ProjectInfoDto {
 	return projectInfoDto
 }
 func (projectInfoDto ProjectInfoDto) InitProject() {
-	data,_ := json.MarshalIndent(projectInfoDto,"", "    ")
+	data, _ := json.MarshalIndent(projectInfoDto, "", "    ")
 	fmt.Printf("%s\n", data)
 	// 检测项目文件夹是否存在
 	exist, err := util.PathExists(projectInfoDto.ProjectName)
@@ -155,7 +155,7 @@ func initProjectData(projectInfoDto ProjectInfoDto) {
 	javaCodeConfigPath := path.Join(projectInfoDto.JavaPath, config.JavaConfigPath)
 	fileMapDtoList = appendTemplateList(javaTemplateConfigPath, javaCodeConfigPath, fileMapDtoList)
 	// Config subDir文件
-	fileMapDtoList =appendCommonTemplateList(javaTemplateConfigPath, javaCodeConfigPath, fileMapDtoList)
+	fileMapDtoList = appendCommonTemplateList(javaTemplateConfigPath, javaCodeConfigPath, fileMapDtoList)
 	// Java Common包
 	javaTemplateCommonPath := path.Join(config.JavaTemplateInitCodePath, config.JavaCommonPath)
 	javaCodeCommonPath := path.Join(projectInfoDto.JavaPath, config.JavaCommonPath)
