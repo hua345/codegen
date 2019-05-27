@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * @author CHENJIANHUA001
- * @date 2019/03/19 12:25
+ * @author {{.Author}}
+ * @date {{.NowDate}}
  */
 @Slf4j
 @ControllerAdvice

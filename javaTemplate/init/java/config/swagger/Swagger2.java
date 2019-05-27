@@ -12,8 +12,8 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
 /**
- * @author CHENJIANHUA001
- * @date 2019/03/18 17:38
+ * @author {{.Author}}
+ * @date {{.NowDate}}
  */
 @Configuration
 public class Swagger2 {

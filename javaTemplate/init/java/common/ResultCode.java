@@ -3,8 +3,8 @@ package {{.PackageName}}.common;
 import lombok.Getter;
 
 /**
- * @author CHENJIANHUA001
- * @date 2019/03/19 20:25
+ * @author {{.Author}}
+ * @date {{.NowDate}}
  */
 @Getter
 public enum ResultCode {

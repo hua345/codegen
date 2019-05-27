@@ -1,0 +1,8 @@
+defaultHttpMethod: get
+defaultHttpPort: 8080
+authorName: fang
+langType: java
+springboot:
+  groupId: com.github
+  apiBaseUrl: api/v1
+  artifactId: learn

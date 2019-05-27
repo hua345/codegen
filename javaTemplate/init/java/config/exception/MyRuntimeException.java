@@ -5,8 +5,8 @@ import {{.PackageName}}.common.ResultCode;
 import lombok.Getter;
 
 /**
- * @author CHENJIANHUA001
- * @date 2019/03/19 12:25
+ * @author {{.Author}}
+ * @date {{.NowDate}}
  */
 @Getter
 public class MyRuntimeException extends RuntimeException {

@@ -6,8 +6,8 @@ import lombok.Setter;
 import java.io.Serializable;
 
 /**
- * @author CHENJIANHUA001
- * @date 2019/03/18 15:28
+ * @author {{.Author}}
+ * @date {{.NowDate}}
  */
 @Getter
 @Setter

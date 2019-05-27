@@ -8,8 +8,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.http.HttpStatus;
 /**
- * @author CHENJIANHUA001
- * @date 2019/03/19 20:05
+ * @author {{.Author}}
+ * @date {{.NowDate}}
  */
 @Getter
 @Setter

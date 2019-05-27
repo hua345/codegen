@@ -15,7 +15,8 @@ import javax.sql.DataSource;
 import java.sql.SQLException;
 
 /**
- * Created by zhong on 2016/9/5.
+ * @author {{.Author}}
+ * @date {{.NowDate}}
  */
 @Configuration
 @EnableConfigurationProperties({DruidDataSourceProperties.class})

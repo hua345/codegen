@@ -3,11 +3,12 @@ package models
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/hua345/generateCode/config"
-	"github.com/hua345/generateCode/pkg/util"
+	"codegen/pkg/util"
+	"codegen/pkg/config"
 	"os"
 	"path"
 	"strings"
+	"time"
 )
 
 type ProjectInfoDto struct {
@@ -17,10 +18,14 @@ type ProjectInfoDto struct {
 	JavaPath     string `json:"javaPath"`
 	ResourcePath string `json:"resourcePath"`
 	ProjectName  string `json:"projectName"`
+	NowDate      string `json:"nowDate"`
+	Author       string `json:"author"`
 }
 
 // 初始化项目数据
 func (projectInfoDto ProjectInfoDto) Init() ProjectInfoDto {
+	projectInfoDto.NowDate = time.Now().Format(config.NowTimeFormat)
+	projectInfoDto.Author = config.ServerConfig.AuthorName
 	// 包路径名称小写
 	projectInfoDto.GroupId = strings.ToLower(projectInfoDto.GroupId)
 	projectInfoDto.ArtifactId = strings.ToLower(projectInfoDto.ArtifactId)

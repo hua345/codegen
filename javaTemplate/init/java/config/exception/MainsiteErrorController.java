@@ -7,11 +7,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
- /**
-  * 系统错误拦截, 主要是针对404的错误
-  * @author CHENJIANHUA001
-  * @date 2019/03/19 12:25
-  */
+/**
+ * @author {{.Author}}
+ * @date {{.NowDate}}
+ */
 @Controller
 public class MainsiteErrorController implements ErrorController {
 

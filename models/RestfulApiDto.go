@@ -3,32 +3,37 @@ package models
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/hua345/generateCode/config"
-	"github.com/hua345/generateCode/pkg/util"
+	"codegen/pkg/util"
+	"codegen/pkg/config"
 	"os"
 	"path"
 	"regexp"
 	"strings"
+	"time"
 )
 
 type RestfulApiDto struct {
-	HttpMethod            string         `json:httpMethod`
-	BaseUrl               string         `json:baseUrl`
-	RestfulUrl            string         `json:restfulUrl`
-	MethodName            string         `json:methodName`
-	MethodURL             string         `json:methodURL`
-	ControllerName        string         `json:controllerName`
-	RequestDTOName        string         `json:requestDTOName`
-	ResponseDTOName       string         `json:responseDTOName`
-	VarResponseDTOName    string         `json:varResponseDTOName`
-	ImportRequestDTOPath  string         `json:importRequestDTOPath`
-	ImportResponseDTOPath string         `json:importResponseDTOPath`
-	ControllerURL         string         `json:controllerURL`
-	Description           string         `json:description`
-	ProjectInfo           ProjectInfoDto `json:projectInfo`
+	HttpMethod            string         `json:"httpMethod"`
+	BaseUrl               string         `json:"baseUrl"`
+	RestfulUrl            string         `json:"restfulUrl"`
+	MethodName            string         `json:"methodName"`
+	MethodURL             string         `json:"methodURL"`
+	ControllerName        string         `json:"controllerName"`
+	RequestDTOName        string         `json:"requestDTOName"`
+	ResponseDTOName       string         `json:"responseDTOName"`
+	VarResponseDTOName    string         `json:"varResponseDTOName"`
+	ImportRequestDTOPath  string         `json:"importRequestDTOPath"`
+	ImportResponseDTOPath string         `json:"importResponseDTOPath"`
+	ControllerURL         string         `json:"controllerURL"`
+	Description           string         `json:"description"`
+	NowDate               string         `json:"nowDate"`
+	Author                string         `json:"author"`
+	ProjectInfo           ProjectInfoDto `json:"projectInfo"`
 }
 
 func (restfulApiDto RestfulApiDto) Init() RestfulApiDto {
+	restfulApiDto.NowDate = time.Now().Format(config.NowTimeFormat)
+	restfulApiDto.Author = config.ServerConfig.AuthorName
 	// 根据输入的RestfulUrl判断生成的Controller
 	urlStrList := util.HandleRestfulURL(restfulApiDto.RestfulUrl)
 	if len(urlStrList) == 0 {
@@ -54,7 +59,7 @@ func (restfulApiDto RestfulApiDto) Init() RestfulApiDto {
 	httpMethod := strings.ToUpper(restfulApiDto.HttpMethod)
 	restfulApiDto.HttpMethod = config.HttpMethodMapping[httpMethod]
 	if len(restfulApiDto.HttpMethod) == 0 {
-		restfulApiDto.HttpMethod = config.HttpMethodMapping[config.DefaultHttpMethod]
+		restfulApiDto.HttpMethod = config.HttpMethodMapping[config.ServerConfig.DefaultHttpMethod]
 	}
 	restfulApiDto.MethodName = util.StrFirstToLower(restfulApiDto.MethodName)
 	// Description
@@ -95,7 +100,7 @@ func checkControllerExist(restfulApiDto RestfulApiDto) (controllerExist bool) {
 	codeControllerPath := path.Join(restfulApiDto.ProjectInfo.JavaPath, config.JavaControllerPath)
 	util.CheckDirAndMkdir(codeControllerPath)
 	// restful controller文件名
-	controllerFilePath := path.Join(codeControllerPath, restfulApiDto.ControllerName+config.JavaControllerFileName)
+	controllerFilePath := path.Join(codeControllerPath, restfulApiDto.ControllerName+config.JavaTemplateControllerFileName)
 	controllerExist, err := util.PathExists(controllerFilePath)
 	if err != nil {
 		panic(err)
@@ -186,7 +191,7 @@ func restfulAddMethod(restfulApiDto RestfulApiDto) {
 	codeControllerDir := path.Join(restfulApiDto.ProjectInfo.JavaPath, config.JavaControllerPath)
 	util.CheckDirAndMkdir(codeControllerDir)
 	// restful controller文件名
-	controllerFilePath := path.Join(codeControllerDir, restfulApiDto.ControllerName+config.JavaControllerFileName)
+	controllerFilePath := path.Join(codeControllerDir, restfulApiDto.ControllerName+config.JavaTemplateControllerFileName)
 	controllerContent := util.ReadFileWithIoUtil(controllerFilePath)
 	checkSameMethod(controllerContent, restfulApiDto)
 	// 检测dto目录是否存在
@@ -220,16 +225,16 @@ func restfulAddMethod(restfulApiDto RestfulApiDto) {
 	}
 
 	// 添加方法
-	methodCode := util.ParseMethodTemplate(path.Join(config.JavaTemplateCodePath, config.JavaMethodControllerFileName), restfulApiDto)
-	dstControllerFileName := path.Join(codeControllerDir, restfulApiDto.ControllerName+config.JavaControllerFileName)
+	methodCode := util.ParseMethodTemplate(path.Join(config.JavaTemplateCodePath, config.JavaTemplateMethodControllerFileName), restfulApiDto)
+	dstControllerFileName := path.Join(codeControllerDir, restfulApiDto.ControllerName+config.JavaTemplateControllerFileName)
 	appendMethod(methodCode, dstControllerFileName, restfulApiDto, false)
 
-	serviceMethodCode := util.ParseMethodTemplate(path.Join(config.JavaTemplateCodePath, config.JavaMethodServiceFileName), restfulApiDto)
-	dstServicePath := path.Join(codeServicePath, restfulApiDto.ControllerName+config.JavaServiceFileName)
+	serviceMethodCode := util.ParseMethodTemplate(path.Join(config.JavaTemplateCodePath, config.JavaTemplateMethodServiceFileName), restfulApiDto)
+	dstServicePath := path.Join(codeServicePath, restfulApiDto.ControllerName+config.JavaTemplateServiceFileName)
 	appendMethod(serviceMethodCode, dstServicePath, restfulApiDto, true)
 
-	serviceImplMethodCode := util.ParseMethodTemplate(path.Join(config.JavaTemplateCodePath, config.JavaMethodServiceImplFileName), restfulApiDto)
-	dstServiceImplPath := path.Join(codeServiceImplPath, restfulApiDto.ControllerName+config.JavaServiceImplFileName)
+	serviceImplMethodCode := util.ParseMethodTemplate(path.Join(config.JavaTemplateCodePath, config.JavaTemplateMethodServiceImplFileName), restfulApiDto)
+	dstServiceImplPath := path.Join(codeServiceImplPath, restfulApiDto.ControllerName+config.JavaTemplateServiceImplFileName)
 	appendMethod(serviceImplMethodCode, dstServiceImplPath, restfulApiDto, false)
 }
 func appendMethod(methodCode, dstFilePath string, restfulApiDto RestfulApiDto, javaInterface bool) {
@@ -262,7 +267,7 @@ func appendMethod(methodCode, dstFilePath string, restfulApiDto RestfulApiDto, j
 
 	importAnnotation := config.ImportSpringAnnotation + restfulApiDto.HttpMethod + ";"
 	if !strings.Contains(resultContent, importAnnotation) {
-		defaultAnnotation := config.HttpMethodMapping[config.DefaultHttpMethod] + ";"
+		defaultAnnotation := config.HttpMethodMapping[config.ServerConfig.DefaultHttpMethod] + ";"
 		resultContent = strings.Replace(resultContent, defaultAnnotation, defaultAnnotation+
 			config.RowLimiter+importAnnotation, 1)
 	}
@@ -295,8 +300,8 @@ func restfulApiNew(restfulApiDto RestfulApiDto) {
 
 	// Controller Code
 	fileMapDtoList = append(fileMapDtoList,
-		FileMapDto{path.Join(config.JavaTemplateCodePath, config.JavaControllerFileName),
-			path.Join(codeControllerPath, restfulApiDto.ControllerName+config.JavaControllerFileName)})
+		FileMapDto{path.Join(config.JavaTemplateCodePath, config.JavaTemplateControllerFileName),
+			path.Join(codeControllerPath, restfulApiDto.ControllerName+config.JavaTemplateControllerFileName)})
 	// request dto Code
 	fileMapDtoList = append(fileMapDtoList,
 		FileMapDto{path.Join(config.JavaTemplateCodePath, config.ImportRequestDto+config.JavaSuffixName),
@@ -308,12 +313,12 @@ func restfulApiNew(restfulApiDto RestfulApiDto) {
 
 	// Service Code
 	fileMapDtoList = append(fileMapDtoList,
-		FileMapDto{path.Join(config.JavaTemplateCodePath, config.JavaServiceFileName),
-			path.Join(codeServicePath, restfulApiDto.ControllerName+config.JavaServiceFileName)})
+		FileMapDto{path.Join(config.JavaTemplateCodePath, config.JavaTemplateServiceFileName),
+			path.Join(codeServicePath, restfulApiDto.ControllerName+config.JavaTemplateServiceFileName)})
 	// ServiceImpl Code
 	fileMapDtoList = append(fileMapDtoList,
-		FileMapDto{path.Join(config.JavaTemplateCodePath, config.JavaServiceImplFileName),
-			path.Join(codeServiceImplPath, restfulApiDto.ControllerName+config.JavaServiceImplFileName)})
+		FileMapDto{path.Join(config.JavaTemplateCodePath, config.JavaTemplateServiceImplFileName),
+			path.Join(codeServiceImplPath, restfulApiDto.ControllerName+config.JavaTemplateServiceImplFileName)})
 	fmt.Println(fileMapDtoList)
 
 	// 解析模板

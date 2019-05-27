@@ -6,8 +6,8 @@ package {{.ProjectInfo.PackageName}}.service;
 import java.util.List;
 
 /**
- * @author CHENJIANHUA001
- * @date 2019/03/18 15:54
+ * @author {{.Author}}
+ * @date {{.NowDate}}
  */
 public interface {{.ControllerName}}Service {
 

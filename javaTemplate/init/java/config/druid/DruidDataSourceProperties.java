@@ -3,7 +3,8 @@ package {{.PackageName}}.config.druid;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * Created by zhong on 2017/1/7.
+ * @author {{.Author}}
+ * @date {{.NowDate}}
  */
 @ConfigurationProperties(prefix = "spring.datasource.druid")
 public class DruidDataSourceProperties {

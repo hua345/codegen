@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * @author CHENJIANHUA001
- * @date 2019/03/18 15:28
+ * @author {{.Author}}
+ * @date {{.NowDate}}
  */
 @Slf4j
 @RestController

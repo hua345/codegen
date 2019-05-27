@@ -2,6 +2,10 @@ package {{.PackageName}}.utils;
 
 import java.util.UUID;
 
+/**
+ * @author {{.Author}}
+ * @date {{.NowDate}}
+ */
 public class UUIDUtil {
     /**
      * 获取UUID
