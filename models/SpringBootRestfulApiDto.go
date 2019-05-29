@@ -12,7 +12,7 @@ import (
 	"time"
 )
 
-type RestfulApiDto struct {
+type SpringBootRestfulApiDto struct {
 	HttpMethod            string         `json:"httpMethod"`
 	BaseUrl               string         `json:"baseUrl"`
 	RestfulUrl            string         `json:"restfulUrl"`
@@ -20,18 +20,18 @@ type RestfulApiDto struct {
 	MethodURL             string         `json:"methodURL"`
 	ControllerName        string         `json:"controllerName"`
 	RequestDTOName        string         `json:"requestDTOName"`
-	ResponseDTOName       string         `json:"responseDTOName"`
-	VarResponseDTOName    string         `json:"varResponseDTOName"`
-	ImportRequestDTOPath  string         `json:"importRequestDTOPath"`
-	ImportResponseDTOPath string         `json:"importResponseDTOPath"`
-	ControllerURL         string         `json:"controllerURL"`
-	Description           string         `json:"description"`
-	NowDate               string         `json:"nowDate"`
-	Author                string         `json:"author"`
-	ProjectInfo           ProjectInfoDto `json:"projectInfo"`
+	ResponseDTOName       string                   `json:"responseDTOName"`
+	VarResponseDTOName    string                   `json:"varResponseDTOName"`
+	ImportRequestDTOPath  string                   `json:"importRequestDTOPath"`
+	ImportResponseDTOPath string                   `json:"importResponseDTOPath"`
+	ControllerURL         string                   `json:"controllerURL"`
+	Description           string                   `json:"description"`
+	NowDate               string                   `json:"nowDate"`
+	Author                string                   `json:"author"`
+	ProjectInfo           SpringBootProjectInfoDto `json:"projectInfo"`
 }
 
-func (restfulApiDto RestfulApiDto) Init() RestfulApiDto {
+func (restfulApiDto SpringBootRestfulApiDto) Init() SpringBootRestfulApiDto {
 	restfulApiDto.NowDate = time.Now().Format(config.NowTimeFormat)
 	restfulApiDto.Author = config.ServerConfig.AuthorName
 	// 根据输入的RestfulUrl判断生成的Controller
@@ -76,7 +76,7 @@ func (restfulApiDto RestfulApiDto) Init() RestfulApiDto {
 		config.ImportDtoResponsePath + "." + restfulApiDto.ResponseDTOName + ";"
 	return restfulApiDto
 }
-func (restfulApiDto RestfulApiDto) GenerateCode() {
+func (restfulApiDto SpringBootRestfulApiDto) GenerateCode() {
 	data, _ := json.MarshalIndent(restfulApiDto, "", "    ")
 	fmt.Printf("%s\n", data)
 	// 检测项目文件夹是否存在
@@ -95,7 +95,7 @@ func (restfulApiDto RestfulApiDto) GenerateCode() {
 		restfulApiNew(restfulApiDto)
 	}
 }
-func checkControllerExist(restfulApiDto RestfulApiDto) (controllerExist bool) {
+func checkControllerExist(restfulApiDto SpringBootRestfulApiDto) (controllerExist bool) {
 	// 检测controller目录是否存在
 	codeControllerPath := path.Join(restfulApiDto.ProjectInfo.JavaPath, config.JavaControllerPath)
 	util.CheckDirAndMkdir(codeControllerPath)
@@ -115,7 +115,7 @@ func checkControllerExist(restfulApiDto RestfulApiDto) (controllerExist bool) {
 /**
  * 检查Controller是否存在相同方法
  */
-func checkSameMethod(controllerContent string, restfulApiDto RestfulApiDto) {
+func checkSameMethod(controllerContent string, restfulApiDto SpringBootRestfulApiDto) {
 	// 获取当前Controller所有方法
 	contentReg := regexp.MustCompile(`public.*\(`)
 	mappingReg := regexp.MustCompile(`@.*` + config.SpringMapping + `.*\)`)
@@ -186,7 +186,7 @@ func checkSameMethod(controllerContent string, restfulApiDto RestfulApiDto) {
 /**
  * 添加在同一个Controller时的方法
  */
-func restfulAddMethod(restfulApiDto RestfulApiDto) {
+func restfulAddMethod(restfulApiDto SpringBootRestfulApiDto) {
 	// 检测controller目录是否存在
 	codeControllerDir := path.Join(restfulApiDto.ProjectInfo.JavaPath, config.JavaControllerPath)
 	util.CheckDirAndMkdir(codeControllerDir)
@@ -237,7 +237,7 @@ func restfulAddMethod(restfulApiDto RestfulApiDto) {
 	dstServiceImplPath := path.Join(codeServiceImplPath, restfulApiDto.ControllerName+config.JavaTemplateServiceImplFileName)
 	appendMethod(serviceImplMethodCode, dstServiceImplPath, restfulApiDto, false)
 }
-func appendMethod(methodCode, dstFilePath string, restfulApiDto RestfulApiDto, javaInterface bool) {
+func appendMethod(methodCode, dstFilePath string, restfulApiDto SpringBootRestfulApiDto, javaInterface bool) {
 	srcContent := util.ReadFileWithIoUtil(dstFilePath)
 	// }加换行符
 	contentReg := regexp.MustCompile(`}[\n|\r\n]`)
@@ -276,7 +276,7 @@ func appendMethod(methodCode, dstFilePath string, restfulApiDto RestfulApiDto, j
 }
 
 // 创建全新的接口文件
-func restfulApiNew(restfulApiDto RestfulApiDto) {
+func restfulApiNew(restfulApiDto SpringBootRestfulApiDto) {
 	// 检测controller目录是否存在
 	codeControllerPath := path.Join(restfulApiDto.ProjectInfo.JavaPath, config.JavaControllerPath)
 	util.CheckDirAndMkdir(codeControllerPath)

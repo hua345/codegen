@@ -1,19 +1,20 @@
 package config
 
 import (
-	"fmt"
-	log "github.com/sirupsen/logrus"
 	"codegen/pkg/util"
-	"io/ioutil"
-	"time"
+	"fmt"
+	"log"
 	"gopkg.in/yaml.v2"
+	"io/ioutil"
+	"os"
+	"time"
 )
 
 type Server struct {
 	DefaultHttpMethod string            `yaml:"defaultHttpMethod"`
 	DefaultHttpPort   string            `yaml:"defaultHttpPort"`
+	ApiBaseUrl        string            `yaml:"apiBaseUrl"`
 	AuthorName        string            `yaml:"authorName"`
-	LangType          string            `yaml:"langType"`
 	Database          Database          `yaml:"database"`
 	Redis             Redis             `yaml:"redis"`
 	Springboot        SpringbootSetting `yaml:"springboot"`
@@ -23,31 +24,27 @@ func newServer() Server {
 	return Server{
 		DefaultHttpMethod: "com.github",
 		DefaultHttpPort:   "api/v1",
+		ApiBaseUrl:        "api/v1",
 		AuthorName:        "learn",
-		LangType:          "java",
 	}
 }
 
 type SpringbootSetting struct {
 	GroupId    string `yaml:"groupId"`
-	ApiBaseUrl string `yaml:"apiBaseUrl"`
 	ArtifactId string `yaml:"artifactId"`
 }
 
 func newSpringbootSetting() SpringbootSetting {
 	return SpringbootSetting{
 		GroupId:    "com.github",
-		ApiBaseUrl: "api/v1",
 		ArtifactId: "learn",
 	}
 }
 
 type Database struct {
-	Type     string `yaml:"type"`
+	Url      string `yaml:"url"`
 	Username string `yaml:"username"`
 	Password string `yaml:"password"`
-	Host     string `yaml:"host"`
-	DbName   string `yaml:"dbName"`
 }
 type Redis struct {
 	Host        string        `yaml:"host"`
@@ -68,7 +65,8 @@ var HttpMethodMapping = map[string]string{
 }
 
 var ServerConfig Server
-var DefaultSettingFile = "codegen.yaml"
+var DefaultSettingFile = DefaultConfigFile
+
 // Setup initialize the configuration instance
 func Setup(configPath string) {
 	ServerConfig = newServer()
@@ -78,9 +76,9 @@ func Setup(configPath string) {
 	}
 	configExist, _ := util.PathExists(path)
 	if true != configExist {
-		log.WithFields(log.Fields{
-			"Path": path,
-		}).Error("Config File Not Found!")
+		log.Println("配置文件" + DefaultConfigFile + "没有找到!")
+		log.Println("初始化配置文件命令: codegen config init")
+		os.Exit(-1)
 	}
 	yamlFile, err := ioutil.ReadFile(path)
 	if err != nil {
@@ -92,5 +90,4 @@ func Setup(configPath string) {
 	if err != nil {
 		fmt.Println(err.Error())
 	}
-	log.Info("ServerConfig:", ServerConfig)
 }

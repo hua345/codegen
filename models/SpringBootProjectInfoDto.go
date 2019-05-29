@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-type ProjectInfoDto struct {
+type SpringBootProjectInfoDto struct {
 	GroupId      string `json:"groupdId"`
 	ArtifactId   string `json:"artifactId"`
 	PackageName  string `json:"packageName"`
@@ -20,12 +20,14 @@ type ProjectInfoDto struct {
 	ProjectName  string `json:"projectName"`
 	NowDate      string `json:"nowDate"`
 	Author       string `json:"author"`
+	HttpPort     string `json:"httpPort"`
 }
 
 // 初始化项目数据
-func (projectInfoDto ProjectInfoDto) Init() ProjectInfoDto {
+func (projectInfoDto SpringBootProjectInfoDto) Init() SpringBootProjectInfoDto {
 	projectInfoDto.NowDate = time.Now().Format(config.NowTimeFormat)
 	projectInfoDto.Author = config.ServerConfig.AuthorName
+	projectInfoDto.HttpPort = config.ServerConfig.DefaultHttpPort
 	// 包路径名称小写
 	projectInfoDto.GroupId = strings.ToLower(projectInfoDto.GroupId)
 	projectInfoDto.ArtifactId = strings.ToLower(projectInfoDto.ArtifactId)
@@ -41,7 +43,7 @@ func (projectInfoDto ProjectInfoDto) Init() ProjectInfoDto {
 	}
 	// 连接符'-'替换
 	projectInfoDto.GroupId = strings.Replace(projectInfoDto.GroupId, "-", "", -1)
-	projectInfoDto.ArtifactId = strings.Replace(projectInfoDto.ArtifactId, "-", "", -1)
+	projectInfoDto.ArtifactId = strings.Replace(projectInfoDto.ArtifactId, "-", ".", -1)
 	projectInfoDto.PackageName = projectInfoDto.GroupId +
 		"." + projectInfoDto.ArtifactId
 
@@ -54,7 +56,7 @@ func (projectInfoDto ProjectInfoDto) Init() ProjectInfoDto {
 	}
 	return projectInfoDto
 }
-func (projectInfoDto ProjectInfoDto) InitProject() {
+func (projectInfoDto SpringBootProjectInfoDto) InitProject() {
 	data, _ := json.MarshalIndent(projectInfoDto, "", "    ")
 	fmt.Printf("%s\n", data)
 	// 检测项目文件夹是否存在
@@ -142,7 +144,7 @@ func appendTemplateList(templatePath, codePath string, fileMapDtoList []FileMapD
 	}
 	return fileMapDtoList
 }
-func initProjectData(projectInfoDto ProjectInfoDto) {
+func initProjectData(projectInfoDto SpringBootProjectInfoDto) {
 	fileMapDtoList := []FileMapDto{
 		FileMapDto{path.Join(config.JavaTemplateInitPath, config.PomXmlFileName),
 			path.Join(projectInfoDto.ProjectName, config.PomXmlFileName)},

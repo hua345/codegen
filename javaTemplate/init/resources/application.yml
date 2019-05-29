@@ -1,3 +1,9 @@
-spring: 
-  profiles: 
+server:
+  port: {{.HttpPort}}
+spring:
+  profiles:
     active: dev
+  application:
+    name: {{.ProjectName}}
+  mvc:
+    locale: zh_CN
