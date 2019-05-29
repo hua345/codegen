@@ -29,9 +29,47 @@ springboot:
 ```
 #### 3.3 工程初始化
 ```
+$ ./codegen.exe init -h
+Springboot初始化工程. For example:
+codegen init -a ArtifactId
+
+Usage:
+  codegen init [-a ArtifactId] [flags]
+
+Flags:
+  -a, --artifactId string   ArtifactID 格式：产品线名-模块名。
+  -h, --help                help for init
+
+Global Flags:
+  -f, --config string   读取配置文件(默认./codegen.yaml)
+```
+```
 ./codegen.exe init
 ```
 ### 4. 接口生成
+```
+$ ./codegen.exe api -h
+Springboot接口生成工具
+
+Usage:
+  codegen api [flags]
+
+Examples:
+./codegen.exe -m methodName -u url [-a ArtifactId]
+[-r requestMethod] [-g GroupId] [-d Description] [-baseUrl baseUrl]
+
+Flags:
+  -a, --ArtifactId string      ArtifactID 格式：产品线名-模块名。
+  -d, --description string     接口描述
+  -g, --groupId string         GroupID 格式：com.{公司/BU }.业务线.[子业务线]
+  -h, --help                   help for api
+  -m, --methodName string      Controller类中的方法名称
+  -r, --requestMethod string   http请求方式Get/Post/Delete，默认: Get
+  -u, --urlPath string         Url路径
+
+Global Flags:
+  -f, --config string   读取配置文件(默认./codegen.yaml)
+```
 主要根据URL设计和方法来生成对应的接口
 ```bash
 ./codegen.exe api -m addArticle -u addArticle
