@@ -25,8 +25,8 @@ var artifactId string
 var initCmd = &cobra.Command{
 	Use:   "init [-a ArtifactId]",
 	Short: "Springboot初始化工程",
-	Long: `Springboot初始化工程. For example:
-codegen init -a ArtifactId`,
+	Long: `Springboot初始化工程.`,
+	Example: "codegen init [-a ArtifactId]",
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
 		config.Setup(cfgFile)
 	},

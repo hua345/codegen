@@ -27,14 +27,16 @@ springboot:
   groupId: com.github
   artifactId: hello-golang
 ```
-#### 3.3 工程初始化
+#### 3.3 查看帮助
 ```
 $ ./codegen.exe init -h
-Springboot初始化工程. For example:
-codegen init -a ArtifactId
+Springboot初始化工程.
 
 Usage:
   codegen init [-a ArtifactId] [flags]
+
+Examples:
+codegen init [-a ArtifactId]
 
 Flags:
   -a, --artifactId string   ArtifactID 格式：产品线名-模块名。
@@ -43,10 +45,11 @@ Flags:
 Global Flags:
   -f, --config string   读取配置文件(默认./codegen.yaml)
 ```
+#### 3.4 工程初始化
 ```
 ./codegen.exe init
 ```
-### 4. 接口生成
+### 4.1 查看帮助
 ```
 $ ./codegen.exe api -h
 Springboot接口生成工具
@@ -70,6 +73,7 @@ Flags:
 Global Flags:
   -f, --config string   读取配置文件(默认./codegen.yaml)
 ```
+#### 4.2 接口生成
 主要根据URL设计和方法来生成对应的接口
 ```bash
 ./codegen.exe api -m addArticle -u addArticle
