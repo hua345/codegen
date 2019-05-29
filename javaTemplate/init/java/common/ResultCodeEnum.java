@@ -7,7 +7,7 @@ import lombok.Getter;
  * @date {{.NowDate}}
  */
 @Getter
-public enum ResultCode {
+public enum ResultCodeEnum {
     /**
      * 请求成功
      */
@@ -24,7 +24,7 @@ public enum ResultCode {
 
     private String errorMsg;
 
-    ResultCode(String errorCode, String errorMsg) {
+    ResultCodeEnum(String errorCode, String errorMsg) {
         this.errorCode = errorCode;
         this.errorMsg = errorMsg;
     }

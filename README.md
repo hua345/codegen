@@ -1,3 +1,6 @@
+> 一千个人心中有一千个哈姆雷特，一千个架构师心中有一千种完美架构。
+
+> 通过http/rpc协议，将自己喜欢的几种语言协作起来，发挥各自优点。
 ### 编译
 ```bash
 go get github.com/hua345/codegen
@@ -58,8 +61,8 @@ Usage:
   codegen api [flags]
 
 Examples:
-./codegen.exe -m methodName -u url [-a ArtifactId]
-[-r requestMethod] [-g GroupId] [-d Description] [-baseUrl baseUrl]
+./codegen.exe api -m methodName -u url [-a ArtifactId]
+[-r requestMethod] [-g GroupId] [-d Description]
 
 Flags:
   -a, --ArtifactId string      ArtifactID 格式：产品线名-模块名。

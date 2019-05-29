@@ -3,10 +3,11 @@ package config
 import (
 	"codegen/pkg/util"
 	"fmt"
-	"log"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
+	"log"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -42,10 +43,13 @@ func newSpringbootSetting() SpringbootSetting {
 }
 
 type Database struct {
-	Url      string `yaml:"url"`
-	Username string `yaml:"username"`
-	Password string `yaml:"password"`
+	Type         string `yaml:"type"`
+	Host         string `yaml:"host"`
+	DatabaseName string `yaml:"databaseName"`
+	Username     string `yaml:"username"`
+	Password     string `yaml:"password"`
 }
+
 type Redis struct {
 	Host        string        `yaml:"host"`
 	Password    string        `yaml:"password"`
@@ -55,13 +59,6 @@ type Redis struct {
 }
 
 type GinSetting struct {
-}
-
-var HttpMethodMapping = map[string]string{
-	"GET":    "GetMapping",
-	"POST":   "PostMapping",
-	"PUT":    "PutMapping",
-	"DELETE": "DeleteMapping",
 }
 
 var ServerConfig Server
@@ -86,8 +83,18 @@ func Setup(configPath string) {
 	}
 	// set default
 	ServerConfig.Springboot = newSpringbootSetting()
+	// 检查数据库类型是否支持
+
 	err = yaml.Unmarshal(yamlFile, &ServerConfig)
 	if err != nil {
 		fmt.Println(err.Error())
+	}
+	ServerConfig.Database.Type = strings.ToLower(ServerConfig.Database.Type)
+	if !(DBTypeMysql == ServerConfig.Database.Type ||
+		DBTypeMariadb == ServerConfig.Database.Type ||
+		DBTypePostgresql == ServerConfig.Database.Type) {
+		log.Println("支持的数据库类型:" + DBTypeMysql + "\\" +
+			DBTypeMariadb + "\\" + DBTypePostgresql)
+		os.Exit(-1)
 	}
 }

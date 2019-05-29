@@ -2,10 +2,18 @@ defaultHttpMethod: get
 defaultHttpPort: 8080
 apiBaseUrl: api/v1
 authorName: chenjianhua
+database:
+  type: mariadb
+  host: 192.168.137.129:3306
+  databaseName: db_example
+  username: springboot
+  password: 123456
 springboot:
   groupId: com.github
   artifactId: hello-golang
-  support:
-    i18n: false
-    druid: true
-    swagger: true
+  # maven/gradle
+  builder: maven
+  # 国际化
+  i18n: false
+  druid: true
+  swagger: true

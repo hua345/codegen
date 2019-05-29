@@ -1,10 +1,10 @@
 package models
 
 import (
+	"codegen/pkg/config"
+	"codegen/pkg/util"
 	"encoding/json"
 	"fmt"
-	"codegen/pkg/util"
-	"codegen/pkg/config"
 	"os"
 	"path"
 	"strings"
@@ -12,15 +12,20 @@ import (
 )
 
 type SpringBootProjectInfoDto struct {
-	GroupId      string `json:"groupdId"`
-	ArtifactId   string `json:"artifactId"`
-	PackageName  string `json:"packageName"`
-	JavaPath     string `json:"javaPath"`
-	ResourcePath string `json:"resourcePath"`
-	ProjectName  string `json:"projectName"`
-	NowDate      string `json:"nowDate"`
-	Author       string `json:"author"`
-	HttpPort     string `json:"httpPort"`
+	GroupId          string          `json:"groupdId"`
+	ArtifactId       string          `json:"artifactId"`
+	PackageName      string          `json:"packageName"`
+	JavaPath         string          `json:"javaPath"`
+	ResourcePath     string          `json:"resourcePath"`
+	ProjectName      string          `json:"projectName"`
+	NowDate          string          `json:"nowDate"`
+	Author           string          `json:"author"`
+	HttpPort         string          `json:"httpPort"`
+	Database         config.Database `json:"database"`
+	JdbcDriverClass  string          `json:"jdbcDriverClass"`
+	DBTypeMariadb    string          `json:"dbTypeMariadb"`
+	DBTypeMysql      string          `json:"dbTypeMysql"`
+	DBTypePostgresql string          `json:"dbTypePostgresql"`
 }
 
 // 初始化项目数据
@@ -28,6 +33,11 @@ func (projectInfoDto SpringBootProjectInfoDto) Init() SpringBootProjectInfoDto {
 	projectInfoDto.NowDate = time.Now().Format(config.NowTimeFormat)
 	projectInfoDto.Author = config.ServerConfig.AuthorName
 	projectInfoDto.HttpPort = config.ServerConfig.DefaultHttpPort
+	projectInfoDto.Database = config.ServerConfig.Database
+	projectInfoDto.JdbcDriverClass = config.JDBCDriverClassNameMapping[projectInfoDto.Database.Type]
+	projectInfoDto.DBTypePostgresql = config.DBTypePostgresql
+	projectInfoDto.DBTypeMariadb = config.DBTypeMariadb
+	projectInfoDto.DBTypeMysql = config.DBTypeMysql
 	// 包路径名称小写
 	projectInfoDto.GroupId = strings.ToLower(projectInfoDto.GroupId)
 	projectInfoDto.ArtifactId = strings.ToLower(projectInfoDto.ArtifactId)

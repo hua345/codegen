@@ -53,15 +53,15 @@ public class ResponseModel<T> implements Serializable {
      * @return
      */
     public static <T> ResponseModel success() {
-        return new ResponseModel<T>(ResultCode.SUCCESS.getErrorCode(), ResultCode.SUCCESS.getErrorMsg());
+        return new ResponseModel<T>(ResultCodeEnum.SUCCESS.getErrorCode(), ResultCodeEnum.SUCCESS.getErrorMsg());
     }
 
     public static <T> ResponseModel success(T result) {
-        return new ResponseModel<>(ResultCode.SUCCESS.getErrorCode(), ResultCode.SUCCESS.getErrorMsg(), result);
+        return new ResponseModel<>(ResultCodeEnum.SUCCESS.getErrorCode(), ResultCodeEnum.SUCCESS.getErrorMsg(), result);
     }
 
     public static <T> ResponseModel success(String message, T result) {
-        return new ResponseModel<>(ResultCode.SUCCESS.getErrorCode(), message, result);
+        return new ResponseModel<>(ResultCodeEnum.SUCCESS.getErrorCode(), message, result);
     }
 
     /**
@@ -71,24 +71,24 @@ public class ResponseModel<T> implements Serializable {
      * @return
      */
     public static <T> ResponseModel fail() {
-        return new ResponseModel<T>(ResultCode.REQUEST_ERROR.getErrorCode(), ResultCode.REQUEST_ERROR.getErrorMsg());
+        return new ResponseModel<T>(ResultCodeEnum.REQUEST_ERROR.getErrorCode(), ResultCodeEnum.REQUEST_ERROR.getErrorMsg());
     }
 
     public static <T> ResponseModel fail(T result) {
-        return new ResponseModel<>(ResultCode.REQUEST_ERROR.getErrorCode(), ResultCode.REQUEST_ERROR.getErrorMsg(), result);
+        return new ResponseModel<>(ResultCodeEnum.REQUEST_ERROR.getErrorCode(), ResultCodeEnum.REQUEST_ERROR.getErrorMsg(), result);
     }
 
     public <T> ResponseModel fail(String message, T result) {
-        return new ResponseModel<>(ResultCode.REQUEST_ERROR.getErrorCode(), message, result);
+        return new ResponseModel<>(ResultCodeEnum.REQUEST_ERROR.getErrorCode(), message, result);
     }
 
     /**
      * 快速返回自定义状态码
-     * @param resultCode
+     * @param resultCodeEnum
      * @return
      */
-    public static ResponseModel result(ResultCode resultCode) {
-        return result(resultCode.getErrorCode(), resultCode.getErrorMsg());
+    public static ResponseModel result(ResultCodeEnum resultCodeEnum) {
+        return result(resultCodeEnum.getErrorCode(), resultCodeEnum.getErrorMsg());
     }
     public static <T> ResponseModel result(String statusCode, String message) {
         return new ResponseModel<T>(statusCode, message);
