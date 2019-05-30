@@ -18,7 +18,7 @@ public class ResponseModel<T> implements Serializable {
     /**
      * 返回状态码
      */
-    private String code;
+    private Integer code;
 
     /**
      * 返回消息
@@ -30,12 +30,12 @@ public class ResponseModel<T> implements Serializable {
      */
     private T data;
 
-    public ResponseModel(String code, String msg) {
+    public ResponseModel(Integer code, String msg) {
         this.code = code;
         this.msg = msg;
     }
 
-    public ResponseModel(String code, String msg, T data) {
+    public ResponseModel(Integer code, String msg, T data) {
         this.code = code;
         this.msg = msg;
         this.data = data;
@@ -84,28 +84,31 @@ public class ResponseModel<T> implements Serializable {
 
     /**
      * 快速返回自定义状态码
+     *
      * @param resultCodeEnum
      * @return
      */
     public static ResponseModel result(ResultCodeEnum resultCodeEnum) {
         return result(resultCodeEnum.getErrorCode(), resultCodeEnum.getErrorMsg());
     }
-    public static <T> ResponseModel result(String statusCode, String message) {
+
+    public static <T> ResponseModel result(Integer statusCode, String message) {
         return new ResponseModel<T>(statusCode, message);
     }
 
-    public static <T> ResponseModel result(String statusCode, String message, T result) {
+    public static <T> ResponseModel result(Integer statusCode, String message, T result) {
         return new ResponseModel<>(statusCode, message, result);
     }
+
     /**
      * org.springframework.http.HttpStatus
      * 快速返回Http状态
      */
-    public static <T>ResponseModel httpStatus(HttpStatus httpStatus, String message){
-        return result(httpStatus.toString(),message);
+    public static <T> ResponseModel httpStatus(HttpStatus httpStatus, String message) {
+        return result(httpStatus.value(), message);
     }
 
-    public static <T>ResponseModel httpStatus(HttpStatus httpStatus, String message, T result){
-        return result(httpStatus.toString(),message,result);
+    public static <T> ResponseModel httpStatus(HttpStatus httpStatus, String message, T result) {
+        return result(httpStatus.value(), message, result);
     }
 }

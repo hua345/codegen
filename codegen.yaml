@@ -3,17 +3,19 @@ defaultHttpPort: 8080
 apiBaseUrl: api/v1
 authorName: chenjianhua
 database:
+  # postgresql/mariadb/mysql/
   type: mariadb
   host: 192.168.137.129:3306
   databaseName: db_example
-  username: springboot
+  username: springuser
   password: 123456
 springboot:
   groupId: com.github
   artifactId: hello-golang
   # maven/gradle
-  builder: maven
+  supportBuilder: [maven, gradle]
   # 国际化
-  i18n: false
-  druid: true
-  swagger: true
+  supportI18n: true
+  # 数据源: druid/HikariCP
+  dataSource: druid
+  supportSwagger: true

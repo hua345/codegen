@@ -1,7 +1,7 @@
 
     @ApiOperation(value="{{.Description}}", notes="{{.Description}}")
     @{{.HttpMethod}}(path = "{{.MethodURL}}")
-    public ResponseModel<{{.ResponseDTOName}}> {{.MethodName}}(@RequestBody {{.RequestDTOName}} param) {
+    public ResponseModel<{{.ResponseDTOName}}> {{.MethodName}}(@RequestBody(required=false) {{.RequestDTOName}} param) {
         log.info("Handing request {{.MethodName}} begin, req: {}", JSONObject.toJSONString(param));
 
         {{.ResponseDTOName}} {{.VarResponseDTOName}} = service.{{.MethodName}}(param);
