@@ -1,7 +1,7 @@
 package {{.PackageName}}.config.exception;
 
-import {{.PackageName}}.common.ResponseModel;
-import {{.PackageName}}.common.ResultCodeEnum;
+import {{.PackageName}}.common.ResponseVO;
+import {{.PackageName}}.common.ResponseStatusEnum;
 import lombok.Getter;
 
 /**
@@ -11,16 +11,19 @@ import lombok.Getter;
 @Getter
 public class MyRuntimeException extends RuntimeException {
 
-    private String code;
-    public MyRuntimeException(String code, String message){
+    private Integer code;
+
+    public MyRuntimeException(Integer code, String message) {
         super(message);
         this.code = code;
     }
-    public MyRuntimeException(ResultCodeEnum resultCodeEnum){
-        super(resultCodeEnum.getErrorMsg());
-        this.code = resultCodeEnum.getErrorCode();
+
+    public MyRuntimeException(ResponseStatusEnum responseStatusEnum) {
+        super(responseStatusEnum.getErrorMsg());
+        this.code = responseStatusEnum.getErrorCode();
     }
-    public ResponseModel getResponseResult(){
-        return ResponseModel.result(this.code, this.getMessage());
+
+    public ResponseVO getResponseResult() {
+        return new ResponseVO(this.code, this.getMessage());
     }
 }

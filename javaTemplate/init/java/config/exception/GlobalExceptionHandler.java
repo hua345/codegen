@@ -2,8 +2,8 @@ package {{.PackageName}}.config.exception;
 
 import com.alibaba.fastjson.JSONObject;
 
-import {{.PackageName}}.common.ResponseModel;
-import {{.PackageName}}.common.ResultCodeEnum;
+import {{.PackageName}}.common.ResponseVO;
+import {{.PackageName}}.common.ResponseStatusEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -22,21 +22,9 @@ import javax.servlet.http.HttpServletRequest;
 @ResponseBody
 public class GlobalExceptionHandler {
 	@ExceptionHandler(value = Exception.class)
-	public ResponseModel defaultErrorHandler(HttpServletRequest req, Exception e) {
-		String errorPosition = "";
-		//如果错误堆栈信息存在
-		if (e.getStackTrace().length > 0) {
-			StackTraceElement element = e.getStackTrace()[0];
-			String fileName = element.getFileName() == null ? "未找到错误文件" : element.getFileName();
-			int lineNumber = element.getLineNumber();
-			errorPosition = fileName + ":" + lineNumber;
-		}
-		ResponseModel responseModel = ResponseModel.result(ResultCodeEnum.SERVER_ERROR);
-		JSONObject errorObject = new JSONObject();
-		errorObject.put("errorLocation", e.toString() + "    错误位置:" + errorPosition);
-		responseModel.setData(errorObject);
+	public ResponseVO defaultErrorHandler(HttpServletRequest req, Exception e) {
 		log.error("Exception", e);
-		return responseModel;
+		return  ResponseVO.fail(ResponseStatusEnum.SERVER_ERROR);
 	}
 
 	/**
@@ -45,24 +33,24 @@ public class GlobalExceptionHandler {
 	 * 所以定义了这个拦截器
 	 */
 	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-	public ResponseModel httpRequestMethodHandler() {
+	public ResponseVO httpRequestMethodHandler() {
 		log.error("Catch HttpRequestMethodNotSupportedException");
-		return ResponseModel.result(ResultCodeEnum.REQUEST_METHOD_ERROR);
+		return ResponseVO.fail(ResponseStatusEnum.REQUEST_METHOD_ERROR);
 	}
 
 	@ExceptionHandler(MissingServletRequestParameterException.class)
-    public ResponseModel requestParameterExceptionHandler(MissingServletRequestParameterException missingServletRequestParameterException) {
-        log.error("Catch MissingServletRequestParameterException {}.", missingServletRequestParameterException.getMessage());
-        return ResponseModel.result(ResultCodeEnum.PARAMETER_CHECK_ERROR.getErrorCode(), missingServletRequestParameterException.getMessage());
-    }
+	public ResponseVO requestParameterExceptionHandler(MissingServletRequestParameterException missingServletRequestParameterException) {
+		log.error("Catch MissingServletRequestParameterException {}.", missingServletRequestParameterException.getMessage());
+		return new ResponseVO(ResponseStatusEnum.PARAMETER_CHECK_ERROR.getErrorCode(), missingServletRequestParameterException.getMessage());
+	}
 	/**
 	 * 本系统自定义错误的拦截器
 	 * 拦截到此错误之后,就返回这个类里面的json给前端
 	 * 常见使用场景是参数校验失败,抛出此错,返回错误信息给前端
 	 */
 	@ExceptionHandler(MyRuntimeException.class)
-	public ResponseModel myRuntimeExceptionHandler(MyRuntimeException myRuntimeException) {
-		log.error("Catch MyRuntimeException ; {}", myRuntimeException.getResponseResult());
+	public ResponseVO myRuntimeExceptionHandler(MyRuntimeException myRuntimeException) {
+		log.error("Catch {} MyRuntimeException ; {}", myRuntimeException.getStackTrace()[0].toString(), myRuntimeException.getResponseResult());
 		return myRuntimeException.getResponseResult();
 	}
 }

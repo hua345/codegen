@@ -1,7 +1,7 @@
 package {{.PackageName}}.config.exception;
 
-import {{.PackageName}}.common.ResponseModel;
-import {{.PackageName}}.common.ResultCodeEnum;
+import {{.PackageName}}.common.ResponseVO;
+import {{.PackageName}}.common.ResponseStatusEnum;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,8 +24,8 @@ public class MainsiteErrorController implements ErrorController {
      */
     @RequestMapping(value = ERROR_PATH)
     @ResponseBody
-    public ResponseModel handleError() {
-        return ResponseModel.result(ResultCodeEnum.REQUEST_PATH_ERROR);
+    public ResponseVO handleError() {
+        return ResponseVO.fail(ResponseStatusEnum.REQUEST_PATH_ERROR);
     }
 
     @Override
@@ -33,4 +33,3 @@ public class MainsiteErrorController implements ErrorController {
         return ERROR_PATH;
     }
 }
-

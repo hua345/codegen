@@ -1,8 +1,8 @@
 package {{.ProjectInfo.PackageName}}.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import {{.ProjectInfo.PackageName}}.common.ResponseModel;
-import {{.ProjectInfo.PackageName}}.common.ResultCodeEnum;
+import {{.ProjectInfo.PackageName}}.common.ResponseVO;
+import {{.ProjectInfo.PackageName}}.common.ResponseStatusEnum;
 import {{.ProjectInfo.PackageName}}.config.exception.MyRuntimeException;
 {{.ImportRequestDTOPath}}
 {{.ImportResponseDTOPath}}
@@ -33,11 +33,11 @@ public class {{.ControllerName}}Controller {
 
     @ApiOperation(value="{{.Description}}", notes="{{.Description}}")
     @{{.HttpMethod}}(path = "{{.MethodURL}}")
-    public ResponseModel<{{.ResponseDTOName}}> {{.MethodName}}(@RequestBody(required=false) {{.RequestDTOName}} param) {
+    public ResponseVO<{{.ResponseDTOName}}> {{.MethodName}}(@RequestBody(required=false) {{.RequestDTOName}} param) {
         log.info("Handing request {{.MethodName}} begin, req: {}", JSONObject.toJSONString(param));
 
         {{.ResponseDTOName}} {{.VarResponseDTOName}} = service.{{.MethodName}}(param);
-        ResponseModel<{{.ResponseDTOName}}> result = ResponseModel.success();
+        ResponseVO<{{.ResponseDTOName}}> result = ResponseVO.ok();
         log.info("Handing request {{.MethodName}} end, req: {}", JSONObject.toJSONString(result));
         return result;
     }
