@@ -5,5 +5,3 @@ spring:
     active: dev
   application:
     name: {{.ProjectName}}
-  mvc:
-    locale: zh_CN

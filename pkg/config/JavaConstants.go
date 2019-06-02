@@ -12,6 +12,7 @@ const JavaServiceImplPath string = "service/impl"
 const SpringMapping = "Mapping"
 const ImportSpringAnnotation = "import org.springframework.web.bind.annotation."
 const DotProjectFileName = ".project"
+
 // Template Config
 const JavaTemplateInitPath string = "javaTemplate/init"
 const JavaTemplateInitCodePath string = "javaTemplate/init/java"
@@ -23,11 +24,17 @@ const JavaTemplateServiceImplFileName = "ServiceImpl.java"
 const JavaTemplateMethodControllerFileName = "method/ControllerMethod.java"
 const JavaTemplateMethodServiceFileName = "method/ServiceMethod.java"
 const JavaTemplateMethodServiceImplFileName = "method/ServiceImplMethod.java"
+const JavaTemplateI18nProperties = "i18n"
+const JavaTemplateI18nCommon = "commonI18n"
+const JavaTemplateI18nUtil = "utilsI18n"
+const JavaTemplateI18nConfig = "config/i18n"
+
 // Default
 const MybatisPath string = "mybatis"
 const JavaUtilPath string = "utils"
 const JavaConfigPath string = "config"
 const JavaCommonPath string = "common"
+
 //***************************************javaTemplateFile***************************
 
 const JavaDtoPath string = "dto"
@@ -37,7 +44,5 @@ const JavaDtoResponsePath string = "dto/response"
 const ImportDtoResponsePath string = "dto.response"
 const ImportRequestDto = "InputDTO"
 const ImportResponseDto = "OutputDTO"
+
 //***************************************DTO***************************
-
-
-

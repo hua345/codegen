@@ -1,11 +1,14 @@
 package util
 
 import (
+	"log"
 	"os"
 	"text/template"
 )
 
 func ParseTemplate(dstPath, srcPath string, data interface{}) {
+	log.Println("srcPath: " + srcPath)
+	log.Println("dstPath: " + dstPath)
 	srcTemplate, err := template.ParseFiles(srcPath)
 	if err != nil {
 		panic(nil)

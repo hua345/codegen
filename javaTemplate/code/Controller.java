@@ -7,6 +7,7 @@ import {{.ProjectInfo.PackageName}}.config.exception.MyRuntimeException;
 {{.ImportRequestDTOPath}}
 {{.ImportResponseDTOPath}}
 import {{.ProjectInfo.PackageName}}.service.{{.ControllerName}}Service;
+import {{.ProjectInfo.PackageName}}.utils.ResponseUtil;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -37,7 +38,7 @@ public class {{.ControllerName}}Controller {
         log.info("Handing request {{.MethodName}} begin, req: {}", JSONObject.toJSONString(param));
 
         {{.ResponseDTOName}} {{.VarResponseDTOName}} = service.{{.MethodName}}(param);
-        ResponseVO<{{.ResponseDTOName}}> result = ResponseVO.ok();
+        ResponseVO<{{.ResponseDTOName}}> result = ResponseUtil.ok();
         log.info("Handing request {{.MethodName}} end, req: {}", JSONObject.toJSONString(result));
         return result;
     }

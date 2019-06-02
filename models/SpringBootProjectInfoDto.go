@@ -96,6 +96,11 @@ func (projectInfoDto SpringBootProjectInfoDto) InitProject() {
 	// 检测mybatis目录是否存在
 	mybatisPath := path.Join(projectInfoDto.ResourcePath, config.MybatisPath)
 	util.CheckDirAndMkdir(mybatisPath)
+	// 检查i18n目录是否存在
+	if config.ServerConfig.Springboot.SupportI18n {
+		i18nPath := path.Join(projectInfoDto.ResourcePath, config.JavaTemplateI18nProperties)
+		util.CheckDirAndMkdir(i18nPath)
+	}
 	// Copy .Gitignore
 	_, err = util.CopyFile(path.Join(projectInfoDto.ProjectName, config.GitIgnoreFileName),
 		path.Join(config.JavaTemplateInitPath, config.GitIgnoreFileName))
@@ -107,9 +112,9 @@ func (projectInfoDto SpringBootProjectInfoDto) InitProject() {
 }
 
 /**
- * 添加common文件模板映射关系
+ * 添加子目录文件模板映射关系
  */
-func appendCommonTemplateList(templateConfigPath, codeConfigPath string, fileMapDtoList []FileMapDto) []FileMapDto {
+func appendSubDirTemplateList(templateConfigPath, codeConfigPath string, fileMapDtoList []FileMapDto) []FileMapDto {
 	subDirList := util.GetSubDirList(templateConfigPath)
 	for _, value := range subDirList {
 		templateSubPath := path.Join(templateConfigPath, value)
@@ -164,26 +169,47 @@ func initProjectData(projectInfoDto SpringBootProjectInfoDto) {
 			path.Join(projectInfoDto.JavaPath, config.JavaApplicationFileName)},
 	}
 	// Java Util包
-	javaTemplateUtilPath := path.Join(config.JavaTemplateInitCodePath, config.JavaUtilPath)
-	javaCodeUtilPath := path.Join(projectInfoDto.JavaPath, config.JavaUtilPath)
-	fileMapDtoList = appendTemplateList(javaTemplateUtilPath, javaCodeUtilPath, fileMapDtoList)
+	if config.ServerConfig.Springboot.SupportI18n {
+		javaTemplateUtilPath := path.Join(config.JavaTemplateInitCodePath, config.JavaTemplateI18nUtil)
+		javaCodeUtilPath := path.Join(projectInfoDto.JavaPath, config.JavaUtilPath)
+		fileMapDtoList = appendTemplateList(javaTemplateUtilPath, javaCodeUtilPath, fileMapDtoList)
+
+		// SubDir holder
+		fileMapDtoList = appendSubDirTemplateList(javaTemplateUtilPath, javaCodeUtilPath, fileMapDtoList)
+	} else {
+		javaTemplateUtilPath := path.Join(config.JavaTemplateInitCodePath, config.JavaUtilPath)
+		javaCodeUtilPath := path.Join(projectInfoDto.JavaPath, config.JavaUtilPath)
+		fileMapDtoList = appendTemplateList(javaTemplateUtilPath, javaCodeUtilPath, fileMapDtoList)
+	}
+
 	// Java Config包
 	javaTemplateConfigPath := path.Join(config.JavaTemplateInitCodePath, config.JavaConfigPath)
 	javaCodeConfigPath := path.Join(projectInfoDto.JavaPath, config.JavaConfigPath)
 	fileMapDtoList = appendTemplateList(javaTemplateConfigPath, javaCodeConfigPath, fileMapDtoList)
 	// Config subDir文件
-	fileMapDtoList = appendCommonTemplateList(javaTemplateConfigPath, javaCodeConfigPath, fileMapDtoList)
+	fileMapDtoList = appendSubDirTemplateList(javaTemplateConfigPath, javaCodeConfigPath, fileMapDtoList)
 	// Java Common包
-	javaTemplateCommonPath := path.Join(config.JavaTemplateInitCodePath, config.JavaCommonPath)
-	javaCodeCommonPath := path.Join(projectInfoDto.JavaPath, config.JavaCommonPath)
-	fileMapDtoList = appendTemplateList(javaTemplateCommonPath, javaCodeCommonPath, fileMapDtoList)
+	if config.ServerConfig.Springboot.SupportI18n {
+		javaTemplateCommonPath := path.Join(config.JavaTemplateInitCodePath, config.JavaTemplateI18nCommon)
+		javaCodeCommonPath := path.Join(projectInfoDto.JavaPath, config.JavaCommonPath)
+		fileMapDtoList = appendTemplateList(javaTemplateCommonPath, javaCodeCommonPath, fileMapDtoList)
+	} else {
+		javaTemplateCommonPath := path.Join(config.JavaTemplateInitCodePath, config.JavaCommonPath)
+		javaCodeCommonPath := path.Join(projectInfoDto.JavaPath, config.JavaCommonPath)
+		fileMapDtoList = appendTemplateList(javaTemplateCommonPath, javaCodeCommonPath, fileMapDtoList)
+	}
 	// Resource文件
 	fileMapDtoList = appendTemplateList(config.JavaTemplateResourcePath, projectInfoDto.ResourcePath, fileMapDtoList)
 	// Mybatis
 	mybatisTemplatePath := path.Join(config.JavaTemplateInitPath, config.MybatisPath)
 	mybatisPath := path.Join(projectInfoDto.ResourcePath, config.MybatisPath)
 	fileMapDtoList = appendMybatisTemplateList(mybatisTemplatePath, mybatisPath, fileMapDtoList)
-
+	// I18n
+	if config.ServerConfig.Springboot.SupportI18n {
+		mybatisTemplatePath := path.Join(config.JavaTemplateInitPath, config.JavaTemplateI18nProperties)
+		mybatisPath := path.Join(projectInfoDto.ResourcePath, config.JavaTemplateI18nProperties)
+		fileMapDtoList = appendTemplateList(mybatisTemplatePath, mybatisPath, fileMapDtoList)
+	}
 	// 解析模板
 	for _, value := range fileMapDtoList {
 		util.ParseTemplate(value.TplDstPath, value.TplSrcPath, projectInfoDto)
