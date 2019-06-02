@@ -12,20 +12,25 @@ import (
 )
 
 type SpringBootProjectInfoDto struct {
-	GroupId          string          `json:"groupdId"`
-	ArtifactId       string          `json:"artifactId"`
-	PackageName      string          `json:"packageName"`
-	JavaPath         string          `json:"javaPath"`
-	ResourcePath     string          `json:"resourcePath"`
-	ProjectName      string          `json:"projectName"`
-	NowDate          string          `json:"nowDate"`
-	Author           string          `json:"author"`
-	HttpPort         string          `json:"httpPort"`
-	Database         config.Database `json:"database"`
-	JdbcDriverClass  string          `json:"jdbcDriverClass"`
-	DBTypeMariadb    string          `json:"dbTypeMariadb"`
-	DBTypeMysql      string          `json:"dbTypeMysql"`
-	DBTypePostgresql string          `json:"dbTypePostgresql"`
+	GroupId            string          `json:"groupdId"`
+	ArtifactId         string          `json:"artifactId"`
+	PackageName        string          `json:"packageName"`
+	JavaPath           string          `json:"javaPath"`
+	ResourcePath       string          `json:"resourcePath"`
+	ProjectName        string          `json:"projectName"`
+	NowDate            string          `json:"nowDate"`
+	Author             string          `json:"author"`
+	SupportI18n        bool            `json:"supportI18n"`
+	SupportSwagger     bool            `json:"supportSwagger"`
+	SupportDataSource  string          `json:"supportDataSource"`
+	HttpPort           string          `json:"httpPort"`
+	Database           config.Database `json:"database"`
+	JdbcDriverClass    string          `json:"jdbcDriverClass"`
+	DBTypeMariadb      string          `json:"dbTypeMariadb"`
+	DBTypeMysql        string          `json:"dbTypeMysql"`
+	DBTypePostgresql   string          `json:"dbTypePostgresql"`
+	DataSourceDruid    string          `json:"dataSourceDruid"`
+	DataSourceHikariCP string          `json:"dataSourceHikariCP"`
 }
 
 // 初始化项目数据
@@ -38,6 +43,11 @@ func (projectInfoDto SpringBootProjectInfoDto) Init() SpringBootProjectInfoDto {
 	projectInfoDto.DBTypePostgresql = config.DBTypePostgresql
 	projectInfoDto.DBTypeMariadb = config.DBTypeMariadb
 	projectInfoDto.DBTypeMysql = config.DBTypeMysql
+	projectInfoDto.SupportI18n = config.ServerConfig.Springboot.SupportI18n
+	projectInfoDto.SupportSwagger = config.ServerConfig.Springboot.SupportSwagger
+	projectInfoDto.SupportDataSource = config.ServerConfig.Springboot.SupportDataSource
+	projectInfoDto.DataSourceDruid = config.DataSourceDruid
+	projectInfoDto.DataSourceHikariCP = config.DataSourceHikariCP
 	// 包路径名称小写
 	projectInfoDto.GroupId = strings.ToLower(projectInfoDto.GroupId)
 	projectInfoDto.ArtifactId = strings.ToLower(projectInfoDto.ArtifactId)
@@ -88,6 +98,21 @@ func (projectInfoDto SpringBootProjectInfoDto) InitProject() {
 	// 检测Config目录是否存在
 	JavaCodeConfigPath := path.Join(projectInfoDto.JavaPath, config.JavaConfigPath)
 	util.CheckDirAndMkdir(JavaCodeConfigPath)
+	// config swagger
+	if projectInfoDto.SupportSwagger {
+		util.CheckDirAndMkdir(path.Join(JavaCodeConfigPath, config.JavaTemplateSwaggerConfig))
+	}
+	// config I18n
+	if projectInfoDto.SupportI18n {
+		util.CheckDirAndMkdir(path.Join(JavaCodeConfigPath, config.JavaTemplateI18nConfig))
+	}
+	// config druid
+	if config.DataSourceDruid == projectInfoDto.SupportDataSource {
+		util.CheckDirAndMkdir(path.Join(JavaCodeConfigPath, config.JavaTemplateDruidConfig))
+	}
+	// config exception
+	util.CheckDirAndMkdir(path.Join(JavaCodeConfigPath, config.JavaTemplateExceptionConfig))
+	//
 	// 检测Common目录是否存在
 	JavaCodeCommonPath := path.Join(projectInfoDto.JavaPath, config.JavaCommonPath)
 	util.CheckDirAndMkdir(JavaCodeCommonPath)
@@ -169,7 +194,11 @@ func initProjectData(projectInfoDto SpringBootProjectInfoDto) {
 			path.Join(projectInfoDto.JavaPath, config.JavaApplicationFileName)},
 	}
 	// Java Util包
+<<<<<<< HEAD
 	if config.ServerConfig.Springboot.SupportI18n {
+=======
+	if projectInfoDto.SupportI18n {
+>>>>>>> I18n:apple:
 		javaTemplateUtilPath := path.Join(config.JavaTemplateInitCodePath, config.JavaTemplateI18nUtil)
 		javaCodeUtilPath := path.Join(projectInfoDto.JavaPath, config.JavaUtilPath)
 		fileMapDtoList = appendTemplateList(javaTemplateUtilPath, javaCodeUtilPath, fileMapDtoList)
@@ -186,10 +215,45 @@ func initProjectData(projectInfoDto SpringBootProjectInfoDto) {
 	javaTemplateConfigPath := path.Join(config.JavaTemplateInitCodePath, config.JavaConfigPath)
 	javaCodeConfigPath := path.Join(projectInfoDto.JavaPath, config.JavaConfigPath)
 	fileMapDtoList = appendTemplateList(javaTemplateConfigPath, javaCodeConfigPath, fileMapDtoList)
+<<<<<<< HEAD
 	// Config subDir文件
 	fileMapDtoList = appendSubDirTemplateList(javaTemplateConfigPath, javaCodeConfigPath, fileMapDtoList)
 	// Java Common包
 	if config.ServerConfig.Springboot.SupportI18n {
+=======
+	// config swagger
+	if projectInfoDto.SupportSwagger {
+		fileMapDtoList = appendTemplateList(
+			path.Join(javaTemplateConfigPath, config.JavaTemplateSwaggerConfig),
+			path.Join(javaCodeConfigPath, config.JavaTemplateSwaggerConfig),
+			fileMapDtoList)
+	}
+	// config I18n
+	if projectInfoDto.SupportI18n {
+		fileMapDtoList = appendTemplateList(
+			path.Join(javaTemplateConfigPath, config.JavaTemplateI18nConfig),
+			path.Join(javaCodeConfigPath, config.JavaTemplateI18nConfig),
+			fileMapDtoList)
+		fileMapDtoList = appendTemplateList(
+			path.Join(javaTemplateConfigPath, config.JavaTemplateExceptionI18nConfig),
+			path.Join(javaCodeConfigPath, config.JavaTemplateExceptionConfig),
+			fileMapDtoList)
+	} else {
+		fileMapDtoList = appendTemplateList(
+			path.Join(javaTemplateConfigPath, config.JavaTemplateExceptionConfig),
+			path.Join(javaCodeConfigPath, config.JavaTemplateExceptionConfig),
+			fileMapDtoList)
+	}
+	// config druid
+	if config.DataSourceDruid == projectInfoDto.SupportDataSource {
+		fileMapDtoList = appendTemplateList(
+			path.Join(javaTemplateConfigPath, config.JavaTemplateDruidConfig),
+			path.Join(javaCodeConfigPath, config.JavaTemplateDruidConfig),
+			fileMapDtoList)
+	}
+	// Java Common包
+	if projectInfoDto.SupportI18n {
+>>>>>>> I18n:apple:
 		javaTemplateCommonPath := path.Join(config.JavaTemplateInitCodePath, config.JavaTemplateI18nCommon)
 		javaCodeCommonPath := path.Join(projectInfoDto.JavaPath, config.JavaCommonPath)
 		fileMapDtoList = appendTemplateList(javaTemplateCommonPath, javaCodeCommonPath, fileMapDtoList)
@@ -205,7 +269,11 @@ func initProjectData(projectInfoDto SpringBootProjectInfoDto) {
 	mybatisPath := path.Join(projectInfoDto.ResourcePath, config.MybatisPath)
 	fileMapDtoList = appendMybatisTemplateList(mybatisTemplatePath, mybatisPath, fileMapDtoList)
 	// I18n
+<<<<<<< HEAD
 	if config.ServerConfig.Springboot.SupportI18n {
+=======
+	if projectInfoDto.SupportI18n {
+>>>>>>> I18n:apple:
 		mybatisTemplatePath := path.Join(config.JavaTemplateInitPath, config.JavaTemplateI18nProperties)
 		mybatisPath := path.Join(projectInfoDto.ResourcePath, config.JavaTemplateI18nProperties)
 		fileMapDtoList = appendTemplateList(mybatisTemplatePath, mybatisPath, fileMapDtoList)

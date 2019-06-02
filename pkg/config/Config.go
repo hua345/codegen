@@ -31,22 +31,22 @@ func newServer() Server {
 }
 
 type SpringbootSetting struct {
-	GroupId        string   `yaml:"groupId"`
-	ArtifactId     string   `yaml:"artifactId"`
-	SupportBuilder []string `yaml:"supportBuilder"`
-	SupportI18n    bool     `yaml:"supportI18n"`
-	DataSource     string   `yaml:"dataSource"`
-	SupportSwagger bool     `yaml:"supportSwagger"`
+	GroupId           string   `yaml:"groupId"`
+	ArtifactId        string   `yaml:"artifactId"`
+	SupportBuilder    []string `yaml:"supportBuilder"`
+	SupportI18n       bool     `yaml:"supportI18n"`
+	SupportDataSource string   `yaml:"supportDataSource"`
+	SupportSwagger    bool     `yaml:"supportSwagger"`
 }
 
 func newSpringbootSetting() SpringbootSetting {
 	return SpringbootSetting{
-		GroupId:        "com.github",
-		ArtifactId:     "learn",
-		SupportBuilder: []string{"maven"},
-		SupportI18n:    true,
-		DataSource:     "druid",
-		SupportSwagger: true,
+		GroupId:           "com.github",
+		ArtifactId:        "learn",
+		SupportBuilder:    []string{"maven"},
+		SupportI18n:       true,
+		SupportDataSource: "druid",
+		SupportSwagger:    true,
 	}
 }
 
@@ -103,6 +103,12 @@ func Setup(configPath string) {
 		DBTypePostgresql == ServerConfig.Database.Type) {
 		log.Println("支持的数据库类型:" + DBTypeMysql + "\\" +
 			DBTypeMariadb + "\\" + DBTypePostgresql)
+		os.Exit(-1)
+	}
+	if !(DataSourceDruid == ServerConfig.Springboot.SupportDataSource ||
+		DataSourceHikariCP == ServerConfig.Springboot.SupportDataSource) {
+		log.Println("支持的数据库连接池:" + DataSourceDruid + "\\" +
+			DataSourceHikariCP)
 		os.Exit(-1)
 	}
 }

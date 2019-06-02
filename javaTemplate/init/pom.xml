@@ -18,12 +18,12 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <mybatis.version>2.0.0</mybatis.version>
         <guava.version>27.1-jre</guava.version>
-        <commons-lang3.version>3.8.1</commons-lang3.version>
-        <druid.version>1.1.9</druid.version>
+        <commons-lang3.version>3.8.1</commons-lang3.version>{{ if .DataSourceDruid }}
+        <druid.version>1.1.9</druid.version>{{ end }}
         <fastjson.version>1.2.56</fastjson.version>
-        <lombok.version>1.18.6</lombok.version>
+        <lombok.version>1.18.6</lombok.version>{{ if .SupportSwagger }}
         <swagger2.version>2.9.2</swagger2.version>
-        <swagger-ui.version>2.9.2</swagger-ui.version>
+        <swagger-ui.version>2.9.2</swagger-ui.version>{{ end }}
     </properties>
 
     <dependencies>
@@ -82,12 +82,12 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>${commons-lang3.version}</version>
-        </dependency>
+        </dependency>{{ if .DataSourceDruid }}
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
             <version>${druid.version}</version>
-        </dependency>
+        </dependency>{{ end }}
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
@@ -98,7 +98,7 @@
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
             <scope>provided</scope>
-        </dependency>
+        </dependency>{{ if .SupportSwagger }}
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>
@@ -108,7 +108,7 @@
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
             <version>${swagger-ui.version}</version>
-        </dependency>
+        </dependency>{{ end }}
     </dependencies>
 
 
@@ -132,7 +132,8 @@
                 <directory>src/main/resources</directory>
                 <includes>
                     <include>*.yml</include>
-                    <include>*.properies</include>
+                    <include>*.properies</include>{{ if .SupportI18n }}
+                    <include>i18n/*</include>{{ end }}
                 </includes>
                 <excludes>
                     <exclude>mybatis/*</exclude>

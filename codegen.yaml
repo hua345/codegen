@@ -17,5 +17,5 @@ springboot:
   # 国际化
   supportI18n: true
   # 数据源: druid/HikariCP
-  dataSource: druid
+  supportDataSource: druid
   supportSwagger: true
