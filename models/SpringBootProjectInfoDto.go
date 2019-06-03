@@ -194,11 +194,7 @@ func initProjectData(projectInfoDto SpringBootProjectInfoDto) {
 			path.Join(projectInfoDto.JavaPath, config.JavaApplicationFileName)},
 	}
 	// Java Util包
-<<<<<<< HEAD
-	if config.ServerConfig.Springboot.SupportI18n {
-=======
 	if projectInfoDto.SupportI18n {
->>>>>>> I18n:apple:
 		javaTemplateUtilPath := path.Join(config.JavaTemplateInitCodePath, config.JavaTemplateI18nUtil)
 		javaCodeUtilPath := path.Join(projectInfoDto.JavaPath, config.JavaUtilPath)
 		fileMapDtoList = appendTemplateList(javaTemplateUtilPath, javaCodeUtilPath, fileMapDtoList)
@@ -215,12 +211,6 @@ func initProjectData(projectInfoDto SpringBootProjectInfoDto) {
 	javaTemplateConfigPath := path.Join(config.JavaTemplateInitCodePath, config.JavaConfigPath)
 	javaCodeConfigPath := path.Join(projectInfoDto.JavaPath, config.JavaConfigPath)
 	fileMapDtoList = appendTemplateList(javaTemplateConfigPath, javaCodeConfigPath, fileMapDtoList)
-<<<<<<< HEAD
-	// Config subDir文件
-	fileMapDtoList = appendSubDirTemplateList(javaTemplateConfigPath, javaCodeConfigPath, fileMapDtoList)
-	// Java Common包
-	if config.ServerConfig.Springboot.SupportI18n {
-=======
 	// config swagger
 	if projectInfoDto.SupportSwagger {
 		fileMapDtoList = appendTemplateList(
@@ -253,7 +243,6 @@ func initProjectData(projectInfoDto SpringBootProjectInfoDto) {
 	}
 	// Java Common包
 	if projectInfoDto.SupportI18n {
->>>>>>> I18n:apple:
 		javaTemplateCommonPath := path.Join(config.JavaTemplateInitCodePath, config.JavaTemplateI18nCommon)
 		javaCodeCommonPath := path.Join(projectInfoDto.JavaPath, config.JavaCommonPath)
 		fileMapDtoList = appendTemplateList(javaTemplateCommonPath, javaCodeCommonPath, fileMapDtoList)
@@ -269,11 +258,7 @@ func initProjectData(projectInfoDto SpringBootProjectInfoDto) {
 	mybatisPath := path.Join(projectInfoDto.ResourcePath, config.MybatisPath)
 	fileMapDtoList = appendMybatisTemplateList(mybatisTemplatePath, mybatisPath, fileMapDtoList)
 	// I18n
-<<<<<<< HEAD
-	if config.ServerConfig.Springboot.SupportI18n {
-=======
 	if projectInfoDto.SupportI18n {
->>>>>>> I18n:apple:
 		mybatisTemplatePath := path.Join(config.JavaTemplateInitPath, config.JavaTemplateI18nProperties)
 		mybatisPath := path.Join(projectInfoDto.ResourcePath, config.JavaTemplateI18nProperties)
 		fileMapDtoList = appendTemplateList(mybatisTemplatePath, mybatisPath, fileMapDtoList)

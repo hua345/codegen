@@ -1,7 +1,7 @@
 package {{.PackageName}}.utils;
 
-import hello.common.ResponseStatusEnum;
-import hello.common.ResponseVO;
+import {{.PackageName}}.common.ResponseStatusEnum;
+import {{.PackageName}}.common.ResponseVO;
 import org.springframework.http.HttpStatus;
 
 /**

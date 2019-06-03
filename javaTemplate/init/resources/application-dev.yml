@@ -1,9 +1,7 @@
-spring:
-  {{ if .SupportI18n }}
+spring: {{ if .SupportI18n }}
   messages:
     basename: i18n/messages
-    encoding: UTF-8
-  {{ end }}
+    encoding: UTF-8 {{ end }}
   profiles: dev
   security:
     enabled: true

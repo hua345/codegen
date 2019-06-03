@@ -2,6 +2,7 @@ package {{.PackageName}}.utils;
 
 import {{.PackageName}}.utils.holder.ServletContextHolder;
 import {{.PackageName}}.utils.holder.SpringContextHolder;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,7 @@ import java.util.Locale;
  * @author CHENJIANHUA
  * @date 2019/5/30 10:05
  */
+@Slf4j
 @Component
 public class I18nMessageUtil {
 

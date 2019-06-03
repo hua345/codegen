@@ -27,15 +27,12 @@ const JavaTemplateMethodServiceImplFileName = "method/ServiceImplMethod.java"
 const JavaTemplateI18nProperties = "i18n"
 const JavaTemplateI18nCommon = "commonI18n"
 const JavaTemplateI18nUtil = "utilsI18n"
-<<<<<<< HEAD
-const JavaTemplateI18nConfig = "config/i18n"
-=======
+
 const JavaTemplateI18nConfig = "i18n"
 const JavaTemplateDruidConfig = "druid"
 const JavaTemplateExceptionConfig = "exception"
 const JavaTemplateExceptionI18nConfig = "exceptionI18n"
 const JavaTemplateSwaggerConfig = "swagger"
->>>>>>> I18n:apple:
 
 // Default
 const MybatisPath string = "mybatis"
