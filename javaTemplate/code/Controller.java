@@ -7,8 +7,8 @@ import {{.ProjectInfo.PackageName}}.config.exception.MyRuntimeException;
 {{.ImportRequestDTOPath}}
 {{.ImportResponseDTOPath}}
 import {{.ProjectInfo.PackageName}}.service.{{.ControllerName}}Service;
-import {{.ProjectInfo.PackageName}}.utils.ResponseUtil;
-import io.swagger.annotations.ApiOperation;
+import {{.ProjectInfo.PackageName}}.utils.ResponseUtil;{{ if .SupportSwagger }}
+import io.swagger.annotations.ApiOperation;{{ end }}
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +31,8 @@ public class {{.ControllerName}}Controller {
      */
     @Autowired
     private {{.ControllerName}}Service service;
-
-    @ApiOperation(value="{{.Description}}", notes="{{.Description}}")
+    {{ if .SupportSwagger }}
+    @ApiOperation(value="{{.Description}}", notes="{{.Description}}"){{ end }}
     @{{.HttpMethod}}(path = "{{.MethodURL}}")
     public ResponseVO<{{.ResponseDTOName}}> {{.MethodName}}(@RequestBody(required=false) {{.RequestDTOName}} param) {
         log.info("Handing request {{.MethodName}} begin, req: {}", JSONObject.toJSONString(param));

@@ -1,10 +1,10 @@
 package models
 
 import (
+	"codegen/pkg/config"
+	"codegen/pkg/util"
 	"encoding/json"
 	"fmt"
-	"codegen/pkg/util"
-	"codegen/pkg/config"
 	"os"
 	"path"
 	"regexp"
@@ -13,13 +13,13 @@ import (
 )
 
 type SpringBootRestfulApiDto struct {
-	HttpMethod            string         `json:"httpMethod"`
-	BaseUrl               string         `json:"baseUrl"`
-	RestfulUrl            string         `json:"restfulUrl"`
-	MethodName            string         `json:"methodName"`
-	MethodURL             string         `json:"methodURL"`
-	ControllerName        string         `json:"controllerName"`
-	RequestDTOName        string         `json:"requestDTOName"`
+	HttpMethod            string                   `json:"httpMethod"`
+	BaseUrl               string                   `json:"baseUrl"`
+	RestfulUrl            string                   `json:"restfulUrl"`
+	MethodName            string                   `json:"methodName"`
+	MethodURL             string                   `json:"methodURL"`
+	ControllerName        string                   `json:"controllerName"`
+	RequestDTOName        string                   `json:"requestDTOName"`
 	ResponseDTOName       string                   `json:"responseDTOName"`
 	VarResponseDTOName    string                   `json:"varResponseDTOName"`
 	ImportRequestDTOPath  string                   `json:"importRequestDTOPath"`
@@ -28,12 +28,14 @@ type SpringBootRestfulApiDto struct {
 	Description           string                   `json:"description"`
 	NowDate               string                   `json:"nowDate"`
 	Author                string                   `json:"author"`
+	SupportSwagger        bool                     `json:"supportSwagger"`
 	ProjectInfo           SpringBootProjectInfoDto `json:"projectInfo"`
 }
 
 func (restfulApiDto SpringBootRestfulApiDto) Init() SpringBootRestfulApiDto {
 	restfulApiDto.NowDate = time.Now().Format(config.NowTimeFormat)
 	restfulApiDto.Author = config.ServerConfig.AuthorName
+	restfulApiDto.SupportSwagger = config.ServerConfig.Springboot.SupportSwagger
 	// 根据输入的RestfulUrl判断生成的Controller
 	urlStrList := util.HandleRestfulURL(restfulApiDto.RestfulUrl)
 	if len(urlStrList) == 0 {

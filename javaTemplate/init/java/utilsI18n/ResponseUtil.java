@@ -20,15 +20,18 @@ public class ResponseUtil {
      */
     public static <T> ResponseVO ok() {
         return new ResponseVO<T>(ResponseStatusEnum.SUCCESS.getErrorCode(),
-                ResponseStatusEnum.SUCCESS.getI18nKey());
+                I18nMessageUtil.getMessage(ResponseStatusEnum.SUCCESS.getI18nKey(), null));
     }
 
     public static <T> ResponseVO ok(T result) {
-        return new ResponseVO<>(ResponseStatusEnum.SUCCESS.getErrorCode(), ResponseStatusEnum.SUCCESS.getI18nKey(), result);
+        return new ResponseVO<>(ResponseStatusEnum.SUCCESS.getErrorCode(),
+                I18nMessageUtil.getMessage(ResponseStatusEnum.SUCCESS.getI18nKey(), null), result);
     }
 
     public static <T> ResponseVO ok(String message, T result) {
-        return new ResponseVO<>(ResponseStatusEnum.SUCCESS.getErrorCode(), message, result);
+        return new ResponseVO<>(ResponseStatusEnum.SUCCESS.getErrorCode(),
+                I18nMessageUtil.getMessage(message, null),
+                result);
     }
 
     /**
@@ -38,11 +41,13 @@ public class ResponseUtil {
      * @return
      */
     public static <T> ResponseVO fail() {
-        return new ResponseVO<T>(ResponseStatusEnum.REQUEST_ERROR.getErrorCode(), ResponseStatusEnum.REQUEST_ERROR.getI18nKey());
+        return new ResponseVO<T>(ResponseStatusEnum.REQUEST_ERROR.getErrorCode(),
+                I18nMessageUtil.getMessage(ResponseStatusEnum.REQUEST_ERROR.getI18nKey(), null));
     }
 
     public static <T> ResponseVO fail(ResponseStatusEnum responseStatusEnum) {
-        return new ResponseVO<>(responseStatusEnum.getErrorCode(), responseStatusEnum.getI18nKey());
+        return new ResponseVO<>(responseStatusEnum.getErrorCode(),
+                I18nMessageUtil.getMessage(responseStatusEnum.getI18nKey(), null));
     }
 
     /**
@@ -50,10 +55,14 @@ public class ResponseUtil {
      * 快速返回Http状态
      */
     public static <T> ResponseVO httpStatus(HttpStatus httpStatus, String message) {
-        return new ResponseVO<T>(httpStatus.value(), message);
+        return new ResponseVO<T>(httpStatus.value(),
+                I18nMessageUtil.getMessage(message, null));
     }
 
     public static <T> ResponseVO httpStatus(HttpStatus httpStatus, String message, T result) {
-        return new ResponseVO<>(httpStatus.value(), message, result);
+        return new ResponseVO<>(httpStatus.value(),
+                I18nMessageUtil.getMessage(message, null),
+                result);
     }
 }
+
