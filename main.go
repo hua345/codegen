@@ -1,4 +1,4 @@
-// generateCode project main.go
+//go:generate go-bindata -o=asset/asset.go -pkg=asset public/...
 package main
 
 import (

@@ -19,8 +19,8 @@ import (
 	"codegen/pkg/util"
 	"encoding/json"
 	"fmt"
-	"github.com/spf13/cobra"
 	log "github.com/sirupsen/logrus"
+	"github.com/spf13/cobra"
 	"os"
 )
 
@@ -28,7 +28,7 @@ import (
 var configCmd = &cobra.Command{
 	Use:   "config",
 	Short: "配置文件命令",
-	Long: "修改codegen配置文件",
+	Long:  "修改codegen配置文件",
 	Example: `codegen config init
 codegen config list`,
 	Run: func(cmd *cobra.Command, args []string) {

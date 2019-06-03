@@ -17,7 +17,6 @@ package cmd
 import (
 	"codegen/pkg/config"
 	"fmt"
-
 	"github.com/spf13/cobra"
 )
 

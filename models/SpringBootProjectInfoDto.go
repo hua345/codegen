@@ -126,72 +126,20 @@ func (projectInfoDto SpringBootProjectInfoDto) InitProject() {
 		i18nPath := path.Join(projectInfoDto.ResourcePath, config.JavaTemplateI18nProperties)
 		util.CheckDirAndMkdir(i18nPath)
 	}
-	// Copy .Gitignore
-	_, err = util.CopyFile(path.Join(projectInfoDto.ProjectName, config.GitIgnoreFileName),
-		path.Join(config.JavaTemplateInitPath, config.GitIgnoreFileName))
-	if err != nil {
-		fmt.Printf("Copy %s failed!", config.GitIgnoreFileName)
-	}
 	// 解析模板
 	initProjectData(projectInfoDto)
 }
 
-/**
- * 添加子目录文件模板映射关系
- */
-func appendSubDirTemplateList(templateConfigPath, codeConfigPath string, fileMapDtoList []FileMapDto) []FileMapDto {
-	subDirList := util.GetSubDirList(templateConfigPath)
-	for _, value := range subDirList {
-		templateSubPath := path.Join(templateConfigPath, value)
-		codeSubDir := path.Join(codeConfigPath, value)
-		util.CheckDirAndMkdir(codeSubDir)
-		fileMapDtoList = appendTemplateList(templateSubPath, codeSubDir, fileMapDtoList)
-	}
-	return fileMapDtoList
-}
-
-/**
- * 添加Mybatis文件模板映射关系
- */
-func appendMybatisTemplateList(mybatisTemplatePath, mybatisPath string, fileMapDtoList []FileMapDto) []FileMapDto {
-	mybatisFileNameList := util.GetFilesName(mybatisTemplatePath)
-	for _, value := range mybatisFileNameList {
-		if util.GetFileSuffix(value) == ".jar" {
-			// 如果是jar文件直接拷贝
-			_, err := util.CopyFile(path.Join(mybatisPath, value),
-				path.Join(mybatisTemplatePath, value))
-			if err != nil {
-				fmt.Printf("Copy %s failed!", value)
-			}
-		} else {
-			fileMapDtoList = append(fileMapDtoList,
-				FileMapDto{path.Join(mybatisTemplatePath, value),
-					path.Join(mybatisPath, value)})
-		}
-	}
-	return fileMapDtoList
-}
-
-/**
- * 添加文件模板映射关系
- */
-func appendTemplateList(templatePath, codePath string, fileMapDtoList []FileMapDto) []FileMapDto {
-	templateFileNameList := util.GetFilesName(templatePath)
-	for _, value := range templateFileNameList {
-		fileMapDtoList = append(fileMapDtoList,
-			FileMapDto{path.Join(templatePath, value),
-				path.Join(codePath, value)})
-	}
-	return fileMapDtoList
-}
 func initProjectData(projectInfoDto SpringBootProjectInfoDto) {
 	fileMapDtoList := []FileMapDto{
-		FileMapDto{path.Join(config.JavaTemplateInitPath, config.PomXmlFileName),
+		{path.Join(config.JavaTemplateInitPath, config.PomXmlFileName),
 			path.Join(projectInfoDto.ProjectName, config.PomXmlFileName)},
-		FileMapDto{path.Join(config.JavaTemplateInitPath, config.DotProjectFileName),
+		{path.Join(config.JavaTemplateInitPath, config.DotProjectFileName),
 			path.Join(projectInfoDto.ProjectName, config.DotProjectFileName)},
-		FileMapDto{path.Join(config.JavaTemplateInitCodePath, config.JavaApplicationFileName),
+		{path.Join(config.JavaTemplateInitCodePath, config.JavaApplicationFileName),
 			path.Join(projectInfoDto.JavaPath, config.JavaApplicationFileName)},
+		{path.Join(config.JavaTemplateInitPath, config.GitIgnoreFileName),
+			path.Join(projectInfoDto.ProjectName, config.GitIgnoreFileName)},
 	}
 	// Java Util包
 	if projectInfoDto.SupportI18n {
@@ -262,6 +210,11 @@ func initProjectData(projectInfoDto SpringBootProjectInfoDto) {
 		mybatisTemplatePath := path.Join(config.JavaTemplateInitPath, config.JavaTemplateI18nProperties)
 		mybatisPath := path.Join(projectInfoDto.ResourcePath, config.JavaTemplateI18nProperties)
 		fileMapDtoList = appendTemplateList(mybatisTemplatePath, mybatisPath, fileMapDtoList)
+	}
+	dataList, err := json.MarshalIndent(fileMapDtoList, "", "    ")
+	fmt.Printf("%s\n", dataList)
+	if err != nil {
+		panic(err)
 	}
 	// 解析模板
 	for _, value := range fileMapDtoList {

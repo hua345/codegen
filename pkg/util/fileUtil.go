@@ -6,6 +6,7 @@ import (
 	"os"
 	"path"
 )
+
 //文件打开模式：
 //
 //const (
@@ -24,24 +25,26 @@ import (
 //w ——> 002
 //x ——> 001
 // 拷贝文件，返回拷贝字节数
-func CopyFile(dstPath, srcPath string) (nBytes int64, err error){
+func CopyFile(dstPath, srcPath string) (nBytes int64, err error) {
 	srcFile, err := os.Open(srcPath)
-	if err!= nil {
+	if err != nil {
 		panic(err)
 	}
-	dstFile, err := os.OpenFile(dstPath, os.O_CREATE | os.O_WRONLY, 0644)
+	dstFile, err := os.OpenFile(dstPath, os.O_CREATE|os.O_WRONLY, 0644)
 	//操作完毕，关闭文件
 	defer srcFile.Close()
 	defer dstFile.Close()
 
 	return io.Copy(dstFile, srcFile)
 }
+
 // 获取文件后缀
-func GetFileSuffix(fileName string) string{
+func GetFileSuffix(fileName string) string {
 	var fileSuffix string
 	fileSuffix = path.Ext(fileName) //获取文件后缀
 	return fileSuffix
 }
+
 //获取文件夹文件列表
 func GetFilesName(path string) []string {
 	var names []string
@@ -49,12 +52,13 @@ func GetFilesName(path string) []string {
 	for _, file := range files {
 		if file.IsDir() {
 			continue
-		}else{
+		} else {
 			names = append(names, file.Name())
 		}
 	}
 	return names
 }
+
 /**
  * 检查目录是否存在，如果不存在创建目录
  */
@@ -67,6 +71,7 @@ func CheckDirAndMkdir(path string) {
 		PathMkdirAll(path)
 	}
 }
+
 //获取文件夹下子文件夹列表
 func GetSubDirList(path string) []string {
 	var subDirList []string
@@ -74,12 +79,13 @@ func GetSubDirList(path string) []string {
 	for _, file := range files {
 		if file.IsDir() {
 			subDirList = append(subDirList, file.Name())
-		}else{
+		} else {
 			continue
 		}
 	}
 	return subDirList
 }
+
 // 读取文件
 func ReadFileWithIoUtil(path string) string {
 	fileBytes, err := ioutil.ReadFile(path)
@@ -88,10 +94,11 @@ func ReadFileWithIoUtil(path string) string {
 	}
 	return string(fileBytes)
 }
+
 // 写入文件
-func WriteFileWithIoUtil(name,content string) {
-	data :=  []byte(content)
-	err := ioutil.WriteFile(name,data,0644)
+func WriteFileWithIoUtil(name, content string) {
+	data := []byte(content)
+	err := ioutil.WriteFile(name, data, 0644)
 	if err != nil {
 		panic(err)
 	}

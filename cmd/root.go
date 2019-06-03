@@ -16,9 +16,8 @@ package cmd
 
 import (
 	"fmt"
-	"os"
-
 	"github.com/spf13/cobra"
+	"os"
 )
 
 var cfgFile string
@@ -49,4 +48,3 @@ func init() {
 	// when this action is called directly.
 	// rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
-

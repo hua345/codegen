@@ -17,8 +17,8 @@ package cmd
 import (
 	"codegen/models"
 	"codegen/pkg/config"
-	"log"
 	"github.com/spf13/cobra"
+	"log"
 	"os"
 )
 
