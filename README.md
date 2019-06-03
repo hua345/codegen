@@ -3,8 +3,14 @@
 > 通过http/rpc协议，将自己喜欢的几种语言协作起来，发挥各自优点。
 ### 编译安装
 ```bash
+# 下载源码
+git clone https://github.com/hua345/codegen.git
+# 安安装go-bindata
 go get -u github.com/go-bindata/go-bindata/...
-go get github.com/hua345/codegen
+# 打包静态资源
+go generate
+# 编译程序
+go build
 ```
 ### 1. 查看帮助
 ```bash
