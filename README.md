@@ -1,13 +1,33 @@
 > 一千个人心中有一千个哈姆雷特，一千个架构师心中有一千种完美架构。
 
 > 通过http/rpc协议，将自己喜欢的几种语言协作起来，发挥各自优点。
-### 编译
+### 编译安装
 ```bash
+go get -u github.com/go-bindata/go-bindata/...
 go get github.com/hua345/codegen
 ```
 ### 1. 查看帮助
 ```bash
  ./codegen.exe -h
+ Code Generate Springboot/SpringCloud/Gin/Express Helper
+
+Usage:
+  codegen [command]
+
+Available Commands:
+  api         Springboot接口生成
+  cloud       SpringCloud代码生成
+  config      配置文件命令
+  express     Node express代码生成
+  gin         Golang Gin代码生成
+  help        Help about any command
+  init        Springboot初始化工程
+
+Flags:
+  -f, --config string   读取配置文件(默认./codegen.yaml)
+  -h, --help            help for codegen
+
+Use "codegen [command] --help" for more information about a command.
 ```
 ### 2. 初始化配置文件
 ```bash

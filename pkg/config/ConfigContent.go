@@ -4,10 +4,20 @@ var DefaultConfigContent = `defaultHttpMethod: get
 defaultHttpPort: 8080
 apiBaseUrl: api/v1
 authorName: chenjianhua
+database:
+  # postgresql/mariadb/mysql/
+  type: mariadb
+  host: 192.168.137.130:3306
+  databaseName: db_example
+  username: springuser
+  password: 123456
 springboot:
   groupId: com.github
   artifactId: hello-golang
-  support:
-    i18n: false
-    druid: true
-    swagger: true`
+  # maven/gradle
+  supportBuilder: [maven, gradle]
+  # 国际化
+  supportI18n: true
+  # 数据源: druid/HikariCP
+  supportDataSource: druid
+  supportSwagger: true`
