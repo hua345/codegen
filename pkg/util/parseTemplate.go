@@ -23,8 +23,6 @@ func GetTemplateFilesName(assertPath string) []string {
 	}
 	for _, fileItem := range assertFileNameList {
 		fileInfo, _ := asset.AssetInfo(path.Join(publicDir, assertPath, fileItem))
-		log.Println(path.Join(publicDir, assertPath, fileItem))
-		log.Println(fileInfo)
 		if nil == fileInfo || fileInfo.IsDir() {
 			continue
 		} else {
