@@ -1,5 +1,7 @@
 package config
 
+const GradleBuildFileName = "build.gradle"
+const GradleSettingFileName = "settings.gradle"
 const PomXmlFileName = "pom.xml"
 const JavaPath = "src/main/java"
 const JavaResourcePath = "src/main/resources"

@@ -1,0 +1,43 @@
+plugins {
+    id 'org.springframework.boot' version '2.1.5.RELEASE'
+    id 'java'
+}
+
+apply plugin: 'io.spring.dependency-management'
+
+group = '{{.GroupId}}'
+version = '1.0.0'
+sourceCompatibility = '1.8'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenLocal()
+    maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-logging'
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.0.1'{{ if eq .Database.Type .DBTypePostgresql }}
+    implementation 'org.postgresql:postgresql:42.2.5'{{ else if eq .Database.Type .DBTypeMariadb }}
+    implementation 'org.mariadb.jdbc:mariadb-java-client:2.4.1'{{ else if eq .Database.Type .DBTypeMysql }}
+    implementation 'mysql:mysql-connector-java:8.0.16'{{ end }}
+    {{ if .DataSourceDruid }}
+    implementation 'com.alibaba:druid:1.1.17'{{ end }}
+    implementation 'log4j:log4j:1.2.17'{{ if .SupportSwagger }}
+    implementation 'io.springfox:springfox-swagger2:2.9.2'
+    implementation 'io.springfox:springfox-swagger-ui:2.9.2'{{ end }}
+    compileOnly 'com.google.guava:guava:27.1-jre'
+    compileOnly 'org.apache.commons:commons-lang3:3.9'
+    compileOnly 'com.alibaba:fastjson:1.2.58'
+    compileOnly 'org.projectlombok:lombok:1.18.8'
+    annotationProcessor 'org.projectlombok:lombok:1.18.8'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}

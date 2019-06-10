@@ -20,6 +20,9 @@ type SpringBootProjectInfoDto struct {
 	ProjectName        string          `json:"projectName"`
 	NowDate            string          `json:"nowDate"`
 	Author             string          `json:"author"`
+	SupportMaven       bool            `yaml:"supportMaven"`
+	SupportGradle      bool            `yaml:"supportGradle"`
+	SupportDocker      bool            `yaml:"supportDocker"`
 	SupportI18n        bool            `json:"supportI18n"`
 	SupportSwagger     bool            `json:"supportSwagger"`
 	SupportDataSource  string          `json:"supportDataSource"`
@@ -43,6 +46,9 @@ func (projectInfoDto SpringBootProjectInfoDto) Init() SpringBootProjectInfoDto {
 	projectInfoDto.DBTypePostgresql = config.DBTypePostgresql
 	projectInfoDto.DBTypeMariadb = config.DBTypeMariadb
 	projectInfoDto.DBTypeMysql = config.DBTypeMysql
+	projectInfoDto.SupportMaven = config.ServerConfig.Springboot.SupportMaven
+	projectInfoDto.SupportGradle = config.ServerConfig.Springboot.SupportGradle
+	projectInfoDto.SupportDocker = config.ServerConfig.Springboot.SupportDocker
 	projectInfoDto.SupportI18n = config.ServerConfig.Springboot.SupportI18n
 	projectInfoDto.SupportSwagger = config.ServerConfig.Springboot.SupportSwagger
 	projectInfoDto.SupportDataSource = config.ServerConfig.Springboot.SupportDataSource
@@ -132,8 +138,6 @@ func (projectInfoDto SpringBootProjectInfoDto) InitProject() {
 
 func initProjectData(projectInfoDto SpringBootProjectInfoDto) {
 	fileMapDtoList := []FileMapDto{
-		{path.Join(config.JavaTemplateInitPath, config.PomXmlFileName),
-			path.Join(projectInfoDto.ProjectName, config.PomXmlFileName)},
 		{path.Join(config.JavaTemplateInitPath, config.DotProjectFileName),
 			path.Join(projectInfoDto.ProjectName, config.DotProjectFileName)},
 		{path.Join(config.JavaTemplateInitCodePath, config.JavaApplicationFileName),
@@ -141,6 +145,21 @@ func initProjectData(projectInfoDto SpringBootProjectInfoDto) {
 		{path.Join(config.JavaTemplateInitPath, config.GitIgnoreFileName),
 			path.Join(projectInfoDto.ProjectName, config.GitIgnoreFileName)},
 	}
+
+	if projectInfoDto.SupportMaven {
+		fileMapDtoList = append(fileMapDtoList, FileMapDto{
+			path.Join(config.JavaTemplateInitPath, config.PomXmlFileName),
+			path.Join(projectInfoDto.ProjectName, config.PomXmlFileName)})
+	}
+	if projectInfoDto.SupportGradle {
+		fileMapDtoList = append(fileMapDtoList, FileMapDto{
+			path.Join(config.JavaTemplateInitPath, config.GradleBuildFileName),
+			path.Join(projectInfoDto.ProjectName, config.GradleBuildFileName)})
+		fileMapDtoList = append(fileMapDtoList, FileMapDto{
+			path.Join(config.JavaTemplateInitPath, config.GradleSettingFileName),
+			path.Join(projectInfoDto.ProjectName, config.GradleSettingFileName)})
+	}
+
 	// Java Util包
 	if projectInfoDto.SupportI18n {
 		javaTemplateUtilPath := path.Join(config.JavaTemplateInitCodePath, config.JavaTemplateI18nUtil)

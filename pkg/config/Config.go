@@ -31,19 +31,23 @@ func newServer() Server {
 }
 
 type SpringbootSetting struct {
-	GroupId           string   `yaml:"groupId"`
-	ArtifactId        string   `yaml:"artifactId"`
-	SupportBuilder    []string `yaml:"supportBuilder"`
-	SupportI18n       bool     `yaml:"supportI18n"`
-	SupportDataSource string   `yaml:"supportDataSource"`
-	SupportSwagger    bool     `yaml:"supportSwagger"`
+	GroupId           string `yaml:"groupId"`
+	ArtifactId        string `yaml:"artifactId"`
+	SupportMaven      bool   `yaml:"supportMaven"`
+	SupportGradle     bool   `yaml:"supportGradle"`
+	SupportDocker     bool   `yaml:"supportDocker"`
+	SupportI18n       bool   `yaml:"supportI18n"`
+	SupportDataSource string `yaml:"supportDataSource"`
+	SupportSwagger    bool   `yaml:"supportSwagger"`
 }
 
 func newSpringbootSetting() SpringbootSetting {
 	return SpringbootSetting{
 		GroupId:           "com.github",
 		ArtifactId:        "learn",
-		SupportBuilder:    []string{"maven"},
+		SupportMaven:      true,
+		SupportGradle:     true,
+		SupportDocker:     true,
 		SupportI18n:       true,
 		SupportDataSource: "druid",
 		SupportSwagger:    true,

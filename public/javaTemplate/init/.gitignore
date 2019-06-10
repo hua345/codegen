@@ -1,14 +1,23 @@
-# maven #
+.settings/
+### maven ###
 **/target/
 **/class/
-**/.classpath
-**/.idea/
-**.iml
-**/.settings/
-**/.vscode/
-# nodejs #
+### gradle ###
+HELP.md
+.gradle/
+gradle/
+/build/
+!gradle/wrapper/gradle-wrapper.jar
+### idea ###
+.idea/
+*.iml
+
+### VS Code ###
+.vscode/
+### nodejs ###
 **/node_modules/
-# eclipse #
+### eclipse ###
+**/.classpath
 .metadata/
 .recommenders/
 RemoteSystemsTempFiles/
