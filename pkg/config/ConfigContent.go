@@ -14,8 +14,9 @@ database:
 springboot:
   groupId: com.github
   artifactId: hello-golang
-  # maven/gradle
-  supportBuilder: [maven, gradle]
+  supportMaven: true
+  supportGradle: true
+  supportDocker: true
   # 国际化
   supportI18n: true
   # 数据源: druid/HikariCP
