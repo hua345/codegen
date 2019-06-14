@@ -1,6 +1,7 @@
 package util
 
 import (
+	"fmt"
 	"strings"
 )
 
@@ -34,6 +35,15 @@ func AppendURL(baseUrl, url string) string {
  * 获取有效URL路径列表
  */
 func HandleRestfulURL(restfulURL string) []string {
+	// 处理windows Git命令行,URL输入/开头的情况
+	const WindowsGit = "Git"
+	if strings.Contains(restfulURL, WindowsGit) {
+		urlStrList := strings.Split(restfulURL, WindowsGit)
+		if len(urlStrList) != 2 || len(urlStrList[1]) <= 1 {
+			fmt.Println("Windows Git命令行下，URL最好不要用`/`开头")
+		}
+		restfulURL = urlStrList[1]
+	}
 	urlStrList := strings.Split(restfulURL, "/")
 	var resultURL []string
 	for _, value := range urlStrList {

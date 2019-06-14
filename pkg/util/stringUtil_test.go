@@ -31,6 +31,17 @@ func TestHandleRestfulURL(t *testing.T) {
 		t.Error(`HandleRestfulURL("///user/add")[0] != "user"`)
 	}
 }
+func TestHandleRestfulURL3(t *testing.T) {
+	urlStr := "/user"
+	urlStrList := HandleRestfulURL(urlStr)
+	fmt.Println(urlStrList)
+	if len(urlStrList) != 1 {
+		t.Error(`len(HandleRestfulURL("/user")) != 2`)
+	}
+	if urlStrList[0] != "user" {
+		t.Error(`HandleRestfulURL("/user")[0] != "user"`)
+	}
+}
 func TestHandleRestfulURL2(t *testing.T) {
 	urlStr := "///user/{name}"
 	urlStrList := HandleRestfulURL(urlStr)
@@ -76,5 +87,5 @@ func TestDemoAppend2(t *testing.T) {
 	nameList := []string{"liu", "fang", "hua"}
 	aa := nameList[0 : len(nameList)-1]
 	bb := nameList[len(nameList)-1]
-	fmt.Printf("%q %s",aa, bb)
+	fmt.Printf("%q %s", aa, bb)
 }
