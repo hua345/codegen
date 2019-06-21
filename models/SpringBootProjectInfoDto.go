@@ -138,19 +138,27 @@ func (projectInfoDto SpringBootProjectInfoDto) InitProject() {
 
 func initProjectData(projectInfoDto SpringBootProjectInfoDto) {
 	fileMapDtoList := []FileMapDto{
+		// .project
 		{path.Join(config.JavaTemplateInitPath, config.DotProjectFileName),
 			path.Join(projectInfoDto.ProjectName, config.DotProjectFileName)},
+		// Springboot Application
 		{path.Join(config.JavaTemplateInitCodePath, config.JavaApplicationFileName),
 			path.Join(projectInfoDto.JavaPath, config.JavaApplicationFileName)},
+		// .gitignore
 		{path.Join(config.JavaTemplateInitPath, config.GitIgnoreFileName),
 			path.Join(projectInfoDto.ProjectName, config.GitIgnoreFileName)},
 	}
-
+	// README.md
+	fileMapDtoList = append(fileMapDtoList, FileMapDto{
+		path.Join(config.JavaTemplateInitPath, config.READMEFileName),
+		path.Join(projectInfoDto.ProjectName, config.READMEFileName)})
+	// Maven
 	if projectInfoDto.SupportMaven {
 		fileMapDtoList = append(fileMapDtoList, FileMapDto{
 			path.Join(config.JavaTemplateInitPath, config.PomXmlFileName),
 			path.Join(projectInfoDto.ProjectName, config.PomXmlFileName)})
 	}
+	// gradle
 	if projectInfoDto.SupportGradle {
 		fileMapDtoList = append(fileMapDtoList, FileMapDto{
 			path.Join(config.JavaTemplateInitPath, config.GradleBuildFileName),

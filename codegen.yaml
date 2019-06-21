@@ -5,13 +5,13 @@ authorName: chenjianhua
 database:
   # postgresql/mariadb/mysql/
   type: mariadb
-  host: 192.168.137.130:3306
+  host: 192.168.137.132:3306
   databaseName: db_example
   username: springuser
   password: 123456
 springboot:
   groupId: com.github
-  artifactId: hello-golang
+  artifactId: code-admin
   supportMaven: true
   supportGradle: true
   supportDocker: true
