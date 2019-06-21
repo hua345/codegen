@@ -56,7 +56,7 @@ func (restfulApiDto SpringBootRestfulApiDto) Init() SpringBootRestfulApiDto {
 	}
 	//Http Method 处理
 	if len(restfulApiDto.HttpMethod) == 0 {
-		restfulApiDto.HttpMethod = urlStrList[0]
+		restfulApiDto.HttpMethod = config.ServerConfig.DefaultHttpMethod
 	}
 	httpMethod := strings.ToUpper(restfulApiDto.HttpMethod)
 	restfulApiDto.HttpMethod = config.HttpMethodMapping[httpMethod]
@@ -229,17 +229,17 @@ func restfulAddMethod(restfulApiDto SpringBootRestfulApiDto) {
 	// 添加方法
 	methodCode := util.ParseMethodTemplate(path.Join(config.JavaTemplateCodePath, config.JavaTemplateMethodControllerFileName), restfulApiDto)
 	dstControllerFileName := path.Join(codeControllerDir, restfulApiDto.ControllerName+config.JavaTemplateControllerFileName)
-	appendMethod(methodCode, dstControllerFileName, restfulApiDto, false)
+	appendMethod(methodCode, dstControllerFileName, restfulApiDto, false, true)
 
 	serviceMethodCode := util.ParseMethodTemplate(path.Join(config.JavaTemplateCodePath, config.JavaTemplateMethodServiceFileName), restfulApiDto)
 	dstServicePath := path.Join(codeServicePath, restfulApiDto.ControllerName+config.JavaTemplateServiceFileName)
-	appendMethod(serviceMethodCode, dstServicePath, restfulApiDto, true)
+	appendMethod(serviceMethodCode, dstServicePath, restfulApiDto, true, false)
 
 	serviceImplMethodCode := util.ParseMethodTemplate(path.Join(config.JavaTemplateCodePath, config.JavaTemplateMethodServiceImplFileName), restfulApiDto)
 	dstServiceImplPath := path.Join(codeServiceImplPath, restfulApiDto.ControllerName+config.JavaTemplateServiceImplFileName)
-	appendMethod(serviceImplMethodCode, dstServiceImplPath, restfulApiDto, false)
+	appendMethod(serviceImplMethodCode, dstServiceImplPath, restfulApiDto, false, false)
 }
-func appendMethod(methodCode, dstFilePath string, restfulApiDto SpringBootRestfulApiDto, javaInterface bool) {
+func appendMethod(methodCode, dstFilePath string, restfulApiDto SpringBootRestfulApiDto, javaInterface bool, isController bool) {
 	srcContent := util.ReadFileWithIoUtil(dstFilePath)
 	// }加换行符
 	contentReg := regexp.MustCompile(`}[\n|\r\n]`)
@@ -267,11 +267,13 @@ func appendMethod(methodCode, dstFilePath string, restfulApiDto SpringBootRestfu
 	resultContent = strings.Replace(resultContent, oldResponse, oldResponse+
 		config.RowLimiter+restfulApiDto.ImportResponseDTOPath, 1)
 
-	importAnnotation := config.ImportSpringAnnotation + restfulApiDto.HttpMethod + ";"
-	if !strings.Contains(resultContent, importAnnotation) {
-		defaultAnnotation := config.HttpMethodMapping[config.ServerConfig.DefaultHttpMethod] + ";"
-		resultContent = strings.Replace(resultContent, defaultAnnotation, defaultAnnotation+
-			config.RowLimiter+importAnnotation, 1)
+	if isController {
+		importAnnotation := config.ImportSpringAnnotation + restfulApiDto.HttpMethod + ";"
+		if !strings.Contains(resultContent, importAnnotation) {
+			defaultAnnotation := config.HttpMethodMapping[config.ServerConfig.DefaultHttpMethod] + ";"
+			resultContent = strings.Replace(resultContent, defaultAnnotation, defaultAnnotation+
+				config.RowLimiter+importAnnotation, 1)
+		}
 	}
 
 	util.WriteFileWithIoUtil(dstFilePath, resultContent)

@@ -12,6 +12,7 @@ database:
 springboot:
   groupId: com.github
   artifactId: code-admin
+  supportRedis: true
   supportMaven: true
   supportGradle: true
   supportDocker: true

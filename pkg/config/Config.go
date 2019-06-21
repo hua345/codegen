@@ -101,6 +101,16 @@ func Setup(configPath string) {
 	if err != nil {
 		fmt.Println(err.Error())
 	}
+	ServerConfig.DefaultHttpMethod = strings.ToLower(ServerConfig.DefaultHttpMethod)
+	if !(httpMethodGet == ServerConfig.DefaultHttpMethod ||
+		httpMethodPost == ServerConfig.DefaultHttpMethod ||
+		httpMethodUpdate == ServerConfig.DefaultHttpMethod ||
+		httpMethodPut == ServerConfig.DefaultHttpMethod ||
+		httpMethodDelete == ServerConfig.DefaultHttpMethod) {
+		log.Println("支持的http请求方法:" + httpMethodGet + "\\" +
+			httpMethodPost + "\\" + httpMethodPut + "\\" + httpMethodDelete)
+		os.Exit(-1)
+	}
 	ServerConfig.Database.Type = strings.ToLower(ServerConfig.Database.Type)
 	if !(DBTypeMysql == ServerConfig.Database.Type ||
 		DBTypeMariadb == ServerConfig.Database.Type ||
