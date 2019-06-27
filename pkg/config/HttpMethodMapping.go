@@ -1,17 +1,17 @@
 package config
 
-var (
-	httpMethodGet    = "GET"
-	httpMethodPost   = "POST"
-	httpMethodUpdate = "UPDATE"
-	httpMethodPut    = "PUT"
-	httpMethodDelete = "DELETE"
+const (
+	HttpMethodGet    = "GET"
+	HttpMethodPost   = "POST"
+	HttpMethodUpdate = "UPDATE"
+	HttpMethodPut    = "PUT"
+	HttpMethodDelete = "DELETE"
 )
 
 var HttpMethodMapping = map[string]string{
-	"GET":    "GetMapping",
-	"POST":   "PostMapping",
-	"UPDATE": "PostMapping",
-	"PUT":    "PutMapping",
-	"DELETE": "DeleteMapping",
+	HttpMethodGet:    "GetMapping",
+	HttpMethodPost:   "PostMapping",
+	HttpMethodUpdate: "PutMapping",
+	HttpMethodPut:    "PutMapping",
+	HttpMethodDelete: "DeleteMapping",
 }

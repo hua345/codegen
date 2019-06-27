@@ -20,6 +20,7 @@ import (
 	"github.com/spf13/cobra"
 	"log"
 	"os"
+	"strings"
 )
 
 var (
@@ -42,6 +43,16 @@ var apiCmd = &cobra.Command{
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		checkFlag(cmd)
+		springbootHttpMethod = strings.ToUpper(springbootHttpMethod)
+		if !(config.HttpMethodGet == springbootHttpMethod ||
+			config.HttpMethodPost == springbootHttpMethod ||
+			config.HttpMethodUpdate == springbootHttpMethod ||
+			config.HttpMethodPut == springbootHttpMethod ||
+			config.HttpMethodDelete == springbootHttpMethod) {
+			log.Println("支持的http请求方法:" + config.HttpMethodGet + "\\" +
+				config.HttpMethodPost + "\\" + config.HttpMethodPut + "\\" + config.HttpMethodDelete)
+			os.Exit(-1)
+		}
 		projectInfoDto := models.SpringBootProjectInfoDto{GroupId: springbootGroupName, ArtifactId: artifactId}
 		projectInfoDto = projectInfoDto.Init()
 		restfulApiDto := models.SpringBootRestfulApiDto{

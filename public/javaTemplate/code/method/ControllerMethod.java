@@ -1,5 +1,4 @@
-    {{ if .SupportSwagger }}
-    @ApiOperation(value="{{.Description}}", notes="{{.Description}}"){{ end }}
+    {{ if .SupportSwagger }}@ApiOperation(value="{{.Description}}", notes="{{.Description}}"){{ end }}
     @{{.HttpMethod}}(path = "{{.MethodURL}}")
     public ResponseVO<{{.ResponseDTOName}}> {{.MethodName}}(@RequestBody(required=false) {{.RequestDTOName}} param) {
         log.info("Handing request {{.MethodName}} begin, req: {}", JSONObject.toJSONString(param));
