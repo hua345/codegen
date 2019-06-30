@@ -1,0 +1,57 @@
+spring: {{ if .SupportI18n }}
+  messages:
+    basename: i18n/messages
+    encoding: UTF-8 {{ end }}
+  {{ if .SupportRedis}}
+  redis:
+    # Redis服务器地址
+    host: {{.Redis.Host}}
+    # Redis服务器连接端口
+    port: {{.Redis.Port}}
+    # Redis服务器连接密码（默认为空）
+    password: {{.Redis.Password}}
+    # 连接超时时间（毫秒）
+    timeout: {{.Redis.Timeout}}
+    # Redis默认情况下有16个分片，这里配置具体使用的分片，默认是0
+    database: {{.Redis.Database}}
+    # 连接池最大连接数（使用负值表示没有限制） 默认 8
+    lettuce:
+      pool:
+        # 连接池最大连接数（使用负值表示没有限制） 默认 8
+        max-active: {{.Redis.MaxActive}}
+        # 连接池最大阻塞等待时间（使用负值表示没有限制） 默认 -1
+        max-wait: -1
+        # 连接池中的最大空闲连接 默认 8
+        max-idle: {{.Redis.MaxIdle}}
+        # 连接池中的最小空闲连接 默认 0
+        min-idle: 0{{ end }}
+  datasource:
+    druid:
+      type: com.alibaba.druid.pool.DruidDataSource
+      url: jdbc:{{.Database.Type}}://{{.Database.Host}}/{{.Database.DatabaseName}}
+      username: {{.Database.Username}}
+      password: {{.Database.Password}}
+      driverClassName: {{.JdbcDriverClass}}
+      # open /druid/index.html
+      # dataSource Pool configuration
+      initialSize: 5
+      minIdle: 5
+      maxActive: 20
+      maxWait: 60000
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      timeBetweenEvictionRunsMillis: 60000
+      # 配置一个连接在池中最小生存的时间，单位是毫秒
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: SELECT 1 FROM DUAL
+      testWhileIdle: true
+      testOnBorrow: false
+      exceptionSorter: true
+      testOnReturn: false
+      poolPreparedStatements: true
+      maxPoolPreparedStatementPerConnectionSize: 20
+      # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙（防止SQL注入）
+      filters: stat,wall,log4j
+      # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+      # # 合并多个DruidDataSource的监控数据
+      useGlobalDataSourceStat: true

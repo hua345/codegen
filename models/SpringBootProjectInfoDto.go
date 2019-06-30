@@ -12,28 +12,32 @@ import (
 )
 
 type SpringBootProjectInfoDto struct {
-	GroupId            string          `json:"groupdId"`
-	ArtifactId         string          `json:"artifactId"`
-	PackageName        string          `json:"packageName"`
-	JavaPath           string          `json:"javaPath"`
-	ResourcePath       string          `json:"resourcePath"`
-	ProjectName        string          `json:"projectName"`
-	NowDate            string          `json:"nowDate"`
-	Author             string          `json:"author"`
-	SupportMaven       bool            `yaml:"supportMaven"`
-	SupportGradle      bool            `yaml:"supportGradle"`
-	SupportDocker      bool            `yaml:"supportDocker"`
-	SupportI18n        bool            `json:"supportI18n"`
-	SupportSwagger     bool            `json:"supportSwagger"`
-	SupportDataSource  string          `json:"supportDataSource"`
-	HttpPort           string          `json:"httpPort"`
-	Database           config.Database `json:"database"`
-	JdbcDriverClass    string          `json:"jdbcDriverClass"`
-	DBTypeMariadb      string          `json:"dbTypeMariadb"`
-	DBTypeMysql        string          `json:"dbTypeMysql"`
-	DBTypePostgresql   string          `json:"dbTypePostgresql"`
-	DataSourceDruid    string          `json:"dataSourceDruid"`
-	DataSourceHikariCP string          `json:"dataSourceHikariCP"`
+	GroupId               string          `json:"groupdId"`
+	ArtifactId            string          `json:"artifactId"`
+	PackageName           string          `json:"packageName"`
+	JavaPath              string          `json:"javaPath"`
+	JavaTestPath          string          `json:"javaTestPath"`
+	ResourcePath          string          `json:"resourcePath"`
+	ProjectName           string          `json:"projectName"`
+	NowDate               string          `json:"nowDate"`
+	Author                string          `json:"author"`
+	SupportMaven          bool            `yaml:"supportMaven"`
+	SupportGradle         bool            `yaml:"supportGradle"`
+	SupportDocker         bool            `yaml:"supportDocker"`
+	SupportI18n           bool            `json:"supportI18n"`
+	SupportSwagger        bool            `json:"supportSwagger"`
+	SupportDataSource     string          `json:"supportDataSource"`
+	HttpPort              string          `json:"httpPort"`
+	Database              config.Database `json:"database"`
+	Redis                 config.Redis    `json:"redis"`
+	SupportRedis          bool            `json:"supportRedis"`
+	JdbcDriverClass       string          `json:"jdbcDriverClass"`
+	DBTypeMariadb         string          `json:"dbTypeMariadb"`
+	DBTypeMysql           string          `json:"dbTypeMysql"`
+	DBTypePostgresql      string          `json:"dbTypePostgresql"`
+	DataSourceDruid       string          `json:"dataSourceDruid"`
+	DataSourceHikariCP    string          `json:"dataSourceHikariCP"`
+	SupportConfigTypeYaml bool            `json:"supportConfigTypeYaml"`
 }
 
 // 初始化项目数据
@@ -42,6 +46,8 @@ func (projectInfoDto SpringBootProjectInfoDto) Init() SpringBootProjectInfoDto {
 	projectInfoDto.Author = config.ServerConfig.AuthorName
 	projectInfoDto.HttpPort = config.ServerConfig.DefaultHttpPort
 	projectInfoDto.Database = config.ServerConfig.Database
+	projectInfoDto.Redis = config.ServerConfig.Redis
+	projectInfoDto.SupportRedis = config.ServerConfig.Springboot.SupportRedis
 	projectInfoDto.JdbcDriverClass = config.JDBCDriverClassNameMapping[projectInfoDto.Database.Type]
 	projectInfoDto.DBTypePostgresql = config.DBTypePostgresql
 	projectInfoDto.DBTypeMariadb = config.DBTypeMariadb
@@ -54,6 +60,7 @@ func (projectInfoDto SpringBootProjectInfoDto) Init() SpringBootProjectInfoDto {
 	projectInfoDto.SupportDataSource = config.ServerConfig.Springboot.SupportDataSource
 	projectInfoDto.DataSourceDruid = config.DataSourceDruid
 	projectInfoDto.DataSourceHikariCP = config.DataSourceHikariCP
+	projectInfoDto.SupportConfigTypeYaml = config.ServerConfig.Springboot.SupportConfigTypeYaml
 	// 包路径名称小写
 	projectInfoDto.GroupId = strings.ToLower(projectInfoDto.GroupId)
 	projectInfoDto.ArtifactId = strings.ToLower(projectInfoDto.ArtifactId)
@@ -76,9 +83,11 @@ func (projectInfoDto SpringBootProjectInfoDto) Init() SpringBootProjectInfoDto {
 	// package目录
 	projectInfoDto.JavaPath = path.Join(projectInfoDto.ProjectName, config.JavaPath)
 	projectInfoDto.ResourcePath = path.Join(projectInfoDto.ProjectName, config.JavaResourcePath)
+	projectInfoDto.JavaTestPath = path.Join(projectInfoDto.ProjectName, config.JavaTestPath)
 	packageNameList := strings.Split(projectInfoDto.PackageName, ".")
 	for _, value := range packageNameList {
 		projectInfoDto.JavaPath = path.Join(projectInfoDto.JavaPath, value)
+		projectInfoDto.JavaTestPath = path.Join(projectInfoDto.JavaTestPath, value)
 	}
 	return projectInfoDto
 }
@@ -98,12 +107,20 @@ func (projectInfoDto SpringBootProjectInfoDto) InitProject() {
 	}
 	// 检测package目录是否存在
 	util.CheckDirAndMkdir(projectInfoDto.JavaPath)
+	// 检查单元测试目录是否存在
+	util.CheckDirAndMkdir(projectInfoDto.JavaTestPath)
+	// 检测resource目录是否存在
+	util.CheckDirAndMkdir(projectInfoDto.ResourcePath)
 	// 检测Util目录是否存在
 	JavaCodeUtilPath := path.Join(projectInfoDto.JavaPath, config.JavaUtilPath)
 	util.CheckDirAndMkdir(JavaCodeUtilPath)
 	// 检测Config目录是否存在
 	JavaCodeConfigPath := path.Join(projectInfoDto.JavaPath, config.JavaConfigPath)
 	util.CheckDirAndMkdir(JavaCodeConfigPath)
+	// config redis
+	if projectInfoDto.SupportRedis {
+		util.CheckDirAndMkdir(path.Join(JavaCodeConfigPath, config.JavaTemplateRedis))
+	}
 	// config swagger
 	if projectInfoDto.SupportSwagger {
 		util.CheckDirAndMkdir(path.Join(JavaCodeConfigPath, config.JavaTemplateSwaggerConfig))
@@ -122,8 +139,6 @@ func (projectInfoDto SpringBootProjectInfoDto) InitProject() {
 	// 检测Common目录是否存在
 	JavaCodeCommonPath := path.Join(projectInfoDto.JavaPath, config.JavaCommonPath)
 	util.CheckDirAndMkdir(JavaCodeCommonPath)
-	// 检测resource目录是否存在
-	util.CheckDirAndMkdir(projectInfoDto.ResourcePath)
 	// 检测mybatis目录是否存在
 	mybatisPath := path.Join(projectInfoDto.ResourcePath, config.MybatisPath)
 	util.CheckDirAndMkdir(mybatisPath)
@@ -169,15 +184,14 @@ func initProjectData(projectInfoDto SpringBootProjectInfoDto) {
 	}
 
 	// Java Util包
+	javaTemplateUtilPath := path.Join(config.JavaTemplateInitCodePath, config.JavaUtilPath)
+	javaCodeUtilPath := path.Join(projectInfoDto.JavaPath, config.JavaUtilPath)
+	fileMapDtoList = appendTemplateList(javaTemplateUtilPath, javaCodeUtilPath, fileMapDtoList)
+	// SubDir holder
+	fileMapDtoList = appendSubDirTemplateList(javaTemplateUtilPath, javaCodeUtilPath, fileMapDtoList)
+	// I18n util
 	if projectInfoDto.SupportI18n {
 		javaTemplateUtilPath := path.Join(config.JavaTemplateInitCodePath, config.JavaTemplateI18nUtil)
-		javaCodeUtilPath := path.Join(projectInfoDto.JavaPath, config.JavaUtilPath)
-		fileMapDtoList = appendTemplateList(javaTemplateUtilPath, javaCodeUtilPath, fileMapDtoList)
-
-		// SubDir holder
-		fileMapDtoList = appendSubDirTemplateList(javaTemplateUtilPath, javaCodeUtilPath, fileMapDtoList)
-	} else {
-		javaTemplateUtilPath := path.Join(config.JavaTemplateInitCodePath, config.JavaUtilPath)
 		javaCodeUtilPath := path.Join(projectInfoDto.JavaPath, config.JavaUtilPath)
 		fileMapDtoList = appendTemplateList(javaTemplateUtilPath, javaCodeUtilPath, fileMapDtoList)
 	}
@@ -226,8 +240,26 @@ func initProjectData(projectInfoDto SpringBootProjectInfoDto) {
 		javaCodeCommonPath := path.Join(projectInfoDto.JavaPath, config.JavaCommonPath)
 		fileMapDtoList = appendTemplateList(javaTemplateCommonPath, javaCodeCommonPath, fileMapDtoList)
 	}
+	// redis
+	if projectInfoDto.SupportRedis {
+		fileMapDtoList = appendTemplateList(
+			path.Join(javaTemplateConfigPath, config.JavaTemplateRedis),
+			path.Join(javaCodeConfigPath, config.JavaTemplateRedis),
+			fileMapDtoList)
+		// redis单元测试文件
+		fileMapDtoList = appendTemplateList(config.JavaTemplateInitTestPath,
+			projectInfoDto.JavaTestPath, fileMapDtoList)
+	}
 	// Resource文件
-	fileMapDtoList = appendTemplateList(config.JavaTemplateResourcePath, projectInfoDto.ResourcePath, fileMapDtoList)
+	fileMapDtoList = appendTemplateList(config.JavaTemplateResourcePath,
+		projectInfoDto.ResourcePath, fileMapDtoList)
+	if projectInfoDto.SupportConfigTypeYaml {
+		fileMapDtoList = appendTemplateList(path.Join(config.JavaTemplateResourcePath, "yaml"),
+			projectInfoDto.ResourcePath, fileMapDtoList)
+	} else {
+		fileMapDtoList = appendTemplateList(path.Join(config.JavaTemplateResourcePath, "default"),
+			projectInfoDto.ResourcePath, fileMapDtoList)
+	}
 	// Mybatis
 	mybatisTemplatePath := path.Join(config.JavaTemplateInitPath, config.MybatisPath)
 	mybatisPath := path.Join(projectInfoDto.ResourcePath, config.MybatisPath)

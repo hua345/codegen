@@ -9,12 +9,29 @@ database:
   databaseName: db_example
   username: springuser
   password: 123456
+redis:
+  host: 192.168.137.128
+  port: 6379
+  # Redis默认情况下有16个分片，这里配置具体使用的分片，默认是0
+  database: 0
+  password:
+  # 连接超时时间（毫秒）
+  timeout: 1000
+  # 连接池中的最大空闲连接 默认 8
+  maxIdle: 8
+  # 连接池最大连接数（使用负值表示没有限制） 默认 8
+  maxActive: 8
+
+
 springboot:
   groupId: com.github
   artifactId: code-admin
+  supportRedis: true
   #shiro, security, spring-session, redis-session, none
   userService: none
   supportMaven: true
+  # 默认配置文件类型是properties,也支持yaml
+  supportConfigTypeYaml: false
   supportGradle: true
   supportDocker: true
   # 国际化
