@@ -22,7 +22,7 @@ spring: {{ if .SupportI18n }}
         # 连接池最大阻塞等待时间（使用负值表示没有限制） 默认 -1
         max-wait: -1
         # 连接池中的最大空闲连接 默认 8
-        max-idle: {{.Database.MaxIdle}}
+        max-idle: {{.Redis.MaxIdle}}
         # 连接池中的最小空闲连接 默认 0
         min-idle: 0{{ end }}
   datasource:
