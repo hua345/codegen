@@ -8,7 +8,6 @@ import (
 	"log"
 	"os"
 	"strings"
-	"time"
 )
 
 type Server struct {
@@ -67,13 +66,13 @@ type Database struct {
 }
 
 type Redis struct {
-	Host      string        `yaml:"host"`
-	Port      string        `yaml:"port"`
-	Database  string        `yaml:"database"`
-	Password  string        `yaml:"password"`
-	Timeout   time.Duration `yaml:"timeout"`
-	MaxIdle   int           `yaml:"maxIdle"`
-	MaxActive int           `yaml:"maxActive"`
+	Host      string `yaml:"host"`
+	Port      string `yaml:"port"`
+	Database  string `yaml:"database"`
+	Password  string `yaml:"password"`
+	Timeout   int    `yaml:"timeout"`
+	MaxIdle   int    `yaml:"maxIdle"`
+	MaxActive int    `yaml:"maxActive"`
 }
 
 type GinSetting struct {
