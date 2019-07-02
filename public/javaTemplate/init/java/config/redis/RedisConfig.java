@@ -21,15 +21,15 @@ public class RedisConfig {
     /**
      * LettuceConnectionFactory redisConnectionFactory
      *
-     * @param redisConnectionFactory
+     * @param lettuceConnectionFactory
      * @return
      */
     @Bean
-    public RedisTemplate<String, Serializable> redisCacheTemplate(LettuceConnectionFactory redisConnectionFactory) {
+    public RedisTemplate<String, Serializable> redisCacheTemplate(LettuceConnectionFactory lettuceConnectionFactory) {
         RedisTemplate<String, Serializable> template = new RedisTemplate<>();
         template.setKeySerializer(new StringRedisSerializer());
         template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
-        template.setConnectionFactory(redisConnectionFactory);
+        template.setConnectionFactory(lettuceConnectionFactory);
         return template;
     }
 }

@@ -5,8 +5,8 @@ import {{.PackageName}}.common.ResponseVO;
 import org.springframework.http.HttpStatus;
 
 /**
- * @author CHENJIANHUA
- * @date 2019/5/31 12:34
+ * @author {{.Author}}
+ * @date {{.NowDate}}
  */
 public class ResponseUtil {
 

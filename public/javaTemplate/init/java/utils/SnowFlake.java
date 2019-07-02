@@ -1,8 +1,8 @@
-package com.github.code.admin.utils;
+package {{.PackageName}}.utils;
 
 /**
- * @author CHENJIANHUA
- * @date 2019/6/20 13:22
+ * @author {{.Author}}
+ * @date {{.NowDate}}
  */
 /**
  * 分布式系统中，有一些需要使用全局唯一ID的场景，这种时候为了防止ID冲突可以使用36位的UUID，但是UUID有一些缺点，首先他相对比较长，另外UUID一般是无序的。

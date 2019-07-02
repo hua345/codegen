@@ -1,8 +1,8 @@
-package com.github.code.admin.utils;
+package {{.PackageName}}.utils;
 
 /**
- * @author CHENJIANHUA
- * @date 2019/6/20 13:32
+ * @author {{.Author}}
+ * @date {{.NowDate}}
  */
 public class SnowFlakeUtil {
     private static SnowFlake snowFlakeInstance = null;
