@@ -139,6 +139,8 @@ func (projectInfoDto SpringBootProjectInfoDto) InitProject() {
 	// 检测Common目录是否存在
 	JavaCodeCommonPath := path.Join(projectInfoDto.JavaPath, config.JavaCommonPath)
 	util.CheckDirAndMkdir(JavaCodeCommonPath)
+	util.CheckDirAndMkdir(path.Join(JavaCodeCommonPath, config.JavaDefineAnnotation))
+	util.CheckDirAndMkdir(path.Join(JavaCodeCommonPath, config.JavaDefineValidator))
 	// 检测mybatis目录是否存在
 	mybatisPath := path.Join(projectInfoDto.ResourcePath, config.MybatisPath)
 	util.CheckDirAndMkdir(mybatisPath)
@@ -235,10 +237,26 @@ func initProjectData(projectInfoDto SpringBootProjectInfoDto) {
 		javaTemplateCommonPath := path.Join(config.JavaTemplateInitCodePath, config.JavaTemplateI18nCommon)
 		javaCodeCommonPath := path.Join(projectInfoDto.JavaPath, config.JavaCommonPath)
 		fileMapDtoList = appendTemplateList(javaTemplateCommonPath, javaCodeCommonPath, fileMapDtoList)
+		// annotation
+		fileMapDtoList = appendTemplateList(path.Join(javaTemplateCommonPath, config.JavaDefineAnnotation),
+			path.Join(javaCodeCommonPath, config.JavaDefineAnnotation),
+			fileMapDtoList)
+		// validator
+		fileMapDtoList = appendTemplateList(path.Join(javaTemplateCommonPath, config.JavaDefineValidator),
+			path.Join(javaCodeCommonPath, config.JavaDefineValidator),
+			fileMapDtoList)
 	} else {
 		javaTemplateCommonPath := path.Join(config.JavaTemplateInitCodePath, config.JavaCommonPath)
 		javaCodeCommonPath := path.Join(projectInfoDto.JavaPath, config.JavaCommonPath)
 		fileMapDtoList = appendTemplateList(javaTemplateCommonPath, javaCodeCommonPath, fileMapDtoList)
+		// annotation
+		fileMapDtoList = appendTemplateList(path.Join(javaTemplateCommonPath, config.JavaDefineAnnotation),
+			path.Join(javaCodeCommonPath, config.JavaDefineAnnotation),
+			fileMapDtoList)
+		// validator
+		fileMapDtoList = appendTemplateList(path.Join(javaTemplateCommonPath, config.JavaDefineValidator),
+			path.Join(javaCodeCommonPath, config.JavaDefineValidator),
+			fileMapDtoList)
 	}
 	// redis
 	if projectInfoDto.SupportRedis {
