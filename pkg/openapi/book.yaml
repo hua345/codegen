@@ -12,7 +12,7 @@ tags:
   - name: books
     description: 书籍
 paths:
-  /books:
+  /api/v1/books:
     get:
       summary: 获取所有书
       tags:
@@ -38,7 +38,18 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Books"
+                type: object
+                required:
+                  - code
+                  - msg
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  msg:
+                    type: string
+                  data:
+                    $ref: "#/components/schemas/Books"
         '404':
           description: 返回错误
           content:
@@ -50,16 +61,39 @@ paths:
       operationId: createPets
       tags:
         - books
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - price
+              properties:
+                bookName:
+                  type: string
+                  example: "断舍离"
+                price:
+                  type: string
+                  example: "20.60"
+                desc:
+                  type: string
+                  example: "断舍离"
       responses:
-        '201':
-          description: Null response
-        default:
-          description: unexpected error
+        '200':
+          description: "添加书籍成功"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        '404':
+          description: "添加书籍失败"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  /book/{bookId}:
+  /api/v1//book/{bookId}:
     get:
       summary: 获取书籍详情
       tags:
@@ -77,7 +111,18 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Book"
+                type: object
+                required:
+                  - code
+                  - msg
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  msg:
+                    type: string
+                  data:
+                    $ref: "#/components/schemas/Book"
         '404':
           description: 返回错误
           content:
@@ -97,11 +142,11 @@ paths:
             type: string
       responses:
         '200':
-          description: Expected response to a valid request
+          description: "删除书籍成功"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Book"
+                $ref: "#/components/schemas/Success"
         '404':
           description: 返回错误
           content:
@@ -133,6 +178,19 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/Book"
+    Success:
+      type: object
+      required:
+        - code
+        - msg
+      properties:
+        code:
+          type: integer
+          format: int32
+          example: 200
+        msg:
+          type: string
+          example: "成功"
     Error:
       type: object
       required:
@@ -142,5 +200,7 @@ components:
         code:
           type: integer
           format: int32
+          example: 10001
         msg:
           type: string
+          example: "失败"
