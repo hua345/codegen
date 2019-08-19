@@ -16,7 +16,7 @@ package cmd
 
 import (
 	"codegen/pkg/config"
-	"codegen/pkg/util"
+	"codegen/pkg/fileUtil"
 	"encoding/json"
 	"fmt"
 	log "github.com/sirupsen/logrus"
@@ -45,14 +45,14 @@ var configInitCmd = &cobra.Command{
 	Long: `初始化配置文件. For example:
 codegen config init`,
 	Run: func(cmd *cobra.Command, args []string) {
-		configExist, _ := util.PathExists(config.DefaultConfigFile)
+		configExist, _ := fileUtil.PathExists(config.DefaultConfigFile)
 		if true == configExist {
 			log.WithFields(log.Fields{
 				"Config File": config.DefaultConfigFile,
 			}).Error("Config File is Exist!")
 			os.Exit(-1)
 		}
-		util.WriteFileWithIoUtil(config.DefaultConfigFile, config.DefaultConfigContent)
+		fileUtil.WriteFileWithIoUtil(config.DefaultConfigFile, config.DefaultConfigContent)
 		log.Info("Init config file success")
 	},
 }

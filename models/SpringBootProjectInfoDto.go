@@ -2,7 +2,8 @@ package models
 
 import (
 	"codegen/pkg/config"
-	"codegen/pkg/util"
+	"codegen/pkg/fileUtil"
+	"codegen/pkg/templateUtil"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -95,7 +96,7 @@ func (projectInfoDto SpringBootProjectInfoDto) InitProject() {
 	data, _ := json.MarshalIndent(projectInfoDto, "", "    ")
 	fmt.Printf("%s\n", data)
 	// 检测项目文件夹是否存在
-	exist, err := util.PathExists(projectInfoDto.ProjectName)
+	exist, err := fileUtil.PathExists(projectInfoDto.ProjectName)
 	if err != nil {
 		panic(err)
 	}
@@ -103,51 +104,51 @@ func (projectInfoDto SpringBootProjectInfoDto) InitProject() {
 		fmt.Printf("Project %s has Exist!\n", projectInfoDto.ProjectName)
 		os.Exit(2)
 	} else {
-		util.PathMkDir(projectInfoDto.ProjectName)
+		fileUtil.PathMkDir(projectInfoDto.ProjectName)
 	}
 	// 检测package目录是否存在
-	util.CheckDirAndMkdir(projectInfoDto.JavaPath)
+	fileUtil.CheckDirAndMkdir(projectInfoDto.JavaPath)
 	// 检查单元测试目录是否存在
-	util.CheckDirAndMkdir(projectInfoDto.JavaTestPath)
+	fileUtil.CheckDirAndMkdir(projectInfoDto.JavaTestPath)
 	// 检测resource目录是否存在
-	util.CheckDirAndMkdir(projectInfoDto.ResourcePath)
+	fileUtil.CheckDirAndMkdir(projectInfoDto.ResourcePath)
 	// 检测Util目录是否存在
 	JavaCodeUtilPath := path.Join(projectInfoDto.JavaPath, config.JavaUtilPath)
-	util.CheckDirAndMkdir(JavaCodeUtilPath)
+	fileUtil.CheckDirAndMkdir(JavaCodeUtilPath)
 	// 检测Config目录是否存在
 	JavaCodeConfigPath := path.Join(projectInfoDto.JavaPath, config.JavaConfigPath)
-	util.CheckDirAndMkdir(JavaCodeConfigPath)
+	fileUtil.CheckDirAndMkdir(JavaCodeConfigPath)
 	// config redis
 	if projectInfoDto.SupportRedis {
-		util.CheckDirAndMkdir(path.Join(JavaCodeConfigPath, config.JavaTemplateRedis))
+		fileUtil.CheckDirAndMkdir(path.Join(JavaCodeConfigPath, config.JavaTemplateRedis))
 	}
 	// config swagger
 	if projectInfoDto.SupportSwagger {
-		util.CheckDirAndMkdir(path.Join(JavaCodeConfigPath, config.JavaTemplateSwaggerConfig))
+		fileUtil.CheckDirAndMkdir(path.Join(JavaCodeConfigPath, config.JavaTemplateSwaggerConfig))
 	}
 	// config I18n
 	if projectInfoDto.SupportI18n {
-		util.CheckDirAndMkdir(path.Join(JavaCodeConfigPath, config.JavaTemplateI18nConfig))
+		fileUtil.CheckDirAndMkdir(path.Join(JavaCodeConfigPath, config.JavaTemplateI18nConfig))
 	}
 	// config druid
 	if config.DataSourceDruid == projectInfoDto.SupportDataSource {
-		util.CheckDirAndMkdir(path.Join(JavaCodeConfigPath, config.JavaTemplateDruidConfig))
+		fileUtil.CheckDirAndMkdir(path.Join(JavaCodeConfigPath, config.JavaTemplateDruidConfig))
 	}
 	// config exception
-	util.CheckDirAndMkdir(path.Join(JavaCodeConfigPath, config.JavaTemplateExceptionConfig))
+	fileUtil.CheckDirAndMkdir(path.Join(JavaCodeConfigPath, config.JavaTemplateExceptionConfig))
 	//
 	// 检测Common目录是否存在
 	JavaCodeCommonPath := path.Join(projectInfoDto.JavaPath, config.JavaCommonPath)
-	util.CheckDirAndMkdir(JavaCodeCommonPath)
-	util.CheckDirAndMkdir(path.Join(JavaCodeCommonPath, config.JavaDefineAnnotation))
-	util.CheckDirAndMkdir(path.Join(JavaCodeCommonPath, config.JavaDefineValidator))
+	fileUtil.CheckDirAndMkdir(JavaCodeCommonPath)
+	fileUtil.CheckDirAndMkdir(path.Join(JavaCodeCommonPath, config.JavaDefineAnnotation))
+	fileUtil.CheckDirAndMkdir(path.Join(JavaCodeCommonPath, config.JavaDefineValidator))
 	// 检测mybatis目录是否存在
 	mybatisPath := path.Join(projectInfoDto.ResourcePath, config.MybatisPath)
-	util.CheckDirAndMkdir(mybatisPath)
+	fileUtil.CheckDirAndMkdir(mybatisPath)
 	// 检查i18n目录是否存在
 	if config.ServerConfig.Springboot.SupportI18n {
 		i18nPath := path.Join(projectInfoDto.ResourcePath, config.JavaTemplateI18nProperties)
-		util.CheckDirAndMkdir(i18nPath)
+		fileUtil.CheckDirAndMkdir(i18nPath)
 	}
 	// 解析模板
 	initProjectData(projectInfoDto)
@@ -295,6 +296,6 @@ func initProjectData(projectInfoDto SpringBootProjectInfoDto) {
 	}
 	// 解析模板
 	for _, value := range fileMapDtoList {
-		util.ParseTemplate(value.TplDstPath, value.TplSrcPath, projectInfoDto)
+		templateUtil.ParseTemplate(value.TplDstPath, value.TplSrcPath, projectInfoDto)
 	}
 }

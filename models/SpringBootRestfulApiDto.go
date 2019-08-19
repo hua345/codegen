@@ -2,7 +2,9 @@ package models
 
 import (
 	"codegen/pkg/config"
-	"codegen/pkg/util"
+	"codegen/pkg/fileUtil"
+	"codegen/pkg/stringUtil"
+	"codegen/pkg/templateUtil"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -37,15 +39,15 @@ func (restfulApiDto SpringBootRestfulApiDto) Init() SpringBootRestfulApiDto {
 	restfulApiDto.Author = config.ServerConfig.AuthorName
 	restfulApiDto.SupportSwagger = config.ServerConfig.Springboot.SupportSwagger
 	// 根据输入的RestfulUrl判断生成的Controller
-	urlStrList := util.HandleRestfulURL(restfulApiDto.RestfulUrl)
+	urlStrList := stringUtil.HandleRestfulURL(restfulApiDto.RestfulUrl)
 	fmt.Println(urlStrList)
 	if len(urlStrList) == 0 {
 		fmt.Println("URL路径： " + restfulApiDto.RestfulUrl + "不符合规范")
 		os.Exit(3)
 	}
 	// URL处理
-	restfulApiDto.ControllerName = util.StrFirstToUpper(urlStrList[0])
-	restfulApiDto.ControllerURL = util.AppendURL(restfulApiDto.BaseUrl, urlStrList[0])
+	restfulApiDto.ControllerName = stringUtil.StrFirstToUpper(urlStrList[0])
+	restfulApiDto.ControllerURL = stringUtil.AppendURL(restfulApiDto.BaseUrl, urlStrList[0])
 	methodUrlList := urlStrList[1:]
 	if len(methodUrlList) == 0 {
 		restfulApiDto.MethodURL = "/"
@@ -64,14 +66,14 @@ func (restfulApiDto SpringBootRestfulApiDto) Init() SpringBootRestfulApiDto {
 	if len(restfulApiDto.HttpMethod) == 0 {
 		restfulApiDto.HttpMethod = config.HttpMethodMapping[config.ServerConfig.DefaultHttpMethod]
 	}
-	restfulApiDto.MethodName = util.StrFirstToLower(restfulApiDto.MethodName)
+	restfulApiDto.MethodName = stringUtil.StrFirstToLower(restfulApiDto.MethodName)
 	// Description
 	if len(restfulApiDto.Description) == 0 {
 		restfulApiDto.Description = restfulApiDto.MethodName
 	}
 	// DTO
-	restfulApiDto.RequestDTOName = util.StrFirstToUpper(restfulApiDto.MethodName) + config.ImportRequestDto
-	restfulApiDto.ResponseDTOName = util.StrFirstToUpper(restfulApiDto.MethodName) + config.ImportResponseDto
+	restfulApiDto.RequestDTOName = stringUtil.StrFirstToUpper(restfulApiDto.MethodName) + config.ImportRequestDto
+	restfulApiDto.ResponseDTOName = stringUtil.StrFirstToUpper(restfulApiDto.MethodName) + config.ImportResponseDto
 	restfulApiDto.VarResponseDTOName = restfulApiDto.MethodName + config.ImportResponseDto
 	restfulApiDto.ImportRequestDTOPath = config.ImportPrefix + restfulApiDto.ProjectInfo.PackageName + "." +
 		config.ImportDtoRequestPath + "." + restfulApiDto.RequestDTOName + ";"
@@ -83,7 +85,7 @@ func (restfulApiDto SpringBootRestfulApiDto) GenerateCode() {
 	data, _ := json.MarshalIndent(restfulApiDto, "", "    ")
 	fmt.Printf("%s\n", data)
 	// 检测项目文件夹是否存在
-	existProject, err := util.PathExists(restfulApiDto.ProjectInfo.ProjectName)
+	existProject, err := fileUtil.PathExists(restfulApiDto.ProjectInfo.ProjectName)
 	if err != nil {
 		panic(err)
 	}
@@ -101,10 +103,10 @@ func (restfulApiDto SpringBootRestfulApiDto) GenerateCode() {
 func checkControllerExist(restfulApiDto SpringBootRestfulApiDto) (controllerExist bool) {
 	// 检测controller目录是否存在
 	codeControllerPath := path.Join(restfulApiDto.ProjectInfo.JavaPath, config.JavaControllerPath)
-	util.CheckDirAndMkdir(codeControllerPath)
+	fileUtil.CheckDirAndMkdir(codeControllerPath)
 	// restful controller文件名
 	controllerFilePath := path.Join(codeControllerPath, restfulApiDto.ControllerName+config.JavaTemplateControllerFileName)
-	controllerExist, err := util.PathExists(controllerFilePath)
+	controllerExist, err := fileUtil.PathExists(controllerFilePath)
 	if err != nil {
 		panic(err)
 	}
@@ -192,26 +194,26 @@ func checkSameMethod(controllerContent string, restfulApiDto SpringBootRestfulAp
 func restfulAddMethod(restfulApiDto SpringBootRestfulApiDto) {
 	// 检测controller目录是否存在
 	codeControllerDir := path.Join(restfulApiDto.ProjectInfo.JavaPath, config.JavaControllerPath)
-	util.CheckDirAndMkdir(codeControllerDir)
+	fileUtil.CheckDirAndMkdir(codeControllerDir)
 	// restful controller文件名
 	controllerFilePath := path.Join(codeControllerDir, restfulApiDto.ControllerName+config.JavaTemplateControllerFileName)
-	controllerContent := util.ReadFileWithIoUtil(controllerFilePath)
+	controllerContent := fileUtil.ReadFileWithIoUtil(controllerFilePath)
 	checkSameMethod(controllerContent, restfulApiDto)
 	// 检测dto目录是否存在
 	codeDtoPath := path.Join(restfulApiDto.ProjectInfo.JavaPath, config.JavaDtoPath)
-	util.CheckDirAndMkdir(codeDtoPath)
+	fileUtil.CheckDirAndMkdir(codeDtoPath)
 	// 检测dto request目录是否存在
 	codeDtoRequestPath := path.Join(restfulApiDto.ProjectInfo.JavaPath, config.JavaDtoRequestPath)
-	util.CheckDirAndMkdir(codeDtoRequestPath)
+	fileUtil.CheckDirAndMkdir(codeDtoRequestPath)
 	// 检测dto response目录是否存在
 	codeDtoResponsePath := path.Join(restfulApiDto.ProjectInfo.JavaPath, config.JavaDtoResponsePath)
-	util.CheckDirAndMkdir(codeDtoResponsePath)
+	fileUtil.CheckDirAndMkdir(codeDtoResponsePath)
 	// 检测service目录是否存在
 	codeServicePath := path.Join(restfulApiDto.ProjectInfo.JavaPath, config.JavaServicePath)
-	util.CheckDirAndMkdir(codeServicePath)
+	fileUtil.CheckDirAndMkdir(codeServicePath)
 	// 检测serviceImpl目录是否存在
 	codeServiceImplPath := path.Join(restfulApiDto.ProjectInfo.JavaPath, config.JavaServiceImplPath)
-	util.CheckDirAndMkdir(codeServiceImplPath)
+	fileUtil.CheckDirAndMkdir(codeServiceImplPath)
 
 	var fileMapDtoList []FileMapDto
 	// request dto Code
@@ -224,24 +226,24 @@ func restfulAddMethod(restfulApiDto SpringBootRestfulApiDto) {
 			path.Join(codeDtoResponsePath, restfulApiDto.ResponseDTOName+config.JavaSuffixName)})
 	// 解析模板
 	for _, value := range fileMapDtoList {
-		util.ParseTemplate(value.TplDstPath, value.TplSrcPath, restfulApiDto)
+		templateUtil.ParseTemplate(value.TplDstPath, value.TplSrcPath, restfulApiDto)
 	}
 
 	// 添加方法
-	methodCode := util.ParseMethodTemplate(path.Join(config.JavaTemplateCodePath, config.JavaTemplateMethodControllerFileName), restfulApiDto)
+	methodCode := templateUtil.ParseMethodTemplate(path.Join(config.JavaTemplateCodePath, config.JavaTemplateMethodControllerFileName), restfulApiDto)
 	dstControllerFileName := path.Join(codeControllerDir, restfulApiDto.ControllerName+config.JavaTemplateControllerFileName)
 	appendMethod(methodCode, dstControllerFileName, restfulApiDto, false, true)
 
-	serviceMethodCode := util.ParseMethodTemplate(path.Join(config.JavaTemplateCodePath, config.JavaTemplateMethodServiceFileName), restfulApiDto)
+	serviceMethodCode := templateUtil.ParseMethodTemplate(path.Join(config.JavaTemplateCodePath, config.JavaTemplateMethodServiceFileName), restfulApiDto)
 	dstServicePath := path.Join(codeServicePath, restfulApiDto.ControllerName+config.JavaTemplateServiceFileName)
 	appendMethod(serviceMethodCode, dstServicePath, restfulApiDto, true, false)
 
-	serviceImplMethodCode := util.ParseMethodTemplate(path.Join(config.JavaTemplateCodePath, config.JavaTemplateMethodServiceImplFileName), restfulApiDto)
+	serviceImplMethodCode := templateUtil.ParseMethodTemplate(path.Join(config.JavaTemplateCodePath, config.JavaTemplateMethodServiceImplFileName), restfulApiDto)
 	dstServiceImplPath := path.Join(codeServiceImplPath, restfulApiDto.ControllerName+config.JavaTemplateServiceImplFileName)
 	appendMethod(serviceImplMethodCode, dstServiceImplPath, restfulApiDto, false, false)
 }
 func appendMethod(methodCode, dstFilePath string, restfulApiDto SpringBootRestfulApiDto, javaInterface bool, isController bool) {
-	srcContent := util.ReadFileWithIoUtil(dstFilePath)
+	srcContent := fileUtil.ReadFileWithIoUtil(dstFilePath)
 	// }加换行符
 	contentReg := regexp.MustCompile(`}[\n|\r\n]`)
 	srcContentSlice := contentReg.Split(srcContent, -1)
@@ -277,29 +279,29 @@ func appendMethod(methodCode, dstFilePath string, restfulApiDto SpringBootRestfu
 		}
 	}
 
-	util.WriteFileWithIoUtil(dstFilePath, resultContent)
+	fileUtil.WriteFileWithIoUtil(dstFilePath, resultContent)
 }
 
 // 创建全新的接口文件
 func restfulApiNew(restfulApiDto SpringBootRestfulApiDto) {
 	// 检测controller目录是否存在
 	codeControllerPath := path.Join(restfulApiDto.ProjectInfo.JavaPath, config.JavaControllerPath)
-	util.CheckDirAndMkdir(codeControllerPath)
+	fileUtil.CheckDirAndMkdir(codeControllerPath)
 	// 检测dto目录是否存在
 	codeDtoPath := path.Join(restfulApiDto.ProjectInfo.JavaPath, config.JavaDtoPath)
-	util.CheckDirAndMkdir(codeDtoPath)
+	fileUtil.CheckDirAndMkdir(codeDtoPath)
 	// 检测dto request目录是否存在
 	codeDtoRequestPath := path.Join(restfulApiDto.ProjectInfo.JavaPath, config.JavaDtoRequestPath)
-	util.CheckDirAndMkdir(codeDtoRequestPath)
+	fileUtil.CheckDirAndMkdir(codeDtoRequestPath)
 	// 检测dto response目录是否存在
 	codeDtoResponsePath := path.Join(restfulApiDto.ProjectInfo.JavaPath, config.JavaDtoResponsePath)
-	util.CheckDirAndMkdir(codeDtoResponsePath)
+	fileUtil.CheckDirAndMkdir(codeDtoResponsePath)
 	// 检测service目录是否存在
 	codeServicePath := path.Join(restfulApiDto.ProjectInfo.JavaPath, config.JavaServicePath)
-	util.CheckDirAndMkdir(codeServicePath)
+	fileUtil.CheckDirAndMkdir(codeServicePath)
 	// 检测serviceImpl目录是否存在
 	codeServiceImplPath := path.Join(restfulApiDto.ProjectInfo.JavaPath, config.JavaServiceImplPath)
-	util.CheckDirAndMkdir(codeServiceImplPath)
+	fileUtil.CheckDirAndMkdir(codeServiceImplPath)
 	//
 	var fileMapDtoList []FileMapDto
 
@@ -328,6 +330,6 @@ func restfulApiNew(restfulApiDto SpringBootRestfulApiDto) {
 
 	// 解析模板
 	for _, value := range fileMapDtoList {
-		util.ParseTemplate(value.TplDstPath, value.TplSrcPath, restfulApiDto)
+		templateUtil.ParseTemplate(value.TplDstPath, value.TplSrcPath, restfulApiDto)
 	}
 }

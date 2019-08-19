@@ -1,7 +1,8 @@
 package models
 
 import (
-	"codegen/pkg/util"
+	"codegen/pkg/fileUtil"
+	"codegen/pkg/templateUtil"
 	"path"
 )
 
@@ -14,12 +15,12 @@ type FileMapDto struct {
  * 添加子目录文件模板映射关系
  */
 func appendSubDirTemplateList(templateConfigPath, codeConfigPath string, fileMapDtoList []FileMapDto) []FileMapDto {
-	subDirList := util.GetTemplateSubDirList(templateConfigPath)
+	subDirList := templateUtil.GetTemplateSubDirList(templateConfigPath)
 	// subDirList := util.GetSubDirList(templateConfigPath)
 	for _, value := range subDirList {
 		templateSubPath := path.Join(templateConfigPath, value)
 		codeSubDir := path.Join(codeConfigPath, value)
-		util.CheckDirAndMkdir(codeSubDir)
+		fileUtil.CheckDirAndMkdir(codeSubDir)
 		fileMapDtoList = appendTemplateList(templateSubPath, codeSubDir, fileMapDtoList)
 	}
 	return fileMapDtoList
@@ -30,12 +31,12 @@ func appendSubDirTemplateList(templateConfigPath, codeConfigPath string, fileMap
  */
 func appendMybatisTemplateList(mybatisTemplatePath, mybatisPath string, fileMapDtoList []FileMapDto) []FileMapDto {
 	// go-bindata
-	mybatisFileNameList := util.GetTemplateFilesName(mybatisTemplatePath)
+	mybatisFileNameList := templateUtil.GetTemplateFilesName(mybatisTemplatePath)
 	// mybatisFileNameList := util.GetFilesName(mybatisTemplatePath)
 	for _, value := range mybatisFileNameList {
-		if util.GetFileSuffix(value) == ".jar" {
+		if fileUtil.GetFileSuffix(value) == ".jar" {
 			// 如果是jar文件直接拷贝
-			util.CopyTemplateFile(path.Join(mybatisPath, value),
+			templateUtil.CopyTemplateFile(path.Join(mybatisPath, value),
 				path.Join(mybatisTemplatePath, value))
 		} else {
 			fileMapDtoList = append(fileMapDtoList,
@@ -51,7 +52,7 @@ func appendMybatisTemplateList(mybatisTemplatePath, mybatisPath string, fileMapD
  */
 func appendTemplateList(templatePath, codePath string, fileMapDtoList []FileMapDto) []FileMapDto {
 	// go-bindata
-	templateFileNameList := util.GetTemplateFilesName(templatePath)
+	templateFileNameList := templateUtil.GetTemplateFilesName(templatePath)
 	// templateFileNameList := util.GetFilesName(templatePath)
 	for _, value := range templateFileNameList {
 		fileMapDtoList = append(fileMapDtoList,

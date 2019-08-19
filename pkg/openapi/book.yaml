@@ -87,7 +87,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ResponseFailed"
-  /api/v1//book/{bookId}:
+  /api/v1/book/{bookId}:
     get:
       summary: 获取书籍详情
       tags:

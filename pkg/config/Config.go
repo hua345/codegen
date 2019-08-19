@@ -1,7 +1,7 @@
 package config
 
 import (
-	"codegen/pkg/util"
+	"codegen/pkg/fileUtil"
 	"fmt"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
@@ -88,7 +88,7 @@ func Setup(configPath string) {
 	if len(configPath) > 0 {
 		path = configPath
 	}
-	configExist, _ := util.PathExists(path)
+	configExist, _ := fileUtil.PathExists(path)
 	if true != configExist {
 		log.Println("配置文件" + DefaultConfigFile + "没有找到!")
 		log.Println("初始化配置文件命令: codegen config init")

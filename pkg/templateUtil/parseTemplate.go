@@ -1,7 +1,8 @@
-package util
+package templateUtil
 
 import (
 	"codegen/asset"
+	"codegen/pkg/fileUtil"
 	"io/ioutil"
 	"log"
 	"os"
@@ -94,7 +95,7 @@ func ParseTemplate(dstPath, srcPath string, data interface{}) {
 func ParseMethodTemplate(srcPath string, data interface{}) string {
 	var tempFile string = "tempFile"
 	ParseTemplate(tempFile, srcPath, data)
-	content := ReadFileWithIoUtil(tempFile)
+	content := fileUtil.ReadFileWithIoUtil(tempFile)
 	defer os.Remove(tempFile)
 	return content
 }

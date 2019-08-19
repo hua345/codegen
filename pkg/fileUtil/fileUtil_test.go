@@ -1,4 +1,4 @@
-package util
+package fileUtil
 
 import (
 	"os"
@@ -17,10 +17,10 @@ func TestCopyFile(t *testing.T) {
 	srcContent := ReadFileWithIoUtil(path)
 	dstContent := ReadFileWithIoUtil(dstPath)
 	if srcContent != content {
-		t.Error(`srcContent != "FangFang"` )
+		t.Error(`srcContent != "FangFang"`)
 	}
 	if dstContent != content {
-		t.Error(`dstContent != "FangFang"` )
+		t.Error(`dstContent != "FangFang"`)
 	}
 	os.Remove(path)
 	os.Remove(dstPath)
@@ -30,13 +30,13 @@ func TestGetFileSuffix(t *testing.T) {
 	var fileName string = "hello.go"
 	fileSuffix := GetFileSuffix(fileName)
 	if fileSuffix != ".go" {
-		t.Error(`"hello.go" Suffix != ".go"` )
+		t.Error(`"hello.go" Suffix != ".go"`)
 	}
 }
 func TestGetFileSuffix2(t *testing.T) {
 	var fileName string = "hello.jar"
 	fileSuffix := GetFileSuffix(fileName)
 	if fileSuffix != ".jar" {
-		t.Error(`"hello.jar" Suffix != ".jar"` )
+		t.Error(`"hello.jar" Suffix != ".jar"`)
 	}
 }
