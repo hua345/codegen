@@ -34,28 +34,22 @@ paths:
             format: int32
       responses:
         '200':
-          description: 书籍列表
+          description: "OK"
           content:
             application/json:
               schema:
                 type: object
-                required:
-                  - code
-                  - msg
+                allOf:
+                  - $ref: "#/components/schemas/ResponseSuccess"
                 properties:
-                  code:
-                    type: integer
-                    format: int32
-                  msg:
-                    type: string
                   data:
                     $ref: "#/components/schemas/Books"
         '404':
-          description: 返回错误
+          description: "Bad request"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: "#/components/schemas/ResponseFailed"
     post:
       summary: 新建书籍
       operationId: createPets
@@ -82,17 +76,17 @@ paths:
                   example: "断舍离"
       responses:
         '200':
-          description: "添加书籍成功"
+          description: "OK"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Success"
+                $ref: "#/components/schemas/ResponseSuccess"
         '404':
-          description: "添加书籍失败"
+          description: "Bad request"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: "#/components/schemas/ResponseFailed"
   /api/v1//book/{bookId}:
     get:
       summary: 获取书籍详情
@@ -107,28 +101,22 @@ paths:
             type: string
       responses:
         '200':
-          description: Expected response to a valid request
+          description: "OK"
           content:
             application/json:
               schema:
                 type: object
-                required:
-                  - code
-                  - msg
+                allOf:
+                  - $ref: "#/components/schemas/ResponseSuccess"
                 properties:
-                  code:
-                    type: integer
-                    format: int32
-                  msg:
-                    type: string
                   data:
                     $ref: "#/components/schemas/Book"
         '404':
-          description: 返回错误
+          description: "Bad request"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: "#/components/schemas/ResponseFailed"
     delete:
       summary: 删除书籍
       tags:
@@ -142,17 +130,17 @@ paths:
             type: string
       responses:
         '200':
-          description: "删除书籍成功"
+          description: "OK"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Success"
+                $ref: "#/components/schemas/ResponseSuccess"
         '404':
-          description: 返回错误
+          description: "Bad request"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: "#/components/schemas/ResponseFailed"
 components:
   schemas:
     Book:
@@ -178,7 +166,7 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/Book"
-    Success:
+    ResponseSuccess:
       type: object
       required:
         - code
@@ -191,7 +179,7 @@ components:
         msg:
           type: string
           example: "成功"
-    Error:
+    ResponseFailed:
       type: object
       required:
         - code
