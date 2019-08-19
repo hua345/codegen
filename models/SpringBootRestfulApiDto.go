@@ -38,6 +38,7 @@ func (restfulApiDto SpringBootRestfulApiDto) Init() SpringBootRestfulApiDto {
 	restfulApiDto.SupportSwagger = config.ServerConfig.Springboot.SupportSwagger
 	// 根据输入的RestfulUrl判断生成的Controller
 	urlStrList := util.HandleRestfulURL(restfulApiDto.RestfulUrl)
+	fmt.Println(urlStrList)
 	if len(urlStrList) == 0 {
 		fmt.Println("URL路径： " + restfulApiDto.RestfulUrl + "不符合规范")
 		os.Exit(3)

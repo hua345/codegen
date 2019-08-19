@@ -1,0 +1,146 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Book接口
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+servers:
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/hua345/Book/1.0.0
+tags:
+  - name: books
+    description: 书籍
+paths:
+  /books:
+    get:
+      summary: 获取所有书
+      tags:
+        - books
+      parameters:
+        - name: pageSize
+          in: query
+          description: 分页大小
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: pageNum
+          in: query
+          description: 分页数目
+          required: false
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: 书籍列表
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Books"
+        '404':
+          description: 返回错误
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary: 新建书籍
+      operationId: createPets
+      tags:
+        - books
+      responses:
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /book/{bookId}:
+    get:
+      summary: 获取书籍详情
+      tags:
+        - books
+      parameters:
+        - name: bookId
+          in: path
+          required: true
+          description: 书籍编号
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Book"
+        '404':
+          description: 返回错误
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      summary: 删除书籍
+      tags:
+        - books
+      parameters:
+        - name: bookId
+          in: path
+          required: true
+          description: 书籍编号
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Book"
+        '404':
+          description: 返回错误
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  schemas:
+    Book:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10001
+        name:
+          type: string
+          example: "断舍离"
+        price:
+          type: string
+          example: "23.60"
+        desc:
+          type: string
+          example: "断=不买、不收取不需要的东西。舍=处理掉堆放在家里没用的东西。离=舍弃对物质的迷恋，让自己处于宽敞舒适，自由自在的空间。"
+    Books:
+      type: array
+      items:
+        $ref: "#/components/schemas/Book"
+    Error:
+      type: object
+      required:
+        - code
+        - msg
+      properties:
+        code:
+          type: integer
+          format: int32
+        msg:
+          type: string
