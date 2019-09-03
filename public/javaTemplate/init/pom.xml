@@ -20,8 +20,7 @@
         <mybatis.version>2.0.1</mybatis.version>
         <guava.version>27.1-jre</guava.version>
         <commons-lang3.version>3.9</commons-lang3.version>{{ if .DataSourceDruid }}
-        <druid.version>1.1.17</druid.version>
-        <log4j.version>1.2.17</log4j.version>{{ end }}
+        <druid.version>1.1.17</druid.version>{{ end }}
         <fastjson.version>1.2.58</fastjson.version>
         <lombok.version>1.18.8</lombok.version>{{ if .SupportSwagger }}
         <swagger2.version>2.9.2</swagger2.version>
@@ -32,7 +31,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>{ if .SupportRedis}}
+        </dependency>{{ if .SupportRedis}}
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
