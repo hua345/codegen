@@ -1,8 +1,8 @@
 package {{.PackageName}}.common.annotation;
 
 
-import com.github.code.admin.common.validator.AmountBigDecimalValidator;
-import com.github.code.admin.common.validator.AmountStringValidator;
+import {{.PackageName}}.common.validator.AmountBigDecimalValidator;
+import {{.PackageName}}.common.validator.AmountStringValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

@@ -21,6 +21,10 @@ func TestStrFirstToLower(t *testing.T) {
 		t.Error(`StrFirstToLower("Hello") == "Hello"`)
 	}
 }
+
+func TestToCamelCase(t *testing.T){
+	t.Log(ToCamelCase("love.hello_fang"))
+}
 func TestHandleRestfulURL(t *testing.T) {
 	urlStr := "///user/add"
 	urlStrList := HandleRestfulURL(urlStr)
@@ -72,20 +76,4 @@ func TestAppendURL3(t *testing.T) {
 	if urlStr2 != "/api/v1/sdc/user/{name}" {
 		t.Error(`AppendURL("//api//v1//sdc//", "///////user/////{name}////") != "/api/v1/sdc/user/{name}"`)
 	}
-}
-func TestDemoAppend(t *testing.T) {
-	nameList := []string{"fang", "fangfang"}
-	nameList = DemoAppend(nameList)
-	if len(nameList) != 3 {
-		t.Error(`len(nameList) != 3`)
-	}
-	if nameList[2] != "demo" {
-		t.Error(`nameList[2] != "demo"`)
-	}
-}
-func TestDemoAppend2(t *testing.T) {
-	nameList := []string{"liu", "fang", "hua"}
-	aa := nameList[0 : len(nameList)-1]
-	bb := nameList[len(nameList)-1]
-	fmt.Printf("%q %s", aa, bb)
 }

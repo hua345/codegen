@@ -18,6 +18,28 @@ func StrFirstToUpper(str string) string {
 func StrFirstToLower(str string) string {
 	return strings.ToLower(string(str[0])) + str[1:]
 }
+
+/**
+* 驼峰格式
+ */
+func ToCamelCase(str string) string {
+	separators := []string{".", "-", "_"}
+	in := []string{str}
+	out := make([]string, 0)
+	for _, sep := range separators {
+		for _, inStr := range in {
+			parts := strings.Split(inStr, sep)
+			out = append(out, parts...)
+		}
+		in = out
+		out = make([]string, 0)
+	}
+	words := in
+	for i := range words {
+		words[i] = StrFirstToUpper(words[i])
+	}
+	return strings.Join(words, "")
+}
 func AppendURL(baseUrl, url string) string {
 	resultUrlStrList := HandleRestfulURL(baseUrl)
 	urlStrList := HandleRestfulURL(url)
@@ -52,12 +74,4 @@ func HandleRestfulURL(restfulURL string) []string {
 		}
 	}
 	return resultURL
-}
-
-/**
- * 测试Append函数
- */
-func DemoAppend(strList []string) []string {
-	strList = append(strList, "demo")
-	return strList
 }

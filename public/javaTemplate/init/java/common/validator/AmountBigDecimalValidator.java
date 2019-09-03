@@ -1,6 +1,6 @@
 package {{.PackageName}}.common.validator;
 
-import com.github.code.admin.common.annotation.Amount;
+import {{.PackageName}}.common.annotation.Amount;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
