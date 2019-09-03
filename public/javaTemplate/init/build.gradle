@@ -31,8 +31,7 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-actuator'
-    implementation 'org.springframework.boot:spring-boot-starter-logging'{{ if .SupportRedis}}
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'{{ if .SupportRedis}}
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'{{ end }}
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.0.1'{{ if eq .Database.Type .DBTypePostgresql }}
@@ -41,8 +40,7 @@ dependencies {
     implementation 'mysql:mysql-connector-java:8.0.16'{{ end }}{{ if .DataSourceDruid }}
     implementation 'com.alibaba:druid:1.1.17'{{ end }}{{ if .SupportRedis}}
     // 连接池，redis依赖
-    implementation 'org.apache.commons:commons-pool2:2.6.2' {{ end }}
-    implementation 'log4j:log4j:1.2.17'{{ if .SupportSwagger }}
+    implementation 'org.apache.commons:commons-pool2:2.6.2' {{ end }}{{ if .SupportSwagger }}
     implementation 'io.springfox:springfox-swagger2:2.9.2'
     implementation 'io.springfox:springfox-swagger-ui:2.9.2'{{ end }}
     implementation 'com.google.guava:guava:27.1-jre'
