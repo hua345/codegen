@@ -44,8 +44,10 @@ Use "codegen [command] --help" for more information about a command.
 ### 2. 初始化配置文件
 
 ```bash
-./codegen.exe config init
+codegen.exe config init
 ```
+
+会在当前目录下生成`codegen.yaml`配置文件
 
 #### 3.1 阿里GroupId和ArtifactId规范
 - GroupID 格式：com.{公司/BU }.业务线.[子业务线]，最多 4 级。
@@ -102,13 +104,13 @@ springboot:
 
 #### 3.3 工程初始化
 ```
-./codegen.exe init
+codegen.exe init
 ```
 
 ### 4.1 查看帮助
 
 ```
-$ ./codegen.exe api -h
+$ codegen.exe api -h
 Springboot接口生成工具
 
 Usage:
@@ -136,9 +138,9 @@ Global Flags:
 主要根据URL设计和方法来生成对应的接口
 
 ```bash
-./codegen.exe api -m addArticle -u addArticle
-./codegen.exe api -m getUser -u user
-./codegen.exe api -m addUser -u user -r post
-./codegen.exe api -m getUserDetail -u user/{id} -r get
-./codegen.exe api -m deleteUser -u user -r delete
+codegen.exe api -m addArticle -u addArticle
+codegen.exe api -m getUser -u user
+codegen.exe api -m addUser -u user -r post
+codegen.exe api -m getUserDetail -u user/{id} -r get
+codegen.exe api -m deleteUser -u user -r delete
 ```
