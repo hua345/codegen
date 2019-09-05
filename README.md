@@ -2,6 +2,7 @@
 
 > 通过http/rpc协议，将自己喜欢的几种语言协作起来，发挥各自优点。
 ### 编译安装
+
 ```bash
 # 下载源码
 git clone https://github.com/hua345/codegen.git
@@ -11,10 +12,14 @@ go get -u github.com/go-bindata/go-bindata/...
 go generate
 # 编译程序
 go build
+# 安装程序
+go install
 ```
+
 ### 1. 查看帮助
+
 ```bash
- ./codegen.exe -h
+ codegen.exe -h
  Code Generate Springboot/SpringCloud/Gin/Express Helper
 
 Usage:
@@ -35,10 +40,13 @@ Flags:
 
 Use "codegen [command] --help" for more information about a command.
 ```
+
 ### 2. 初始化配置文件
+
 ```bash
 ./codegen.exe config init
 ```
+
 #### 3.1 阿里GroupId和ArtifactId规范
 - GroupID 格式：com.{公司/BU }.业务线.[子业务线]，最多 4 级。
 > 说明：{公司/BU} 例如：alibaba/taobao/tmall/aliexpress 等 BU 一级；子业务线可选。
@@ -47,38 +55,58 @@ Use "codegen [command] --help" for more information about a command.
 > 正例：dubbo-client / fastjson-api / jstorm-tool
 
 #### 3.2 修改配置文件`codegen.yaml`
+
 ```
-defaultHttpMethod: get
+defaultHttpMethod: post
 defaultHttpPort: 8080
 apiBaseUrl: api/v1
 authorName: chenjianhua
+database:
+  # postgresql/mariadb/mysql/
+  type: mariadb
+  host: 192.168.137.128:3306
+  databaseName: db_example
+  username: springuser
+  password: 123456
+redis:
+  host: 192.168.137.128
+  port: 6379
+  # Redis默认情况下有16个分片，这里配置具体使用的分片，默认是0
+  database: 0
+  password:
+  # 连接超时时间（毫秒）
+  timeout: 1000
+  # 连接池中的最大空闲连接 默认 8
+  maxIdle: 8
+  # 连接池最大连接数（使用负值表示没有限制） 默认 8
+  maxActive: 8
+
+
 springboot:
   groupId: com.github
-  artifactId: hello-golang
+  artifactId: code-admin
+  supportRedis: true
+  #shiro, security, spring-session, redis-session, none
+  userService: none
+  supportMaven: true
+  # 默认配置文件类型是properties,也支持yaml
+  supportConfigTypeYaml: false
+  supportGradle: true
+  supportDocker: true
+  # 国际化
+  supportI18n: true
+  # 数据源: druid/HikariCP
+  supportDataSource: druid
+  supportSwagger: true
 ```
-#### 3.3 查看帮助
-```
-$ ./codegen.exe init -h
-Springboot初始化工程.
 
-Usage:
-  codegen init [-a ArtifactId] [flags]
-
-Examples:
-codegen init [-a ArtifactId]
-
-Flags:
-  -a, --artifactId string   ArtifactID 格式：产品线名-模块名。
-  -h, --help                help for init
-
-Global Flags:
-  -f, --config string   读取配置文件(默认./codegen.yaml)
-```
-#### 3.4 工程初始化
+#### 3.3 工程初始化
 ```
 ./codegen.exe init
 ```
+
 ### 4.1 查看帮助
+
 ```
 $ ./codegen.exe api -h
 Springboot接口生成工具
@@ -102,8 +130,11 @@ Flags:
 Global Flags:
   -f, --config string   读取配置文件(默认./codegen.yaml)
 ```
+
 #### 4.2 接口生成
+
 主要根据URL设计和方法来生成对应的接口
+
 ```bash
 ./codegen.exe api -m addArticle -u addArticle
 ./codegen.exe api -m getUser -u user
