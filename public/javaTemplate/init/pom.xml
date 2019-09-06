@@ -10,21 +10,13 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.5.RELEASE</version>
+        <version>2.1.7.RELEASE</version>
     </parent>
 
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <mybatis.version>2.0.1</mybatis.version>
-        <guava.version>27.1-jre</guava.version>
-        <commons-lang3.version>3.9</commons-lang3.version>{{ if .DataSourceDruid }}
-        <druid.version>1.1.17</druid.version>{{ end }}
-        <fastjson.version>1.2.58</fastjson.version>
-        <lombok.version>1.18.8</lombok.version>{{ if .SupportSwagger }}
-        <swagger2.version>2.9.2</swagger2.version>
-        <swagger-ui.version>2.9.2</swagger-ui.version>{{ end }}
     </properties>
 
     <dependencies>
@@ -49,38 +41,38 @@
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
-            <version>${mybatis.version}</version>
+            <version>2.1.0</version>
         </dependency>
         <!-- MySQL -->{{ if eq .Database.Type .DBTypePostgresql }}
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.2.5</version>
+            <version>42.2.6</version>
         </dependency>{{ else if eq .Database.Type .DBTypeMariadb }}
         <dependency>
             <groupId>org.mariadb.jdbc</groupId>
             <artifactId>mariadb-java-client</artifactId>
-            <version>2.4.1</version>
+            <version>2.4.3</version>
         </dependency>{{ else if eq .Database.Type .DBTypeMysql }}
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.16</version>
+            <version>8.0.17</version>
         </dependency>{{ end }}
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>${guava.version}</version>
+            <version>28.1-jre</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>${commons-lang3.version}</version>
+            <version>3.9</version>
         </dependency>{{ if .DataSourceDruid }}
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
-            <version>${druid.version}</version>
+            <version>1.1.20</version>
         </dependency>{{ end }}{{ if .SupportRedis}}
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -90,23 +82,23 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>${fastjson.version}</version>
+            <version>1.2.60</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
+            <version>1.18.8</version>
             <scope>provided</scope>
         </dependency>{{ if .SupportSwagger }}
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>
-            <version>${swagger2.version}</version>
+            <version>2.9.2</version>
         </dependency>
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
-            <version>${swagger-ui.version}</version>
+            <version>2.9.2</version>
         </dependency>{{ end }}
     </dependencies>
 
