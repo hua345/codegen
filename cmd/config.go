@@ -15,8 +15,8 @@
 package cmd
 
 import (
-	"codegen/pkg/config"
-	"codegen/pkg/fileUtil"
+	"github.com/hua345/codegen/pkg/config"
+	"github.com/hua345/codegen/pkg/fileUtil"
 	"encoding/json"
 	"fmt"
 	log "github.com/sirupsen/logrus"

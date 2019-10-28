@@ -2,7 +2,7 @@
 package main
 
 import (
-	"codegen/cmd"
+	"github.com/hua345/codegen/cmd"
 	log "github.com/sirupsen/logrus"
 	"os"
 )

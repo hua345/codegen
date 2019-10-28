@@ -1,8 +1,8 @@
 package templateUtil
 
 import (
-	"codegen/asset"
-	"codegen/pkg/fileUtil"
+	"github.com/hua345/codegen/asset"
+	"github.com/hua345/codegen/pkg/fileUtil"
 	"io/ioutil"
 	"log"
 	"os"

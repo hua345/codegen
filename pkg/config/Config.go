@@ -1,7 +1,7 @@
 package config
 
 import (
-	"codegen/pkg/fileUtil"
+	"github.com/hua345/codegen/pkg/fileUtil"
 	"fmt"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"

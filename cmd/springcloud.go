@@ -15,7 +15,7 @@
 package cmd
 
 import (
-	"codegen/pkg/config"
+	"github.com/hua345/codegen/pkg/config"
 	"fmt"
 	"github.com/spf13/cobra"
 )

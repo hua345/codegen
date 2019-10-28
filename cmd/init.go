@@ -15,8 +15,8 @@
 package cmd
 
 import (
-	"codegen/models"
-	"codegen/pkg/config"
+	"github.com/hua345/codegen/models"
+	"github.com/hua345/codegen/pkg/config"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )

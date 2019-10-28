@@ -1,10 +1,10 @@
 package models
 
 import (
-	"codegen/pkg/config"
-	"codegen/pkg/fileUtil"
-	"codegen/pkg/stringUtil"
-	"codegen/pkg/templateUtil"
+	"github.com/hua345/codegen/pkg/config"
+	"github.com/hua345/codegen/pkg/fileUtil"
+	"github.com/hua345/codegen/pkg/stringUtil"
+	"github.com/hua345/codegen/pkg/templateUtil"
 	"encoding/json"
 	"fmt"
 	"os"

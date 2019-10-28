@@ -1,8 +1,8 @@
 package models
 
 import (
-	"codegen/pkg/fileUtil"
-	"codegen/pkg/templateUtil"
+	"github.com/hua345/codegen/pkg/fileUtil"
+	"github.com/hua345/codegen/pkg/templateUtil"
 	"path"
 )
 

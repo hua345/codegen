@@ -1,13 +1,18 @@
 > 一千个人心中有一千个哈姆雷特，一千个架构师心中有一千种完美架构。
-
+>
 > 通过http/rpc协议，将自己喜欢的几种语言协作起来，发挥各自优点。
+
 ### 编译安装
 
 ```bash
 # 下载源码
 git clone https://github.com/hua345/codegen.git
 # 安安装go-bindata
-go get -u github.com/go-bindata/go-bindata/...
+go get github.com/spf13/cobra
+# github.com/go-yaml/yaml -> gopkg.in/yaml.v2
+go get github.com/go-yaml/yaml
+go get github.com/sirupsen/logrus
+go get github.com/go-bindata/go-bindata/...
 # 打包静态资源
 go generate
 # 编译程序
@@ -50,15 +55,19 @@ codegen.exe config init
 会在当前目录下生成`codegen.yaml`配置文件
 
 #### 3.1 阿里GroupId和ArtifactId规范
+
 - GroupID 格式：com.{公司/BU }.业务线.[子业务线]，最多 4 级。
+
 > 说明：{公司/BU} 例如：alibaba/taobao/tmall/aliexpress 等 BU 一级；子业务线可选。
 正例：com.taobao.jstorm 或 com.alibaba.dubbo.register
+
 - ArtifactID 格式：产品线名-模块名。语义不重复不遗漏，先到中央仓库去查证一下。
+  
 > 正例：dubbo-client / fastjson-api / jstorm-tool
 
 #### 3.2 修改配置文件`codegen.yaml`
 
-```
+```yaml
 defaultHttpMethod: post
 defaultHttpPort: 8080
 apiBaseUrl: api/v1
@@ -103,13 +112,14 @@ springboot:
 ```
 
 #### 3.3 工程初始化
-```
+
+```bash
 codegen.exe init
 ```
 
 ### 4.1 查看帮助
 
-```
+```bash
 $ codegen.exe api -h
 Springboot接口生成工具
 
