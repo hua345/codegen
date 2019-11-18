@@ -2,6 +2,8 @@
 >
 > 通过http/rpc协议，将自己喜欢的几种语言协作起来，发挥各自优点。
 
+![badge.svg?branch=master](https://github.com/hua345/codegen/workflows/Go/badge.svg?branch=master)
+
 ### 编译安装
 
 ```bash
