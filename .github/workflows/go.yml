@@ -25,4 +25,4 @@ jobs:
           fi
 
       - name: Build
-        run: go env && export PATH=$GOPATH/bin:$PATH && go generate && go build -v .
+        run: go env && export PATH=$GOPATH/bin/:$PATH && go generate && go build -v .
