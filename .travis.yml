@@ -8,5 +8,4 @@ before_install:
   - go generate
 
 script:
-  - go generate 
   - go build -v .
