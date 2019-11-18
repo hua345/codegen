@@ -12,7 +12,7 @@ func ParseExcelApi(excelPath string) {
 		return
 	}
 	for _, value := range excelFile.GetSheetMap() {
-		rows, err := excelFile.GetRows(value)
+		rows := excelFile.GetRows(value)
 		if err != nil {
 			panic(nil)
 		}
