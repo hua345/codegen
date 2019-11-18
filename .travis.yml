@@ -4,6 +4,10 @@ go:
   - 1.12.x
   - 1.13.x
 
-script:
+before_install:
   - go get github.com/go-bindata/go-bindata/...
-  - go generate && go build -v .
+  - go generate
+
+script:
+  - go generate 
+  - go build -v .
