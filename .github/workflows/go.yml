@@ -25,4 +25,4 @@ jobs:
           fi
 
       - name: Build
-        run: ls $GOPATH/bin && go generate && go build -v .
+        run: goenv && ls $GOPATH/bin && go generate && go build -v .
