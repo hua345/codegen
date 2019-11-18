@@ -6,5 +6,4 @@ go:
 
 script:
   - go get github.com/go-bindata/go-bindata/...
-  - go generate
-  - go build -v .
+  - go generate && go build -v .
