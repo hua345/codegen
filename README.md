@@ -3,7 +3,7 @@
 > 通过http/rpc协议，将自己喜欢的几种语言协作起来，发挥各自优点。
 
 ![badge.svg](https://github.com/hua345/codegen/workflows/Go/badge.svg)
-![travis-ci](https://api.travis-ci.org/hua345/codegen.svg)
+[![Build Status](https://travis-ci.org/hua345/codegen.svg?branch=master)](https://travis-ci.org/hua345/codegen)
 
 ### 编译安装
 
