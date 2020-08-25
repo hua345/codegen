@@ -35,7 +35,7 @@ var expressCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(expressCmd)
+	// rootCmd.AddCommand(expressCmd)
 
 	// Here you will define your flags and configuration settings.
 

@@ -35,7 +35,7 @@ var ginCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(ginCmd)
+	// rootCmd.AddCommand(ginCmd)
 
 	// Here you will define your flags and configuration settings.
 

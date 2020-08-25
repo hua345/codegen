@@ -1,5 +1,5 @@
 plugins {
-    id 'org.springframework.boot' version '2.1.7.RELEASE'
+    id 'org.springframework.boot' version '2.3.3.RELEASE'
     id 'java'
 }
 
@@ -36,15 +36,15 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     compile group: 'org.mybatis.spring.boot', name: 'mybatis-spring-boot-starter', version: '2.1.0'{{ if eq .Database.Type .DBTypePostgresql }}
     compile group: 'org.postgresql', name: 'postgresql', version: '42.2.6'{{ else if eq .Database.Type .DBTypeMariadb }}
-    compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.4.3'{{ else if eq .Database.Type .DBTypeMysql }}
-    compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.17'{{ end }}{{ if .DataSourceDruid }}
-    compile group: 'com.alibaba', name: 'druid', version: '1.1.20'{{ end }}{{ if .SupportRedis}}
+    compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.6.2'{{ else if eq .Database.Type .DBTypeMysql }}
+    compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.21'{{ end }}{{ if .DataSourceDruid }}
+    compile group: 'com.alibaba', name: 'druid', version: '1.1.23'{{ end }}{{ if .SupportRedis}}
     // 连接池，redis依赖
     compile group: 'org.apache.commons', name: 'commons-pool2', version: '2.7.0' {{ end }}
     compile group: 'com.google.guava', name: 'guava', version: '28.1-jre'
-    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.11'
     compile group: 'com.alibaba', name: 'fastjson', version: '1.2.60'
-    providedCompile group: 'org.projectlombok', name: 'lombok', version: '1.18.8'{{ if .SupportSwagger }}
-    compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
-    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'{{ end }}
+    providedCompile group: 'org.projectlombok', name: 'lombok', version: '1.18.12'{{ if .SupportSwagger }}
+    compile group: 'io.springfox', name: 'springfox-swagger2', version: '3.0.0'
+    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '3.0.0'{{ end }}
 }

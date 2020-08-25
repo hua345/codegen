@@ -34,7 +34,7 @@ springboot:
   supportMaven: true
   # 默认配置文件类型是properties,也支持yaml
   supportConfigTypeYaml: false
-  supportGradle: true
+  supportGradle: false
   supportDocker: true
   # 国际化
   supportI18n: true

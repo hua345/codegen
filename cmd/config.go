@@ -15,10 +15,10 @@
 package cmd
 
 import (
-	"github.com/hua345/codegen/pkg/config"
-	"github.com/hua345/codegen/pkg/fileUtil"
 	"encoding/json"
 	"fmt"
+	"github.com/hua345/codegen/pkg/config"
+	"github.com/hua345/codegen/pkg/fileUtil"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"os"
