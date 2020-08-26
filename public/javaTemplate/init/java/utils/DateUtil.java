@@ -14,55 +14,81 @@ import java.util.Date;
  */
 public final class DateUtil {
     private static final Logger log = LoggerFactory.getLogger(DateUtil.class);
+    /**
+     * 从`Java 8`开始,`java.time`包提供了新的日期和时间API,主要涉及的类型有:
+     *
+     * - 本地日期和时间:`LocalDateTime`,`LocalDate`,`LocalTime`；
+     * - 带时区的日期和时间:`ZonedDateTime`;
+     * - 时刻:`Instant`;
+     * - 时区:`ZoneId`,`ZoneOffset`;
+     * - 时间间隔:`Duration`
+     * 以及一套新的用于取代`SimpleDateFormat`的格式化类型`DateTimeFormatter`
+     */
+    /**
+     * Date 转 localDate
+     */
+    public static LocalDate date2LocalDate(Date date) {
+        Instant instant = date.toInstant();
+        ZonedDateTime zdt = instant.atZone(ZoneId.systemDefault());
+        return zdt.toLocalDate();
+    }
 
     /**
-     * 格式化日期
+     * Date 转 localDate
+     */
+    public static LocalDateTime date2LocalDateTime(Date date) {
+        Instant instant = date.toInstant();
+        ZonedDateTime zdt = instant.atZone(ZoneId.systemDefault());
+        return zdt.toLocalDateTime();
+    }
+
+    /**
+     * localDate转Date
+     */
+    public static Date localDate2Date(LocalDate localDate) {
+        ZonedDateTime zonedDateTime = localDate.atStartOfDay(ZoneId.systemDefault());
+        Instant instant1 = zonedDateTime.toInstant();
+        Date from = Date.from(instant1);
+        return from;
+    }
+
+    /**
+     * 解析日期
      * 默认:yyyy-MM-dd HH:mm:ss
-     *
-     * @param dateStr 时间格式字符串
-     * @return 格式化后的日期
+     * LocalDateTime LocalDate + LocalTime 两部分都得有
      */
-    public static Date parseDate(String dateStr) {
-        return parseDate(dateStr, DateFormatEnum.DATE_YYYY_MM_DD_HH_MM_SS);
+    public static LocalDateTime parseDateTime(String dateStr) {
+        return LocalDateTime.parse(dateStr, DateFormatEnum.DATE_YYYY_MM_DD_HH_MM_SS.getSdf());
+    }
+
+    /**
+     * 解析日期
+     * 默认:yyyy-MM-dd
+     * LocalDateTime LocalDate + LocalTime 两部分都得有
+     */
+    public static LocalDate parseDate(String dateStr) {
+        return LocalDate.parse(dateStr, DateFormatEnum.DATE_YYYY_MM_DD.getSdf());
     }
 
     /**
      * 格式化日期
-     *
-     * @param dateStr 时间格式字符串
-     * @param pattern DateFormatEnum时间格式
-     * @return 格式化后的日期
      */
-    public static Date parseDate(String dateStr, DateFormatEnum pattern) {
-        if (StringUtils.isBlank(dateStr)) {
-            return null;
-        }
-        try {
-            return pattern.getSdf().parse(dateStr);
-        } catch (Exception e) {
-            log.error("Parse Date error dateStr={}, pattern={}", dateStr, pattern.getDateFormat());
-        }
-        return null;
+    public static String formatDateTime(Date date) {
+        return formatDateTime(date, DateFormatEnum.DATE_YYYY_MM_DD_HH_MM_SS);
     }
 
     /**
      * 格式化日期
-     *
-     * @param date Date对象
-     * @return 格式化后的日期
      */
-    public static String formatDate(Date date) {
-        return formatDate(date, DateFormatEnum.DATE_YYYY_MM_DD_HH_MM_SS);
+    public static String formatDateTime(Date date, DateFormatEnum pattern) {
+        return formatDateTime(date2LocalDateTime(date), pattern);
     }
 
     /**
      * 格式化日期
-     *
-     * @param date Date对象
-     * @return 格式化后的日期
      */
-    public static String formatDate(Date date, DateFormatEnum pattern) {
-        return pattern.getSdf().format(date);
+    public static String formatDateTime(LocalDateTime localDateTime, DateFormatEnum pattern) {
+        return localDateTime.format(pattern.getSdf());
     }
 
     /**
@@ -79,7 +105,8 @@ public final class DateUtil {
      * @return 时间字符串
      */
     public static String getNowDate(DateFormatEnum pattern) {
-        return pattern.getSdf().format(new Date());
+        LocalDateTime now = LocalDateTime.now();
+        return now.format(pattern.getSdf());
     }
 
     /**
@@ -92,34 +119,70 @@ public final class DateUtil {
     }
 
     /**
-     * 判断一个时间是否在另一个时间之前
-     *  before("2019-07-02","2019-07-01",DateFormatEnum.DATE_YYYY_MM_DD) -> 0
-     *  before("2019-07-01","2019-07-02",DateFormatEnum.DATE_YYYY_MM_DD) -> 1
-     *  error -> null
-     * @param dateStr1 第一个时间
-     * @param dateStr2 第二个时间
-     * @return 判断结果
+     * 获取月第一天
      */
-    public static Integer before(String dateStr1, String dateStr2, DateFormatEnum pattern) {
-        Date dateTime1 = parseDate(dateStr1, pattern);
-        Date dateTime2 = parseDate(dateStr2, pattern);
-        if (null == dateTime1 || null == dateTime2) {
-            log.error("compare error dateStr1={}, dateStr2={}, pattern={}", dateStr1, dateStr2, pattern.getDateFormat());
-            return null;
-        }
-        if (dateTime1.before(dateTime2)) {
-            return 1;
-        } else {
-            return 0;
-        }
+    public static Date getStartDayOfMonth(String date) {
+        LocalDate now = LocalDate.parse(date);
+        return getStartDayOfMonth(now);
     }
 
-    public static Integer before(String dateStr1, String dateStr2) {
-        return before(dateStr1, dateStr2, DateFormatEnum.DATE_YYYY_MM_DD_HH_MM_SS);
+    public static Date getStartDayOfMonth(LocalDate date) {
+        LocalDate now = date.with(TemporalAdjusters.firstDayOfMonth());
+        return localDate2Date(now);
+    }
+
+    public static Date getStartDayOfMonth() {
+        return getStartDayOfMonth(LocalDate.now());
+    }
+
+    /**
+     * 获取月最后一天
+     */
+    public static Date getEndDayOfMonth(String date) {
+        LocalDate localDate = LocalDate.parse(date);
+        return getEndDayOfMonth(localDate);
+    }
+
+    public static Date getEndDayOfMonth(Date date) {
+        return getEndDayOfMonth(date2LocalDate(date));
+    }
+
+    public static Date getEndDayOfMonth(LocalDate date) {
+        LocalDate now = date.with(TemporalAdjusters.lastDayOfMonth());
+        Date.from(now.atStartOfDay(ZoneId.systemDefault()).plusDays(1L).minusNanos(1L).toInstant());
+        return localDate2Date(now);
+    }
+
+    public static Date getEndDayOfMonth() {
+        return getEndDayOfMonth(LocalDate.now());
+    }
+
+    /**
+     * 一天的开始
+     */
+    public static LocalDateTime getStartOfDay(LocalDate date) {
+        LocalDateTime time = LocalDateTime.of(date, LocalTime.MIN);
+        return time;
+    }
+
+    public static LocalDateTime getStartOfDay() {
+        return getStartOfDay(LocalDate.now());
+    }
+
+    /**
+     * 一天的结束
+     */
+    public static LocalDateTime getEndOfDay(LocalDate date) {
+        LocalDateTime time = LocalDateTime.of(date, LocalTime.MAX);
+        return time;
+    }
+
+    public static LocalDateTime getEndOfDay() {
+        return getEndOfDay(LocalDate.now());
     }
 
     public static void main(String[] args) {
-        System.out.println(getNowDate(DateFormatEnum.DATE_YYYYMMDD));
         System.out.println(getNowDate());
+        System.out.println(formatDateTime(new Date()));
     }
 }

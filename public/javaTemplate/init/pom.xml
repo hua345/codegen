@@ -33,6 +33,10 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+        </dependency>
         <!-- 引入Actuator监控依赖 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

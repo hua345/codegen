@@ -24,19 +24,19 @@ public enum DateFormatEnum {
     DATE_YYYY_MM_DD_HH_MM_CN("yyyy年MM月dd日 HH:mm");
 
     private String dateFormat;
-    private SimpleDateFormat sdf;
+    private DateTimeFormatter sdf;
 
     DateFormatEnum(String dateFormat) {
 
         this.dateFormat = dateFormat;
-        this.sdf = new SimpleDateFormat(dateFormat);
+        this.sdf = DateTimeFormatter.ofPattern(dateFormat, Locale.CHINA);
     }
 
     public String getDateFormat() {
         return dateFormat;
     }
 
-    public SimpleDateFormat getSdf() {
+    public DateTimeFormatter getSdf() {
         return sdf;
     }
 }
