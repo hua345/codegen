@@ -7,12 +7,12 @@ authorName: chenjianhua
 database:
   # postgresql/mariadb/mysql/
   type: mariadb
-  host: 192.168.137.128:3306
+  host: 192.168.137.129:3306
   databaseName: db_example
   username: springuser
   password: 123456
 redis:
-  host: 192.168.137.128
+  host: 192.168.137.129
   port: 6379
   # Redis默认情况下有16个分片，这里配置具体使用的分片，默认是0
   database: 0

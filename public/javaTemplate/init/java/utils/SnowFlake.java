@@ -1,5 +1,9 @@
 package {{.PackageName}}.utils;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.Date;
+
 /**
  * @author {{.Author}}
  * @date {{.NowDate}}
@@ -21,9 +25,9 @@ package {{.PackageName}}.utils;
 public class SnowFlake {
 
     /**
-     * 起始的时间戳
+     * 起始的时间戳,2020-08-15
      */
-    private final static long START_STMP = 1561008572829L;
+    private final static long START_STMP = 1597420800000L;
 
     /**
      * 每一部分占用的位数
@@ -56,6 +60,8 @@ public class SnowFlake {
     private long sequence = 0L;
     //上一次时间戳
     private long lastStmp = -1L;
+
+    private SnowFlake(){}
 
     public SnowFlake(long datacenterId, long machineId) {
         if (datacenterId > MAX_DATACENTER_NUM || datacenterId < 0) {
@@ -111,11 +117,15 @@ public class SnowFlake {
         return System.currentTimeMillis();
     }
 
-//    public static void main(String[] args) {
-//        SnowFlake snowFlake = new SnowFlake(2, 3);
-//
-//        for (int i = 0; i < (1 << 12); i++) {
-//            System.out.println(snowFlake.nextId());
-//        }
-//    }
+    public static void main(String[] args) {
+        Date startDate =  new Date(START_STMP);
+        System.out.println(startDate.toLocaleString());
+        LocalDateTime d2 = LocalDateTime.of(2020, 8, 15,0,0,0);
+        System.out.println(d2.toInstant(ZoneOffset.of("+8")).toEpochMilli());
+        SnowFlake snowFlake = new SnowFlake(2, 3);
+
+        for (int i = 0; i < 10; i++) {
+            System.out.println(snowFlake.nextId());
+        }
+    }
 }

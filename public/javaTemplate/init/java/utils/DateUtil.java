@@ -1,11 +1,10 @@
 package {{.PackageName}}.utils;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.time.*;
+import java.time.temporal.TemporalAdjusters;
 import java.util.Date;
 
 /**
@@ -71,6 +70,13 @@ public final class DateUtil {
     }
 
     /**
+     * 格式化时间戳
+     */
+    public static LocalDateTime parseTimestamp(Long timestamp) {
+        return LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.systemDefault());
+    }
+
+    /**
      * 格式化日期
      */
     public static String formatDateTime(Date date) {
@@ -89,6 +95,23 @@ public final class DateUtil {
      */
     public static String formatDateTime(LocalDateTime localDateTime, DateFormatEnum pattern) {
         return localDateTime.format(pattern.getSdf());
+    }
+
+    /**
+     * 格式化日期
+     */
+    public static String formatDateTime(Long timestamp, DateFormatEnum pattern) {
+        return parseTimestamp(timestamp).format(pattern.getSdf());
+    }
+
+    /**
+     * 从性能上System.currentTimeMillis()大于Instant.now().toEpochMilli();
+     * 100万次
+     * getEpochMilliWithSystem cost:5ms
+     * getEpochMilliWithInstant cost:60ms
+     */
+    public static Long getTimeStamp() {
+        return System.currentTimeMillis();
     }
 
     /**
