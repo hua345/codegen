@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="{{.PackageName}}.mapper.LeafAllocMapper">
+  <resultMap id="BaseResultMap" type="{{.PackageName}}.model.LeafAlloc">
+    <id column="biz_tag" jdbcType="VARCHAR" property="bizTag" />
+    <result column="max_id" jdbcType="BIGINT" property="maxId" />
+    <result column="step" jdbcType="INTEGER" property="step" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    biz_tag, max_id, step, description, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from leaf_alloc
+    where biz_tag = #{bizTag,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAllLeafAlloc" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from leaf_alloc
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+
+    delete from leaf_alloc
+    where biz_tag = #{bizTag,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="{{.PackageName}}.model.LeafAlloc">
+    insert into leaf_alloc (biz_tag, max_id, step, 
+      description, update_time)
+    values (#{bizTag,jdbcType=VARCHAR}, #{maxId,jdbcType=BIGINT}, #{step,jdbcType=INTEGER}, 
+      #{description,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="{{.PackageName}}.model.LeafAlloc">
+
+    update leaf_alloc
+    set max_id = #{maxId,jdbcType=BIGINT},
+      step = #{step,jdbcType=INTEGER},
+      description = #{description,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where biz_tag = #{bizTag,jdbcType=VARCHAR}
+  </update>
+
+</mapper>

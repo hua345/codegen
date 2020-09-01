@@ -1,9 +1,6 @@
 package {{.PackageName}};
 
-import {{.PackageName}}.utils.DateFormatEnum;
-import {{.PackageName}}.utils.DateUtil;
-import {{.PackageName}}.utils.SnowFlake;
-import {{.PackageName}}.utils.SnowFlakeUtil;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -61,11 +58,4 @@ public class SpringBootLettuceRedisApplicationTests {
         log.info("[对象缓存结果] - [{}]", fangName);
     }
 
-    @Test
-    public void SnowFlakeTest() {
-        log.info("雪花算法起始时间:{}",DateUtil.formatDateTime(SnowFlake.START_STMP, DateFormatEnum.DATE_YYYY_MM_DD_HH_MM_SS));
-        for (int i = 0; i < 10; i++) {
-            log.info("雪花算法生成id：{}",SnowFlakeUtil.getNextId());
-        }
-    }
 }

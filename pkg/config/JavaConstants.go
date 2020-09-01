@@ -46,6 +46,9 @@ const MybatisPath string = "mybatis"
 const JavaUtilPath string = "utils"
 const JavaConfigPath string = "config"
 const JavaCommonPath string = "common"
+const JavaModelPath string = "model"
+const JavaMapperPath string = "mapper"
+const JavaIdLeafPath string = "service/idleaf"
 
 //***************************************javaTemplateFile***************************
 

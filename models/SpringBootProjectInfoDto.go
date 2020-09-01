@@ -112,6 +112,15 @@ func (projectInfoDto SpringBootProjectInfoDto) InitProject() {
 	fileUtil.CheckDirAndMkdir(projectInfoDto.JavaTestPath)
 	// 检测resource目录是否存在
 	fileUtil.CheckDirAndMkdir(projectInfoDto.ResourcePath)
+	// 检测model目录是否存在
+	JavaCodeModelPath := path.Join(projectInfoDto.JavaPath, config.JavaModelPath)
+	fileUtil.CheckDirAndMkdir(JavaCodeModelPath)
+	// 检测mapper目录是否存在
+	JavaCodeMapperPath := path.Join(projectInfoDto.JavaPath, config.JavaMapperPath)
+	fileUtil.CheckDirAndMkdir(JavaCodeMapperPath)
+	// 检测idleaf目录是否存在
+	JavaCodeIdLeafPath := path.Join(projectInfoDto.JavaPath, config.JavaIdLeafPath)
+	fileUtil.CheckDirAndMkdir(JavaCodeIdLeafPath)
 	// 检测Util目录是否存在
 	JavaCodeUtilPath := path.Join(projectInfoDto.JavaPath, config.JavaUtilPath)
 	fileUtil.CheckDirAndMkdir(JavaCodeUtilPath)
@@ -203,6 +212,16 @@ func initProjectData(projectInfoDto SpringBootProjectInfoDto) {
 	javaTemplateConfigPath := path.Join(config.JavaTemplateInitCodePath, config.JavaConfigPath)
 	javaCodeConfigPath := path.Join(projectInfoDto.JavaPath, config.JavaConfigPath)
 	fileMapDtoList = appendTemplateList(javaTemplateConfigPath, javaCodeConfigPath, fileMapDtoList)
+	// idLeaf
+	javaTemplateModelPath := path.Join(config.JavaTemplateInitCodePath, config.JavaModelPath)
+	javaCodeIdModelPath := path.Join(projectInfoDto.JavaPath, config.JavaModelPath)
+	fileMapDtoList = appendTemplateList(javaTemplateModelPath, javaCodeIdModelPath, fileMapDtoList)
+	javaTemplateMapperPath := path.Join(config.JavaTemplateInitCodePath, config.JavaMapperPath)
+	javaCodeIdMapperPath := path.Join(projectInfoDto.JavaPath, config.JavaMapperPath)
+	fileMapDtoList = appendTemplateList(javaTemplateMapperPath, javaCodeIdMapperPath, fileMapDtoList)
+	javaTemplateIdLeafPath := path.Join(config.JavaTemplateInitCodePath, config.JavaIdLeafPath)
+	javaCodeIdLeafPath := path.Join(projectInfoDto.JavaPath, config.JavaIdLeafPath)
+	fileMapDtoList = appendTemplateList(javaTemplateIdLeafPath, javaCodeIdLeafPath, fileMapDtoList)
 	// config swagger
 	if projectInfoDto.SupportSwagger {
 		fileMapDtoList = appendTemplateList(
