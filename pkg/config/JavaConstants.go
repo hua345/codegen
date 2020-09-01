@@ -15,8 +15,6 @@ const JavaServiceImplPath string = "service/impl"
 const SpringMapping = "Mapping"
 const ImportSpringAnnotation = "import org.springframework.web.bind.annotation."
 const DotProjectFileName = ".project"
-const JavaDefineAnnotation = "annotation"
-const JavaDefineValidator = "validator"
 
 // Template Config
 const JavaTemplateInitPath string = "javaTemplate/init"
