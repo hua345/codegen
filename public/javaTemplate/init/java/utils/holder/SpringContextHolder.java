@@ -7,9 +7,8 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Nonnull;
 
 /**
- * Spring 容器对象，里面保存所有已经注册的 Bean
- * @author shiyajian
- * create: 2018-12-27
+ * @author {{.Author}}
+ * @date {{.NowDate}}
  */
 @Component
 public class SpringContextHolder implements ApplicationContextAware {

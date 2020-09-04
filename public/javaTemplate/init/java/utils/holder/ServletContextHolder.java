@@ -8,9 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * servlet上下文工具类,建议使用静态导包
- * @author shiyajian
- * create: 2018-12-25
+ * @author {{.Author}}
+ * @date {{.NowDate}}
  */
 public class ServletContextHolder {
 
