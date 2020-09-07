@@ -43,7 +43,6 @@ dependencies {
     compile group: 'org.apache.commons', name: 'commons-pool2', version: '2.7.0' {{ end }}
     compile group: 'com.google.guava', name: 'guava', version: '28.1-jre'
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.11'
-    compile group: 'com.alibaba', name: 'fastjson', version: '1.2.60'
     providedCompile group: 'org.projectlombok', name: 'lombok', version: '1.18.12'{{ if .SupportSwagger }}
     compile group: 'io.springfox', name: 'springfox-swagger2', version: '3.0.0'
     compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '3.0.0'{{ end }}

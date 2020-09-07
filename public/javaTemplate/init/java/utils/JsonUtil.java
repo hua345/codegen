@@ -4,13 +4,17 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
-
 
 /**
  * @author {{.Author}}
@@ -29,7 +33,19 @@ public class JsonUtil {
          * https://github.com/FasterXML/jackson-databind#commonly-used-features
          */
         mapper = new ObjectMapper().setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+        // 对Date格式化
         mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+        // 对LocalDateTime格式化
+        JavaTimeModule javaTimeModule = new JavaTimeModule();
+        //处理LocalDateTime
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_TIME_PATTERN);
+        javaTimeModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(dateTimeFormatter));
+        javaTimeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(dateTimeFormatter));
+        // https://github.com/FasterXML/jackson-modules-java8
+        // javaTimeModule注册时间模块, 支持支持jsr310, 即新的时间类(java.time包下的时间类)
+        // Jdk8Module模块可以使用java8 Optional
+        // ParameterNamesModule可以使用bean构造函数替代注解JsonProperty
+        mapper.registerModule(javaTimeModule);
         // 强制将空字符串("")转换为null对象值
         mapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
         mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
