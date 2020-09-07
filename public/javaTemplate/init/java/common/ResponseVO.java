@@ -1,12 +1,11 @@
 package {{.PackageName}}.common;
 
-import com.alibaba.fastjson.JSONObject;
-
 import java.io.Serializable;
 
+import {{.PackageName}}.utils.JsonUtil;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.http.HttpStatus;
+
 /**
  * @author {{.Author}}
  * @date {{.NowDate}}
@@ -43,6 +42,6 @@ public class ResponseVO<T> implements Serializable {
 
     @Override
     public String toString() {
-        return JSONObject.toJSONString(this);
+        return JsonUtil.toJSONString(this);
     }
 }

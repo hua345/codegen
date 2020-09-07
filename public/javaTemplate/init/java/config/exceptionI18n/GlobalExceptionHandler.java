@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 
 import {{.PackageName}}.common.ResponseVO;
 import {{.PackageName}}.common.ResponseStatusEnum;
+import {{.PackageName}}.utils.JsonUtil;
 import {{.PackageName}}.utils.ResponseUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -20,6 +21,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.stream.Collectors;
+
 /**
  * @author {{.Author}}
  * @date {{.NowDate}}
@@ -31,7 +33,7 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(value = Exception.class)
 	public ResponseVO defaultErrorHandler(Exception e) {
 		log.error("Exception", e);
-		return  ResponseUtil.fail(ResponseStatusEnum.SERVER_ERROR);
+		return ResponseUtil.fail(ResponseStatusEnum.SERVER_ERROR);
 	}
 
 	/**
@@ -46,9 +48,10 @@ public class GlobalExceptionHandler {
 	}
 
 	/**
-	 *  使用@RequestParam时，请求参数缺失时抛出的异常
+	 * 使用@RequestParam时，请求参数缺失时抛出的异常
 	 * //@GetMapping(path = "/")
-	 *   public ResponseVO<GetUserOutputDTO> getUser(@RequestParam String name)
+	 * public ResponseVO<GetUserOutputDTO> getUser(@RequestParam String name)
+	 *
 	 * @param missingServletRequestParameterException MissingServletRequestParameterException
 	 * @return 全局统一返回体
 	 */
@@ -57,6 +60,7 @@ public class GlobalExceptionHandler {
 		log.error("Catch MissingServletRequestParameterException {}.", missingServletRequestParameterException.getMessage());
 		return new ResponseVO(ResponseStatusEnum.PARAMETER_CHECK_ERROR.getErrorCode(), missingServletRequestParameterException.getMessage());
 	}
+
 	/**
 	 * 所有业务异常统一处理入口 （默认 HttpStatus.OK = 200）
 	 *
@@ -68,18 +72,20 @@ public class GlobalExceptionHandler {
 		log.error("Catch {} MyRuntimeException ; {}", myRuntimeException.getStackTrace()[0].toString(), myRuntimeException.getResponseResult());
 		return myRuntimeException.getResponseResult();
 	}
+
 	/**
 	 * 处理Get请求中 使用@Valid 验证路径中请求实体校验失败后抛出的异常
 	 * 参数校验不通过异常处理
 	 * //@GetMapping(path = "/")
 	 * public ResponseVO<GetUserOutputDTO> getUser(@Valid/@Validated GetUserInputDTO param)
+	 *
 	 * @param e validation 校验异常
 	 * @return 返回给前台的响应实体，会被Jackson序列化成json
 	 */
 	@ExceptionHandler(BindException.class)
 	@ResponseBody
 	public ResponseVO bindExceptionHandler(BindException e) {
-		log.info("BindException Handler--- ERROR: {}",JSON.toJSONString(e.getBindingResult().getAllErrors()));
+		log.info("BindException Handler--- ERROR: {}", JsonUtil.toJSONString(e.getBindingResult().getAllErrors()));
 		String message = e.getBindingResult().getAllErrors()
 				.stream().map(DefaultMessageSourceResolvable::getDefaultMessage)
 				.collect(Collectors.joining());
@@ -93,16 +99,17 @@ public class GlobalExceptionHandler {
 	 * 处理请求参数格式错误
 	 * //@Validated
 	 * public class UserController {
-	 *  //   @GetMapping(path = "/")
-	 *       public ResponseVO<GetUserOutputDTO> getUser(@NotBlank(message = "名字不能为空") @RequestParam String name)
-	 *   }
+	 * //   @GetMapping(path = "/")
+	 * public ResponseVO<GetUserOutputDTO> getUser(@NotBlank(message = "名字不能为空") @RequestParam String name)
+	 * }
+	 *
 	 * @param e ConstraintViolationException
 	 * @return ResponseVO
 	 */
 	@ExceptionHandler(ConstraintViolationException.class)
 	@ResponseBody
 	public ResponseVO constraintViolationExceptionHandler(ConstraintViolationException e) {
-		log.info("ConstraintViolationException Handler--- ERROR: {}",e.getConstraintViolations());
+		log.info("ConstraintViolationException Handler--- ERROR: {}", e.getConstraintViolations());
 		String message = e.getConstraintViolations().stream()
 				.map(ConstraintViolation::getMessage).collect(Collectors.joining());
 		ResponseVO<String> response = ResponseUtil.fail(ResponseStatusEnum.PARAMETER_CHECK_ERROR);
@@ -115,6 +122,7 @@ public class GlobalExceptionHandler {
 	 * org.springframework.validation.annotation.Validated
 	 * //@PostMapping(path = "/")
 	 * public ResponseVO<GetUserOutputDTO> addUser(@Valid/@Validated @RequestBody GetUserInputDTO param)
+	 *
 	 * @param e MethodArgumentNotValidException 校验异常
 	 * @return 返回给前台的响应实体，会被Jackson序列化成json
 	 */
@@ -130,3 +138,4 @@ public class GlobalExceptionHandler {
 		return response;
 	}
 }
+
