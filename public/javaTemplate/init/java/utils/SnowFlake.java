@@ -81,10 +81,11 @@ public class SnowFlake {
      */
     public synchronized long nextId() {
         long currStmp = getNewstmp();
+        // 不允许时钟回拨
         if (currStmp < lastStmp) {
-            throw new RuntimeException("Clock moved backwards.  Refusing to generate id");
+            throw new RuntimeException(String.format("Clock moved backwards.  Refusing to generate id for %d milliseconds", lastStmp - currStmp));
         }
-
+        // 上一次请求的时间戳和此刻相等，需要生成序列号
         if (currStmp == lastStmp) {
             //相同毫秒内，序列号自增
             sequence = (sequence + 1) & MAX_SEQUENCE;
