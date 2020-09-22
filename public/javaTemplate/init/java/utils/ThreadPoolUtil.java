@@ -3,7 +3,7 @@ package {{.PackageName}}.utils;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.*;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author {{.Author}}
@@ -24,7 +24,7 @@ public class ThreadPoolUtil {
     public static class MyNameThreadFactory implements ThreadFactory {
 
         private final String poolName;
-        private AtomicLong count = new AtomicLong(1);
+        private AtomicInteger count = new AtomicInteger(1);
 
         public MyNameThreadFactory(String poolName) {
             this.poolName = poolName;
